@@ -1329,7 +1329,24 @@ body.menu-open {
     }
     
     .skills-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .skill-card {
+        padding: 18px;
+        min-height: 150px;
+    }
+    
+    .skill-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+        margin-bottom: 12px;
+    }
+    
+    .skill-name {
+        font-size: 0.9rem;
     }
     
     .contact-content {
@@ -1392,6 +1409,7 @@ body.menu-open {
     
     .skill-card {
         padding: 14px;
+        min-height: 130px;
     }
     
     .skill-icon {
@@ -1490,4 +1508,203 @@ body.menu-open {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--gray);
+}
+
+/* ============================================
+   Blog Section
+   ============================================ */
+.blog-content {
+    margin-top: 3rem;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.blog-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.blog-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.blog-thumbnail {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: var(--bg-section);
+}
+
+.blog-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-thumbnail img {
+    transform: scale(1.05);
+}
+
+.blog-thumbnail-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+}
+
+.blog-thumbnail-placeholder i {
+    font-size: 3rem;
+    color: var(--white);
+    opacity: 0.8;
+}
+
+.blog-card-content {
+    padding: 1.5rem;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.blog-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.blog-meta i {
+    font-size: 1rem;
+}
+
+.blog-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-excerpt {
+    font-size: 0.9rem;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--primary);
+    transition: gap 0.3s ease;
+}
+
+.blog-card:hover .blog-read-more {
+    gap: 0.6rem;
+}
+
+.blog-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.blog-loading {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    color: var(--gray);
+    gap: 1rem;
+}
+
+.blog-loading i {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.blog-error {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--gray);
+}
+
+.blog-error i {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.blog-error a {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+/* Blog Section Responsive */
+@media (max-width: 1024px) {
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .blog-thumbnail {
+        height: 200px;
+    }
+    
+    .blog-card-content {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-thumbnail {
+        height: 160px;
+    }
+    
+    .blog-title {
+        font-size: 1.05rem;
+    }
+    
+    .blog-meta {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
 }
