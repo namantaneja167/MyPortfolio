@@ -4,13 +4,13 @@
 
 // Initialize AOS (Animate on Scroll)
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS
+    // Initialize AOS - Hero section excluded via data-aos-disabled attribute
     AOS.init({
-        duration: 800,
+        duration: 600,
         easing: 'ease-out',
         once: true,
         offset: 100,
-        disable: 'mobile'
+        disable: false
     });
 
     // Initialize all features
@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initHeaderScroll();
     initFormValidation();
     initActiveNavLink();
+    initSkillsPagination();
+    initMobileMenu();
+    initSkillCardsHover();
+    initTimelineHover();
 });
 
 /* ============================================
@@ -239,7 +243,7 @@ function initFormValidation() {
 /* ============================================
    Skill Cards Hover Effect
    ============================================ */
-document.addEventListener('DOMContentLoaded', function() {
+function initSkillCardsHover() {
     const skillCards = document.querySelectorAll('.skill-card');
     
     skillCards.forEach(card => {
@@ -251,12 +255,12 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.transform = 'translateY(0) scale(1)';
         });
     });
-});
+}
 
 /* ============================================
    Timeline Item Hover Effect
    ============================================ */
-document.addEventListener('DOMContentLoaded', function() {
+function initTimelineHover() {
     const timelineItems = document.querySelectorAll('.timeline-item');
     
     timelineItems.forEach(item => {
@@ -280,25 +284,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
+}
 
 /* ============================================
-   Parallax Effect for Hero Section
+   Parallax Effect for Hero Section (DISABLED)
+   Caused visual issues with hero image sliding
    ============================================ */
-document.addEventListener('DOMContentLoaded', function() {
-    const heroImage = document.querySelector('.hero-image');
-    
-    if (heroImage && window.innerWidth > 768) {
-        window.addEventListener('scroll', function() {
-            const scrolled = window.scrollY;
-            const parallaxSpeed = 0.3;
-            
-            if (scrolled < window.innerHeight) {
-                heroImage.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-            }
-        });
-    }
-});
+// Parallax disabled - was causing hero image to move unexpectedly on scroll
 
 /* ============================================
    Typed Effect for Hero Title (Optional)
@@ -340,18 +332,117 @@ window.addEventListener('load', function() {
 });
 
 /* ============================================
-   Mobile Menu Toggle (for future use)
+   Mobile Menu Toggle
    ============================================ */
 function initMobileMenu() {
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('.nav');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const body = document.body;
     
-    if (menuToggle && nav) {
-        menuToggle.addEventListener('click', function() {
-            nav.classList.toggle('active');
-            this.classList.toggle('active');
+    if (!menuToggle || !nav) return;
+    
+    // Toggle menu on hamburger click
+    menuToggle.addEventListener('click', function() {
+        nav.classList.toggle('active');
+        this.classList.toggle('active');
+        body.classList.toggle('menu-open');
+    });
+    
+    // Close menu when clicking nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            nav.classList.remove('active');
+            menuToggle.classList.remove('active');
+            body.classList.remove('menu-open');
         });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!nav.contains(e.target) && !menuToggle.contains(e.target) && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+            menuToggle.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+            menuToggle.classList.remove('active');
+            body.classList.remove('menu-open');
+        }
+    });
+}
+
+/* ============================================
+   Skills Pagination
+   ============================================ */
+function initSkillsPagination() {
+    const skillCards = document.querySelectorAll('.skill-card');
+    const prevBtn = document.getElementById('prevSkills');
+    const nextBtn = document.getElementById('nextSkills');
+    const paginationDots = document.querySelectorAll('.pagination-dot');
+    
+    if (!skillCards.length || !prevBtn || !nextBtn) return;
+    
+    let currentPage = 1;
+    const totalPages = 2;
+    
+    // Show initial page
+    showPage(currentPage);
+    
+    function showPage(page) {
+        // Hide all cards
+        skillCards.forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        // Show cards for current page
+        skillCards.forEach(card => {
+            if (parseInt(card.dataset.page) === page) {
+                card.classList.add('active');
+            }
+        });
+        
+        // Update pagination dots
+        paginationDots.forEach(dot => {
+            dot.classList.remove('active');
+            if (parseInt(dot.dataset.page) === page) {
+                dot.classList.add('active');
+            }
+        });
+        
+        // Update button states
+        prevBtn.disabled = page === 1;
+        nextBtn.disabled = page === totalPages;
+        
+        currentPage = page;
     }
+    
+    // Previous button click
+    prevBtn.addEventListener('click', function() {
+        if (currentPage > 1) {
+            showPage(currentPage - 1);
+        }
+    });
+    
+    // Next button click
+    nextBtn.addEventListener('click', function() {
+        if (currentPage < totalPages) {
+            showPage(currentPage + 1);
+        }
+    });
+    
+    // Pagination dot click
+    paginationDots.forEach(dot => {
+        dot.addEventListener('click', function() {
+            const page = parseInt(this.dataset.page);
+            showPage(page);
+        });
+    });
 }
 
 /* ============================================

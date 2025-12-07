@@ -14,6 +14,16 @@
     
     <title>Naman Taneja | Data Engineer</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ff6b35'/><text x='50' y='65' font-family='Arial' font-size='50' font-weight='bold' fill='white' text-anchor='middle'>N</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#ff6b35">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Naman Taneja">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,13 +45,16 @@
             <a href="#" class="logo">
                 <span class="logo-icon">N</span>
             </a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span class="hamburger"></span>
+            </button>
             <nav class="nav">
                 <a href="#about" class="nav-link">About</a>
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#skills" class="nav-link">Skills</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
-            <a href="assets/Naman_Resume.pdf" class="btn btn-outline" download>
+            <a href="assets/Naman_Resume.pdf" class="btn btn-outline" target="_blank">
                 Download PDF Resume
             </a>
         </div>
@@ -50,7 +63,7 @@
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="container hero-container">
-            <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
+            <div class="hero-content">
                 <h1 class="hero-title">
                     I'm Naman <span class="wave">👋</span>
                     <br>
@@ -85,9 +98,9 @@
                     </a>
                 </div>
             </div>
-            <div class="hero-image" data-aos="fade-left" data-aos-duration="1000">
+            <div class="hero-image">
                 <div class="image-wrapper">
-                    <img src="images/profile.jpg" alt="Naman Taneja - Data Engineer">
+                    <img src="images/profile.jpg" alt="Naman Taneja - Data Engineer" loading="eager" width="500" height="667">
                 </div>
             </div>
         </div>
@@ -179,7 +192,7 @@
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
                     <div class="timeline-date">
                         <span class="year">2022-2025</span>
-                        <span class="role">BTS Associate</span>
+                        <span class="role">BTSA Associate - Data Engineer</span>
                     </div>
                     <div class="timeline-marker">
                         <span class="marker-dot"></span>
@@ -203,7 +216,7 @@
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
                     <div class="timeline-date">
                         <span class="year">2022</span>
-                        <span class="role">BTS Associate Intern</span>
+                        <span class="role">BTSA Associate Intern</span>
                     </div>
                     <div class="timeline-marker">
                         <span class="marker-dot"></span>
@@ -239,9 +252,9 @@
                             <i class='bx bx-radio-circle-marked'></i>
                         </div>
                         <div class="edu-info">
-                            <h3 class="edu-title">B.Tech in Computer Science - 2022</h3>
+                            <h3 class="edu-title">Gen AI Engineer Apprenticeship - 2024</h3>
                             <p class="edu-description">
-                                Guru Gobind Singh Indraprastha University, Delhi. Focused on data structures, algorithms, and database management systems.
+                                100x Engineers. Intensive program covering model fine-tuning (DreamBooth, Stable Diffusion), full-stack LLM applications, RAG architectures, and AI agents using LangChain, CrewAI, and Ollama.
                             </p>
                         </div>
                     </div>
@@ -250,9 +263,9 @@
                             <i class='bx bx-radio-circle-marked'></i>
                         </div>
                         <div class="edu-info">
-                            <h3 class="edu-title">Gen AI Engineer Apprenticeship - 2024</h3>
+                            <h3 class="edu-title">B.Tech in Computer Science - 2022</h3>
                             <p class="edu-description">
-                                100x Engineers. Intensive program covering model fine-tuning (DreamBooth, Stable Diffusion), full-stack LLM applications, RAG architectures, and AI agents using LangChain, CrewAI, and Ollama.
+                                Guru Gobind Singh Indraprastha University, Delhi.
                             </p>
                         </div>
                     </div>
@@ -268,123 +281,256 @@
                         </div>
                     </div>
                 </div>
-                <div class="skills-grid" data-aos="fade-left" data-aos-delay="200">
-                    <div class="skill-card">
-                        <div class="skill-icon snowflake">
-                            <i class='bx bxs-data'></i>
+                <div class="skills-grid-wrapper" data-aos="fade-left" data-aos-delay="200">
+                    <div class="skills-grid" id="skillsGrid">
+                        <!-- Page 1 -->
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon snowflake">
+                                <i class='bx bxs-data'></i>
+                            </div>
+                            <span class="skill-name">Snowflake</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
                         </div>
-                        <span class="skill-name">Snowflake</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon python">
+                                <i class='bx bxl-python'></i>
+                            </div>
+                            <span class="skill-name">Python</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon databricks">
+                                <i class='bx bx-chip'></i>
+                            </div>
+                            <span class="skill-name">Databricks</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon azure">
+                                <i class='bx bxl-microsoft'></i>
+                            </div>
+                            <span class="skill-name">Azure</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon git">
+                                <i class='bx bxl-git'></i>
+                            </div>
+                            <span class="skill-name">Git</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon dbt">
+                                <i class='bx bx-transfer'></i>
+                            </div>
+                            <span class="skill-name">DBT</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon adf">
+                                <i class='bx bx-git-merge'></i>
+                            </div>
+                            <span class="skill-name">Azure Data Factory</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon crewai">
+                                <i class='bx bx-bot'></i>
+                            </div>
+                            <span class="skill-name">CrewAI</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="1">
+                            <div class="skill-icon rag">
+                                <i class='bx bx-search-alt-2'></i>
+                            </div>
+                            <span class="skill-name">RAG</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <!-- Page 2 -->
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon dataiku">
+                                <i class='bx bx-cog'></i>
+                            </div>
+                            <span class="skill-name">Dataiku DSS</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon sql">
+                                <i class='bx bx-data'></i>
+                            </div>
+                            <span class="skill-name">SQL</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon tableau">
+                                <i class='bx bx-bar-chart-alt-2'></i>
+                            </div>
+                            <span class="skill-name">Tableau</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon langchain">
+                                <i class='bx bx-link-alt'></i>
+                            </div>
+                            <span class="skill-name">LangChain</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon ollama">
+                                <i class='bx bx-brain'></i>
+                            </div>
+                            <span class="skill-name">Ollama</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon excel">
+                                <i class='bx bx-table'></i>
+                            </div>
+                            <span class="skill-name">Excel</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon cicd">
+                                <i class='bx bx-infinite'></i>
+                            </div>
+                            <span class="skill-name">CI/CD</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon jira">
+                                <i class='bx bxl-trello'></i>
+                            </div>
+                            <span class="skill-name">Jira</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="skill-card" data-page="2">
+                            <div class="skill-icon placeholder">
+                                <i class='bx bx-code-alt'></i>
+                            </div>
+                            <span class="skill-name">ETL Pipelines</span>
+                            <div class="skill-level">
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                                <span class="dot filled"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="skill-card">
-                        <div class="skill-icon dataiku">
-                            <i class='bx bx-cog'></i>
+                    <div class="skills-pagination">
+                        <button class="pagination-btn prev" id="prevSkills" aria-label="Previous skills">
+                            <i class='bx bx-chevron-left'></i>
+                        </button>
+                        <div class="pagination-dots">
+                            <span class="pagination-dot active" data-page="1"></span>
+                            <span class="pagination-dot" data-page="2"></span>
                         </div>
-                        <span class="skill-name">Dataiku DSS</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon python">
-                            <i class='bx bxl-python'></i>
-                        </div>
-                        <span class="skill-name">Python</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon sql">
-                            <i class='bx bx-data'></i>
-                        </div>
-                        <span class="skill-name">SQL</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon tableau">
-                            <i class='bx bx-bar-chart-alt-2'></i>
-                        </div>
-                        <span class="skill-name">Tableau</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon databricks">
-                            <i class='bx bx-chip'></i>
-                        </div>
-                        <span class="skill-name">Databricks</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot"></span>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon langchain">
-                            <i class='bx bx-link-alt'></i>
-                        </div>
-                        <span class="skill-name">LangChain</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot"></span>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon azure">
-                            <i class='bx bxl-microsoft'></i>
-                        </div>
-                        <span class="skill-name">Azure</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot"></span>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon crewai">
-                            <i class='bx bx-bot'></i>
-                        </div>
-                        <span class="skill-name">CrewAI</span>
-                        <div class="skill-level">
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot filled"></span>
-                            <span class="dot"></span>
-                        </div>
+                        <button class="pagination-btn next" id="nextSkills" aria-label="Next skills">
+                            <i class='bx bx-chevron-right'></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -456,5 +602,20 @@
     
     <!-- Custom JavaScript -->
     <script src="js/main.js"></script>
+    
+    <!-- Register Service Worker for Offline Support -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
