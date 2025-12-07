@@ -185,24 +185,34 @@ function initActiveNavLink() {
 }
 
 /* ============================================
-   Form Validation & Submission
+   Form Validation & AJAX Submission
    ============================================ */
 function initFormValidation() {
-    const form = document.querySelector('.contact-form');
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formSuccess = document.getElementById('formSuccess');
+    const sendAnother = document.getElementById('sendAnother');
     
     if (!form) return;
     
-    form.addEventListener('submit', function(e) {
+    // Handle form submission with AJAX
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
         const name = form.querySelector('#name');
         const email = form.querySelector('#email');
         const message = form.querySelector('#message');
-        
-        let isValid = true;
         
         // Reset previous error states
         [name, email, message].forEach(field => {
             field.style.borderColor = '#e0e0e0';
         });
+        
+        // Remove any existing error message
+        const existingError = form.querySelector('.form-error');
+        if (existingError) existingError.remove();
+        
+        let isValid = true;
         
         // Validate name
         if (!name.value.trim()) {
@@ -223,10 +233,62 @@ function initFormValidation() {
             isValid = false;
         }
         
-        if (!isValid) {
-            e.preventDefault();
+        if (!isValid) return;
+        
+        // Show loading state
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+        const btnIcon = submitBtn.querySelector('.btn-icon');
+        
+        btnText.style.display = 'none';
+        btnIcon.style.display = 'none';
+        btnLoading.style.display = 'inline-flex';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                // Show success message
+                form.style.display = 'none';
+                formSuccess.style.display = 'block';
+                form.reset();
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            
+            // Show error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'form-error';
+            errorDiv.innerHTML = `
+                <i class='bx bx-error-circle'></i>
+                <span>Something went wrong. Please try again or email me directly.</span>
+            `;
+            form.insertBefore(errorDiv, form.firstChild);
+        } finally {
+            // Reset button state
+            btnText.style.display = 'inline';
+            btnIcon.style.display = 'inline';
+            btnLoading.style.display = 'none';
+            submitBtn.disabled = false;
         }
     });
+    
+    // Handle "Send Another Message" button
+    if (sendAnother) {
+        sendAnother.addEventListener('click', function() {
+            formSuccess.style.display = 'none';
+            form.style.display = 'block';
+        });
+    }
     
     // Real-time validation feedback
     const inputs = form.querySelectorAll('input, textarea');

@@ -1708,3 +1708,222 @@ body.menu-open {
         gap: 0.5rem;
     }
 }
+
+/* ============================================
+   Hero CTA Buttons
+   ============================================ */
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.hero-cta .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hero-cta .btn i {
+    font-size: 1.25rem;
+}
+
+/* ============================================
+   Skeleton Loading Animation
+   ============================================ */
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.skeleton {
+    pointer-events: none;
+}
+
+.skeleton-thumbnail {
+    background: linear-gradient(90deg, #f0f0f0 0px, #e0e0e0 40px, #f0f0f0 80px);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+}
+
+.skeleton .blog-card-content {
+    padding: 1.5rem;
+}
+
+.skeleton-meta {
+    height: 16px;
+    width: 60%;
+    background: linear-gradient(90deg, #f0f0f0 0px, #e0e0e0 40px, #f0f0f0 80px);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.skeleton-title {
+    height: 24px;
+    width: 90%;
+    background: linear-gradient(90deg, #f0f0f0 0px, #e0e0e0 40px, #f0f0f0 80px);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.skeleton-excerpt {
+    height: 14px;
+    width: 100%;
+    background: linear-gradient(90deg, #f0f0f0 0px, #e0e0e0 40px, #f0f0f0 80px);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.skeleton-excerpt.short {
+    width: 70%;
+}
+
+/* ============================================
+   Contact Form Success Message
+   ============================================ */
+.form-success {
+    text-align: center;
+    padding: 3rem 2rem;
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.5s ease 0.2s both;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.success-icon i {
+    font-size: 2.5rem;
+    color: var(--white);
+}
+
+.form-success h3 {
+    font-size: 1.75rem;
+    color: var(--black);
+    margin-bottom: 0.75rem;
+}
+
+.form-success p {
+    color: var(--gray);
+    margin-bottom: 2rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Submit Button States */
+.btn-loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#submitBtn {
+    position: relative;
+    min-width: 180px;
+}
+
+#submitBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+#submitBtn .btn-icon {
+    transition: transform 0.3s ease;
+}
+
+#submitBtn:hover:not(:disabled) .btn-icon {
+    transform: translateX(4px);
+}
+
+/* Form Error State */
+.form-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-error i {
+    font-size: 1.25rem;
+}
+
+/* ============================================
+   Responsive - Hero CTA
+   ============================================ */
+@media (max-width: 768px) {
+    .hero-cta {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .hero-cta .btn {
+        justify-content: center;
+    }
+    
+    .form-success {
+        padding: 2rem 1rem;
+    }
+    
+    .success-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .success-icon i {
+        font-size: 2rem;
+    }
+    
+    .form-success h3 {
+        font-size: 1.5rem;
+    }
+}

@@ -98,6 +98,16 @@
                         <i class='bx bxl-twitter'></i>
                     </a>
                 </div>
+                <div class="hero-cta">
+                    <a href="assets/Naman_Resume.pdf" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                        <i class='bx bx-download'></i>
+                        Download Resume
+                    </a>
+                    <a href="#contact" class="btn btn-outline">
+                        <i class='bx bx-envelope'></i>
+                        Get In Touch
+                    </a>
+                </div>
             </div>
             <div class="hero-image">
                 <div class="image-wrapper">
@@ -545,10 +555,33 @@
             </div>
             <div class="blog-content" data-aos="fade-up" data-aos-delay="200">
                 <div class="blog-grid" id="blogGrid">
-                    <!-- Blog posts will be loaded dynamically -->
-                    <div class="blog-loading">
-                        <i class='bx bx-loader-alt bx-spin'></i>
-                        <span>Loading articles...</span>
+                    <!-- Skeleton loading cards -->
+                    <div class="blog-card skeleton">
+                        <div class="blog-thumbnail skeleton-thumbnail"></div>
+                        <div class="blog-card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt short"></div>
+                        </div>
+                    </div>
+                    <div class="blog-card skeleton">
+                        <div class="blog-thumbnail skeleton-thumbnail"></div>
+                        <div class="blog-card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt short"></div>
+                        </div>
+                    </div>
+                    <div class="blog-card skeleton">
+                        <div class="blog-thumbnail skeleton-thumbnail"></div>
+                        <div class="blog-card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt short"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="blog-cta">
@@ -570,7 +603,7 @@
             </div>
             <div class="contact-content">
                 <div class="contact-form-wrapper" data-aos="fade-right" data-aos-delay="200">
-                    <form class="contact-form" action="https://formspree.io/f/xvgebpon" method="POST">
+                    <form class="contact-form" id="contactForm" action="https://formspree.io/f/xvgebpon" method="POST">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name">Name *</label>
@@ -585,11 +618,27 @@
                             <label for="message">Message *</label>
                             <textarea id="message" name="message" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            Send Message
-                            <i class='bx bx-send'></i>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="btn-text">Send Message</span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class='bx bx-loader-alt bx-spin'></i>
+                                Sending...
+                            </span>
+                            <i class='bx bx-send btn-icon'></i>
                         </button>
                     </form>
+                    <!-- Success Message -->
+                    <div class="form-success" id="formSuccess" style="display: none;">
+                        <div class="success-icon">
+                            <i class='bx bx-check-circle'></i>
+                        </div>
+                        <h3>Message Sent!</h3>
+                        <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
+                        <button class="btn btn-outline" id="sendAnother">
+                            <i class='bx bx-envelope'></i>
+                            Send Another Message
+                        </button>
+                    </div>
                 </div>
                 <div class="contact-info" data-aos="fade-left" data-aos-delay="200">
                     <div class="contact-socials">
