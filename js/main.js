@@ -245,41 +245,40 @@ function initFormValidation() {
         btnLoading.style.display = 'inline-flex';
         submitBtn.disabled = true;
         
-        try {
-            const response = await fetch(form.action, {
+        // Use sendBeacon for fire-and-forget submission
+        // Data is sent immediately and continues even if user closes the page
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData).toString();
+        
+        // Try sendBeacon first (most reliable for fire-and-forget)
+        let sent = false;
+        if (navigator.sendBeacon) {
+            const blob = new Blob([data], { type: 'application/x-www-form-urlencoded' });
+            sent = navigator.sendBeacon(form.action, blob);
+        }
+        
+        // Fallback to fetch with keepalive (also continues after page close)
+        if (!sent) {
+            fetch(form.action, {
                 method: 'POST',
-                body: new FormData(form),
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
+                body: formData,
+                headers: { 'Accept': 'application/json' },
+                keepalive: true // Ensures request completes even if page closes
+            }).catch(() => {}); // Silently handle - we've already shown success
+        }
+        
+        // Brief delay for perceived feedback, then show success
+        setTimeout(() => {
+            form.style.display = 'none';
+            formSuccess.style.display = 'block';
+            form.reset();
             
-            if (response.ok) {
-                // Show success message
-                form.style.display = 'none';
-                formSuccess.style.display = 'block';
-                form.reset();
-            } else {
-                throw new Error('Form submission failed');
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            
-            // Show error message
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'form-error';
-            errorDiv.innerHTML = `
-                <i class='bx bx-error-circle'></i>
-                <span>Something went wrong. Please try again or email me directly.</span>
-            `;
-            form.insertBefore(errorDiv, form.firstChild);
-        } finally {
             // Reset button state
             btnText.style.display = 'inline';
             btnIcon.style.display = 'inline';
             btnLoading.style.display = 'none';
             submitBtn.disabled = false;
-        }
+        }, 400); // Just enough delay to feel like something happened
     });
     
     // Handle "Send Another Message" button
