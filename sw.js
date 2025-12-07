@@ -5,6 +5,10 @@
 
 const CACHE_NAME = 'naman-portfolio-v1';
 const OFFLINE_URL = './offline.html';
+const DEBUG = false; // Set to true for development logging
+
+// Conditional logging
+const log = (...args) => DEBUG && console.log(...args);
 
 // Assets to cache on install
 const ASSETS_TO_CACHE = [
@@ -22,23 +26,23 @@ const ASSETS_TO_CACHE = [
 
 // Install event - cache core assets
 self.addEventListener('install', (event) => {
-    console.log('[ServiceWorker] Installing...');
+    log('[ServiceWorker] Installing...');
     
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[ServiceWorker] Caching core assets');
+                log('[ServiceWorker] Caching core assets');
                 // Cache what we can, don't fail if some resources are unavailable
                 return Promise.allSettled(
                     ASSETS_TO_CACHE.map(url => 
                         cache.add(url).catch(err => {
-                            console.log(`[ServiceWorker] Failed to cache: ${url}`, err);
+                            log(`[ServiceWorker] Failed to cache: ${url}`, err);
                         })
                     )
                 );
             })
             .then(() => {
-                console.log('[ServiceWorker] Install complete');
+                log('[ServiceWorker] Install complete');
                 return self.skipWaiting();
             })
     );
@@ -46,7 +50,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-    console.log('[ServiceWorker] Activating...');
+    log('[ServiceWorker] Activating...');
     
     event.waitUntil(
         caches.keys()
@@ -55,13 +59,13 @@ self.addEventListener('activate', (event) => {
                     cacheNames
                         .filter(name => name !== CACHE_NAME)
                         .map(name => {
-                            console.log(`[ServiceWorker] Deleting old cache: ${name}`);
+                            log(`[ServiceWorker] Deleting old cache: ${name}`);
                             return caches.delete(name);
                         })
                 );
             })
             .then(() => {
-                console.log('[ServiceWorker] Activation complete');
+                log('[ServiceWorker] Activation complete');
                 return self.clients.claim();
             })
     );

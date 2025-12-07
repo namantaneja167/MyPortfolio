@@ -1,29 +1,34 @@
 /* ============================================
    Naman Taneja - Portfolio Website JavaScript
    ============================================ */
+'use strict';
 
 // Initialize AOS (Animate on Scroll)
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS - Hero section excluded via data-aos-disabled attribute
-    AOS.init({
-        duration: 600,
-        easing: 'ease-out',
-        once: true,
-        offset: 100,
-        disable: false
-    });
+    try {
+        // Initialize AOS - Hero section excluded via data-aos-disabled attribute
+        AOS.init({
+            duration: 600,
+            easing: 'ease-out',
+            once: true,
+            offset: 100,
+            disable: false
+        });
 
-    // Initialize all features
-    initSmoothScroll();
-    initCounterAnimation();
-    initHeaderScroll();
-    initFormValidation();
-    initActiveNavLink();
-    initSkillsPagination();
-    initMobileMenu();
-    initSkillCardsHover();
-    initTimelineHover();
-    initBlogPosts();
+        // Initialize all features
+        initSmoothScroll();
+        initCounterAnimation();
+        initHeaderScroll();
+        initFormValidation();
+        initActiveNavLink();
+        initSkillsPagination();
+        initMobileMenu();
+        initSkillCardsHover();
+        initTimelineHover();
+        initBlogPosts();
+    } catch (error) {
+        console.error('Error initializing application:', error);
+    }
 });
 
 /* ============================================
@@ -382,215 +387,280 @@ function initMobileMenu() {
    Skills Pagination
    ============================================ */
 function initSkillsPagination() {
-    const skillCards = document.querySelectorAll('.skill-card');
-    const prevBtn = document.getElementById('prevSkills');
-    const nextBtn = document.getElementById('nextSkills');
-    const paginationDotsContainer = document.getElementById('paginationDots');
+    'use strict';
     
-    if (!skillCards.length || !prevBtn || !nextBtn || !paginationDotsContainer) return;
-    
-    let currentPage = 1;
-    let itemsPerPage = getItemsPerPage();
-    let totalPages = Math.ceil(skillCards.length / itemsPerPage);
-    
-    // Get items per page based on screen width
-    function getItemsPerPage() {
-        return window.innerWidth <= 768 ? 6 : 9;
-    }
-    
-    // Generate pagination dots
-    function generatePaginationDots() {
-        paginationDotsContainer.innerHTML = '';
-        for (let i = 1; i <= totalPages; i++) {
-            const dot = document.createElement('span');
-            dot.className = 'pagination-dot' + (i === currentPage ? ' active' : '');
-            dot.dataset.page = i;
-            dot.addEventListener('click', function() {
-                showPage(parseInt(this.dataset.page));
+    try {
+        const skillCards = document.querySelectorAll('.skill-card');
+        const prevBtn = document.getElementById('prevSkills');
+        const nextBtn = document.getElementById('nextSkills');
+        const paginationDotsContainer = document.getElementById('paginationDots');
+        
+        if (!skillCards.length || !prevBtn || !nextBtn || !paginationDotsContainer) return;
+        
+        let currentPage = 1;
+        let itemsPerPage = getItemsPerPage();
+        let totalPages = Math.ceil(skillCards.length / itemsPerPage);
+        
+        // Get items per page based on screen width
+        function getItemsPerPage() {
+            return window.innerWidth <= 768 ? 6 : 9;
+        }
+        
+        // Generate pagination dots
+        function generatePaginationDots() {
+            paginationDotsContainer.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'pagination-dot' + (i === currentPage ? ' active' : '');
+                dot.dataset.page = i;
+                dot.addEventListener('click', function() {
+                    showPage(parseInt(this.dataset.page, 10));
+                });
+                paginationDotsContainer.appendChild(dot);
+            }
+        }
+        
+        // Show page
+        function showPage(page) {
+            // Hide all cards
+            skillCards.forEach(card => {
+                card.classList.remove('active');
             });
-            paginationDotsContainer.appendChild(dot);
+            
+            // Calculate start and end index for current page
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, skillCards.length);
+            
+            // Show cards for current page
+            for (let i = startIndex; i < endIndex; i++) {
+                skillCards[i].classList.add('active');
+            }
+            
+            // Update pagination dots
+            const dots = paginationDotsContainer.querySelectorAll('.pagination-dot');
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+                if (parseInt(dot.dataset.page, 10) === page) {
+                    dot.classList.add('active');
+                }
+            });
+            
+            // Update button states
+            prevBtn.disabled = page === 1;
+            nextBtn.disabled = page === totalPages;
+            
+            currentPage = page;
         }
-    }
-    
-    // Show page
-    function showPage(page) {
-        // Hide all cards
-        skillCards.forEach(card => {
-            card.classList.remove('active');
-        });
         
-        // Calculate start and end index for current page
-        const startIndex = (page - 1) * itemsPerPage;
-        const endIndex = Math.min(startIndex + itemsPerPage, skillCards.length);
-        
-        // Show cards for current page
-        for (let i = startIndex; i < endIndex; i++) {
-            skillCards[i].classList.add('active');
+        // Handle resize
+        function handleResize() {
+            const newItemsPerPage = getItemsPerPage();
+            if (newItemsPerPage !== itemsPerPage) {
+                itemsPerPage = newItemsPerPage;
+                totalPages = Math.ceil(skillCards.length / itemsPerPage);
+                currentPage = 1; // Reset to first page on resize
+                generatePaginationDots();
+                showPage(currentPage);
+            }
         }
         
-        // Update pagination dots
-        const dots = paginationDotsContainer.querySelectorAll('.pagination-dot');
-        dots.forEach(dot => {
-            dot.classList.remove('active');
-            if (parseInt(dot.dataset.page) === page) {
-                dot.classList.add('active');
+        // Initialize
+        generatePaginationDots();
+        showPage(currentPage);
+        
+        // Event listeners
+        prevBtn.addEventListener('click', function() {
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
             }
         });
         
-        // Update button states
-        prevBtn.disabled = page === 1;
-        nextBtn.disabled = page === totalPages;
+        nextBtn.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
         
-        currentPage = page;
+        // Debounced resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(handleResize, 150);
+        });
+    } catch (error) {
+        console.error('Error initializing skills pagination:', error);
     }
-    
-    // Handle resize
-    function handleResize() {
-        const newItemsPerPage = getItemsPerPage();
-        if (newItemsPerPage !== itemsPerPage) {
-            itemsPerPage = newItemsPerPage;
-            totalPages = Math.ceil(skillCards.length / itemsPerPage);
-            currentPage = 1; // Reset to first page on resize
-            generatePaginationDots();
-            showPage(currentPage);
-        }
-    }
-    
-    // Initialize
-    generatePaginationDots();
-    showPage(currentPage);
-    
-    // Event listeners
-    prevBtn.addEventListener('click', function() {
-        if (currentPage > 1) {
-            showPage(currentPage - 1);
-        }
-    });
-    
-    nextBtn.addEventListener('click', function() {
-        if (currentPage < totalPages) {
-            showPage(currentPage + 1);
-        }
-    });
-    
-    // Debounced resize handler
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(handleResize, 150);
-    });
 }
 
 /* ============================================
    Blog Posts - Medium RSS Feed
    ============================================ */
-let allBlogPosts = []; // Store all posts for responsive display
-
-function initBlogPosts() {
-    const blogGrid = document.getElementById('blogGrid');
-    if (!blogGrid) return;
+const BlogModule = (function() {
+    'use strict';
     
-    const MEDIUM_RSS_URL = 'https://medium.com/feed/@namantaneja167';
-    const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json';
+    let allBlogPosts = [];
+    let resizeTimeout = null;
     
-    fetch(`${RSS2JSON_API}?rss_url=${encodeURIComponent(MEDIUM_RSS_URL)}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'ok' && data.items && data.items.length > 0) {
-                allBlogPosts = data.items.slice(0, 6); // Store up to 6 posts
-                displayBlogPosts();
-                
-                // Handle resize for responsive blog display
-                let blogResizeTimeout;
-                window.addEventListener('resize', function() {
-                    clearTimeout(blogResizeTimeout);
-                    blogResizeTimeout = setTimeout(displayBlogPosts, 150);
-                });
-            } else {
-                showBlogError();
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching blog posts:', error);
-            showBlogError();
-        });
-}
-
-function displayBlogPosts() {
-    const blogGrid = document.getElementById('blogGrid');
-    if (!blogGrid || allBlogPosts.length === 0) return;
-    
-    blogGrid.innerHTML = '';
-    
-    // Show 3 posts on mobile, 6 on desktop
-    const postsToShow = window.innerWidth <= 768 ? 3 : 6;
-    const posts = allBlogPosts.slice(0, postsToShow);
-    
-    posts.forEach((post, index) => {
-        const thumbnail = extractImageFromContent(post.content) || post.thumbnail || '';
-        const excerpt = stripHtml(post.description).substring(0, 120) + '...';
-        const publishDate = new Date(post.pubDate).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-        const readTime = estimateReadTime(post.content);
-        
-        const card = document.createElement('article');
-        card.className = 'blog-card';
-        card.setAttribute('data-aos', 'fade-up');
-        card.setAttribute('data-aos-delay', (index * 100).toString());
-        
-        card.innerHTML = `
-            <a href="${post.link}" target="_blank" rel="noopener noreferrer" class="blog-card-link">
-                ${thumbnail ? `<div class="blog-thumbnail"><img src="${thumbnail}" alt="${post.title}" loading="lazy"></div>` : '<div class="blog-thumbnail blog-thumbnail-placeholder"><i class="bx bx-file-blank"></i></div>'}
-                <div class="blog-card-content">
-                    <div class="blog-meta">
-                        <span class="blog-date"><i class='bx bx-calendar'></i> ${publishDate}</span>
-                        <span class="blog-read-time"><i class='bx bx-time-five'></i> ${readTime} min read</span>
-                    </div>
-                    <h3 class="blog-title">${post.title}</h3>
-                    <p class="blog-excerpt">${excerpt}</p>
-                    <span class="blog-read-more">Read Article <i class='bx bx-right-arrow-alt'></i></span>
-                </div>
-            </a>
-        `;
-        
-        blogGrid.appendChild(card);
-    });
-    
-    // Re-init AOS for new elements
-    if (typeof AOS !== 'undefined') {
-        AOS.refresh();
+    // Sanitize HTML to prevent XSS attacks
+    function sanitizeHTML(str) {
+        const temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
     }
-}
+    
+    function getPostsToShow() {
+        return window.innerWidth <= 768 ? 3 : 6;
+    }
+    
+    function extractImageFromContent(content) {
+        try {
+            const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/);
+            return imgMatch ? imgMatch[1] : null;
+        } catch (error) {
+            return null;
+        }
+    }
+    
+    function stripHtml(html) {
+        try {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        } catch (error) {
+            return '';
+        }
+    }
+    
+    function estimateReadTime(content) {
+        const text = stripHtml(content);
+        const wordsPerMinute = 200;
+        const wordCount = text.split(/\s+/).length;
+        return Math.max(1, Math.ceil(wordCount / wordsPerMinute));
+    }
+    
+    function showError() {
+        const blogGrid = document.getElementById('blogGrid');
+        if (!blogGrid) return;
+        
+        blogGrid.innerHTML = `
+            <div class="blog-error">
+                <i class='bx bx-error-circle'></i>
+                <p>Unable to load articles. Please visit my <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer">Medium profile</a> directly.</p>
+            </div>
+        `;
+    }
+    
+    function displayPosts() {
+        try {
+            const blogGrid = document.getElementById('blogGrid');
+            if (!blogGrid || allBlogPosts.length === 0) return;
+            
+            blogGrid.innerHTML = '';
+            
+            const postsToShow = getPostsToShow();
+            const posts = allBlogPosts.slice(0, postsToShow);
+            
+            posts.forEach((post, index) => {
+                const thumbnail = extractImageFromContent(post.content) || post.thumbnail || '';
+                const rawExcerpt = stripHtml(post.description).substring(0, 120);
+                const excerpt = sanitizeHTML(rawExcerpt) + '...';
+                const title = sanitizeHTML(post.title);
+                const publishDate = new Date(post.pubDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                const readTime = estimateReadTime(post.content);
+                const safeLink = encodeURI(post.link);
+                
+                const card = document.createElement('article');
+                card.className = 'blog-card';
+                card.setAttribute('data-aos', 'fade-up');
+                card.setAttribute('data-aos-delay', (index * 100).toString());
+                
+                // Build thumbnail HTML safely
+                let thumbnailHTML = '';
+                if (thumbnail) {
+                    const img = document.createElement('img');
+                    img.src = thumbnail;
+                    img.alt = title;
+                    img.loading = 'lazy';
+                    thumbnailHTML = `<div class="blog-thumbnail">${img.outerHTML}</div>`;
+                } else {
+                    thumbnailHTML = '<div class="blog-thumbnail blog-thumbnail-placeholder"><i class="bx bx-file-blank"></i></div>';
+                }
+                
+                card.innerHTML = `
+                    <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="blog-card-link">
+                        ${thumbnailHTML}
+                        <div class="blog-card-content">
+                            <div class="blog-meta">
+                                <span class="blog-date"><i class='bx bx-calendar'></i> ${publishDate}</span>
+                                <span class="blog-read-time"><i class='bx bx-time-five'></i> ${readTime} min read</span>
+                            </div>
+                            <h3 class="blog-title">${title}</h3>
+                            <p class="blog-excerpt">${excerpt}</p>
+                            <span class="blog-read-more">Read Article <i class='bx bx-right-arrow-alt'></i></span>
+                        </div>
+                    </a>
+                `;
+                
+                blogGrid.appendChild(card);
+            });
+            
+            // Re-init AOS for new elements
+            if (typeof AOS !== 'undefined') {
+                AOS.refresh();
+            }
+        } catch (error) {
+            console.error('Error displaying blog posts:', error);
+            showError();
+        }
+    }
+    
+    function handleResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(displayPosts, 150);
+    }
+    
+    function init() {
+        const blogGrid = document.getElementById('blogGrid');
+        if (!blogGrid) return;
+        
+        const MEDIUM_RSS_URL = 'https://medium.com/feed/@namantaneja167';
+        const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json';
+        
+        fetch(`${RSS2JSON_API}?rss_url=${encodeURIComponent(MEDIUM_RSS_URL)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'ok' && data.items && data.items.length > 0) {
+                    allBlogPosts = data.items.slice(0, 6);
+                    displayPosts();
+                    window.addEventListener('resize', handleResize);
+                } else {
+                    showError();
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching blog posts:', error);
+                showError();
+            });
+    }
+    
+    // Public API
+    return {
+        init: init
+    };
+})();
 
-function extractImageFromContent(content) {
-    const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/);
-    return imgMatch ? imgMatch[1] : null;
-}
-
-function stripHtml(html) {
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
-}
-
-function estimateReadTime(content) {
-    const text = stripHtml(content);
-    const wordsPerMinute = 200;
-    const wordCount = text.split(/\s+/).length;
-    return Math.max(1, Math.ceil(wordCount / wordsPerMinute));
-}
-
-function showBlogError() {
-    const blogGrid = document.getElementById('blogGrid');
-    blogGrid.innerHTML = `
-        <div class="blog-error">
-            <i class='bx bx-error-circle'></i>
-            <p>Unable to load articles. Please visit my <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer">Medium profile</a> directly.</p>
-        </div>
-    `;
+// Initialize blog module
+function initBlogPosts() {
+    BlogModule.init();
 }
 
 /* ============================================
