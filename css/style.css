@@ -47,6 +47,11 @@ html {
     scroll-behavior: smooth;
     font-size: 16px;
     touch-action: manipulation; /* Disable double-tap zoom on mobile */
+    overflow-x: hidden; /* Prevent horizontal scroll from AOS animations */
+}
+
+html, body {
+    max-width: 100vw; /* Ensure no content extends beyond viewport */
 }
 
 body {
@@ -85,6 +90,7 @@ ul, ol {
 /* Section Base */
 .section {
     padding: var(--section-padding);
+    overflow-x: hidden; /* Prevent AOS animations from causing horizontal scroll */
 }
 
 .section-header {
