@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initSkillCardsHover();
         initTimelineHover();
         initBlogPosts();
+        initBackToTop();
     } catch (error) {
         console.error('Error initializing application:', error);
     }
@@ -52,6 +53,15 @@ function initSmoothScroll() {
             if (targetElement) {
                 const headerHeight = document.querySelector('.header').offsetHeight;
                 const targetPosition = targetElement.offsetTop - headerHeight - 20;
+                
+                // Close mobile menu if open
+                const menuToggle = document.querySelector('.menu-toggle');
+                const nav = document.querySelector('.nav');
+                if (menuToggle && menuToggle.classList.contains('active')) {
+                    menuToggle.classList.remove('active');
+                    nav.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
                 
                 window.scrollTo({
                     top: targetPosition,
@@ -271,7 +281,13 @@ function initFormValidation() {
         setTimeout(() => {
             form.style.display = 'none';
             formSuccess.style.display = 'block';
+            formSuccess.classList.add('animate');
             form.reset();
+            
+            // Trigger haptic feedback if available
+            if (navigator.vibrate) {
+                navigator.vibrate([50, 30, 50]); // Short vibration pattern
+            }
             
             // Reset button state
             btnText.style.display = 'inline';
@@ -285,6 +301,7 @@ function initFormValidation() {
     if (sendAnother) {
         sendAnother.addEventListener('click', function() {
             formSuccess.style.display = 'none';
+            formSuccess.classList.remove('animate');
             form.style.display = 'block';
         });
     }
@@ -548,6 +565,50 @@ function initSkillsPagination() {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(handleResize, 150);
         });
+        
+        // Touch swipe support for mobile devices
+        const skillsWrapper = document.querySelector('.skills-grid-wrapper');
+        if (skillsWrapper) {
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchEndX = 0;
+            let isHorizontalSwipe = false;
+            const swipeThreshold = 50;
+            
+            skillsWrapper.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+                isHorizontalSwipe = false;
+            }, { passive: true });
+            
+            skillsWrapper.addEventListener('touchmove', function(e) {
+                const currentX = e.changedTouches[0].screenX;
+                const currentY = e.changedTouches[0].screenY;
+                const diffX = Math.abs(currentX - touchStartX);
+                const diffY = Math.abs(currentY - touchStartY);
+                
+                // If horizontal movement is greater, it's a swipe - prevent scroll
+                if (diffX > diffY && diffX > 10) {
+                    isHorizontalSwipe = true;
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            skillsWrapper.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0 && currentPage < totalPages) {
+                        // Swipe left = next page
+                        showPage(currentPage + 1);
+                    } else if (diff < 0 && currentPage > 1) {
+                        // Swipe right = previous page
+                        showPage(currentPage - 1);
+                    }
+                }
+            }, { passive: true });
+        }
     } catch (error) {
         console.error('Error initializing skills pagination:', error);
     }
@@ -730,3 +791,50 @@ function initBlogPosts() {
 console.log('%c👋 Hey there, curious developer!', 'font-size: 20px; font-weight: bold; color: #ff6b35;');
 console.log('%cInterested in working together? Reach out at er.namantaneja@gmail.com', 'font-size: 14px; color: #666;');
 console.log('%cOr connect on LinkedIn: linkedin.com/in/namantaneja167', 'font-size: 14px; color: #666;');
+
+/* ============================================
+   Back to Top Button
+   ============================================ */
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('backToTop');
+    if (!backToTopBtn) return;
+    
+    const scrollThreshold = 400; // Show button after scrolling 400px
+    
+    // Show/hide button based on scroll position
+    function toggleBackToTop() {
+        if (window.scrollY > scrollThreshold) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    }
+    
+    // Throttled scroll handler for performance
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                toggleBackToTop();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    
+    // Scroll to top on click
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        // Haptic feedback if available
+        if (navigator.vibrate) {
+            navigator.vibrate(30);
+        }
+    });
+    
+    // Initial check
+    toggleBackToTop();
+}
