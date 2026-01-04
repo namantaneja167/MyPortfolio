@@ -65,12 +65,16 @@
                 <a href="#about" class="nav-link">About</a>
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
                 <a href="#blog" class="nav-link">Blog</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
             <a href="assets/Naman_Resume.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
                 Download PDF Resume
             </a>
+            <button class="theme-toggle" aria-label="Toggle dark mode">
+                <i class='bx bx-sun'></i>
+            </button>
         </div>
     </header>
 
@@ -626,6 +630,134 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section - Featured Architectures -->
+    <section class="projects section" id="projects">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Featured Architectures</h2>
+                <p class="section-subtitle">Engineering Scalable Solutions & Intelligent Systems</p>
+            </div>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <article class="project-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-visual energy-theme">
+                        <div class="project-icon">
+                            <i class='bx bx-bolt-circle'></i>
+                        </div>
+                        <div class="project-overlay">
+                            <span class="project-type">Cloud Infrastructure</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Energy Market Data Hub</h3>
+                        <p class="project-description">
+                            A high-throughput trading data platform designed for North American electricity markets. Ingests millions of real-time market signals to empower trading algorithms.
+                        </p>
+                        <div class="project-meta">
+                            <div class="meta-row">
+                                <span class="meta-label">Challenge:</span>
+                                <span class="meta-value">Handling high-frequency time-series data with zero data loss.</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-label">Outcome:</span>
+                                <span class="meta-value">Reduced query latency by 40% for trading desks.</span>
+                            </div>
+                        </div>
+                        <div class="project-tech">
+                            <span>Snowflake</span>
+                            <span>Azure</span>
+                            <span>dbt</span>
+                            <span>Airflow</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="link-item disabled" title="Proprietary / Internal">
+                                <i class='bx bx-lock-alt'></i> Enterprise
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="project-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="project-visual pharma-theme">
+                        <div class="project-icon">
+                            <i class='bx bx-capsule'></i>
+                        </div>
+                        <div class="project-overlay">
+                            <span class="project-type">Big Data ETL</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Pharma Commercial Intelligence</h3>
+                        <p class="project-description">
+                            End-to-end commercial analytics pipeline processing over 1 billion healthcare records. Automated reporting for 300+ KPIs to drive Go-to-Market strategies.
+                        </p>
+                        <div class="project-meta">
+                            <div class="meta-row">
+                                <span class="meta-label">Challenge:</span>
+                                <span class="meta-value">Complex data governance and privacy (HIPAA) requirements.</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-label">Outcome:</span>
+                                <span class="meta-value">Automated 95% of manual reporting workflows.</span>
+                            </div>
+                        </div>
+                        <div class="project-tech">
+                            <span>Dataiku</span>
+                            <span>Python</span>
+                            <span>SQL</span>
+                            <span>Tableau</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="link-item disabled" title="Proprietary / Internal">
+                                <i class='bx bx-lock-alt'></i> Enterprise
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="project-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="project-visual ai-theme">
+                        <div class="project-icon">
+                            <i class='bx bx-brain'></i>
+                        </div>
+                        <div class="project-overlay">
+                            <span class="project-type">Gen AI & RAG</span>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Enterprise RAG Knowledge Agent</h3>
+                        <p class="project-description">
+                            A Retrieval-Augmented Generation system that allows teams to query internal documentation using natural language. Built with agentic workflows for complex reasoning.
+                        </p>
+                        <div class="project-meta">
+                            <div class="meta-row">
+                                <span class="meta-label">Stack:</span>
+                                <span class="meta-value">LangChain, Pinecone Vector DB, OpenAI API.</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-label">Outcome:</span>
+                                <span class="meta-value">Instant knowledge retrieval for engineering teams.</span>
+                            </div>
+                        </div>
+                        <div class="project-tech">
+                            <span>LangChain</span>
+                            <span>CrewAI</span>
+                            <span>Docker</span>
+                            <span>React</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/namantaneja167" target="_blank" rel="noopener noreferrer" class="link-item">
+                                <i class='bx bxl-github'></i> View Code
+                            </a>
+                        </div>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
