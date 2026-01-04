@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initHeaderScroll();
         initFormValidation();
         initActiveNavLink();
+        initProjects(); // New: Render Projects
         initSkillsPagination();
         initMobileMenu();
         initBlogPosts();
@@ -376,12 +377,43 @@ function initSkillsPagination() {
     'use strict';
     
     try {
-        const skillCards = document.querySelectorAll('.skill-card');
+        const skillsGrid = document.getElementById('skillsGrid');
         const prevBtn = document.getElementById('prevSkills');
         const nextBtn = document.getElementById('nextSkills');
         const paginationDotsContainer = document.getElementById('paginationDots');
         
-        if (!skillCards.length || !prevBtn || !nextBtn || !paginationDotsContainer) return;
+        if (!skillsGrid || !prevBtn || !nextBtn || !paginationDotsContainer) return;
+
+        // --- New: Dynamic Rendering ---
+        if (window.PORTFOLIO_DATA && window.PORTFOLIO_DATA.skills) {
+            console.log(`Rendering ${window.PORTFOLIO_DATA.skills.length} skills...`);
+            skillsGrid.innerHTML = ''; // Clear loading/static content
+            
+            window.PORTFOLIO_DATA.skills.forEach(skill => {
+                const card = document.createElement('div');
+                card.className = 'skill-card';
+                
+                // Level Dots
+                let dotsHtml = '<div class="skill-level">';
+                for (let i = 1; i <= 5; i++) {
+                    dotsHtml += `<span class="dot ${i <= skill.level ? 'filled' : ''}"></span>`;
+                }
+                dotsHtml += '</div>';
+
+                card.innerHTML = `
+                    <div class="skill-icon ${skill.class}">
+                        <i class='bx ${skill.icon}'></i>
+                    </div>
+                    <span class="skill-name">${skill.name}</span>
+                    ${dotsHtml}
+                `;
+                skillsGrid.appendChild(card);
+            });
+        }
+        // ------------------------------
+        
+        const skillCards = document.querySelectorAll('.skill-card');
+        if (!skillCards.length) return;
         
         let currentPage = 1;
         let itemsPerPage = getItemsPerPage();
@@ -695,6 +727,105 @@ function initBlogPosts() {
 }
 
 /* ============================================
+   Projects Rendering (Dynamic)
+   ============================================ */
+function initProjects() {
+    const projectsGrid = document.getElementById('projectsGrid');
+    
+    if (!window.PORTFOLIO_DATA) {
+        console.error('PORTFOLIO_DATA not found. Check if data.js is loaded.');
+        return;
+    }
+    
+    if (!projectsGrid) {
+        console.error('Projects Grid container not found.');
+        return;
+    }
+
+    const projects = window.PORTFOLIO_DATA.projects;
+    console.log(`Rendering ${projects.length} projects...`);
+
+    projects.forEach((project, index) => {
+        const card = document.createElement('article');
+        card.className = 'project-card';
+        card.setAttribute('data-aos', 'fade-up');
+        card.setAttribute('data-aos-delay', ((index + 1) * 100).toString());
+
+        // Visual Header
+        let visualHtml = `
+            <div class="project-visual ${project.theme}">
+                <div class="project-icon">
+                    <i class='bx ${project.icon}'></i>
+                </div>
+                <div class="project-overlay">
+                    <span class="project-type">${project.type}</span>
+                </div>
+            </div>
+        `;
+
+        // Meta Details (Conditional rendering based on what data exists)
+        let metaHtml = '';
+        if (project.challenge && project.outcome) {
+            metaHtml = `
+                <div class="project-meta">
+                    <div class="meta-row">
+                        <span class="meta-label">Challenge:</span>
+                        <span class="meta-value">${project.challenge}</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Outcome:</span>
+                        <span class="meta-value">${project.outcome}</span>
+                    </div>
+                </div>
+            `;
+        } else if (project.meta) {
+            // Handle the RAG project structure
+            metaHtml = `
+                <div class="project-meta">
+                    <div class="meta-row">
+                        <span class="meta-label">Stack:</span>
+                        <span class="meta-value">${project.meta.stack}</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Outcome:</span>
+                        <span class="meta-value">${project.meta.outcome}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Tech Tags
+        let tagsHtml = '<div class="project-tech">';
+        project.stack.forEach(tech => {
+            tagsHtml += `<span>${tech}</span>`;
+        });
+        tagsHtml += '</div>';
+
+        // Links
+        let linkHtml = `
+            <div class="project-links">
+                <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="link-item ${project.linkClass}" title="${project.linkText}">
+                    <i class='bx ${project.linkIcon}'></i> ${project.linkText}
+                </a>
+            </div>
+        `;
+
+        card.innerHTML = `
+            ${visualHtml}
+            <div class="project-content">
+                <h3 class="project-title">${project.title}</h3>
+                <p class="project-description">${project.description}</p>
+                ${metaHtml}
+                ${tagsHtml}
+                ${linkHtml}
+            </div>
+        `;
+
+        projectsGrid.appendChild(card);
+    });
+}
+
+/* ============================================
    Back to Top Button
    ============================================ */
 function initBackToTop() {
@@ -865,40 +996,15 @@ function initChatWidget() {
 
     if (!chatToggle || !chatWindow || !chatForm) return;
 
-    // --- Knowledge Base ---
-    const KNOWLEDGE_BASE = {
-        greetings: {
-            keywords: ['hi', 'hello', 'hey', 'greetings', 'who are you', 'what is this'],
-            response: "Hello! I'm Naman's AI assistant. I can tell you about his expertise in **Data Engineering**, **Gen AI**, or his work at **Uniper** and **ZS Associates**. What would you like to know?"
-        },
-        skills: {
-            keywords: [
-                'skills', 'tech', 'stack', 'languages', 'tools', 'know', 
-                'snowflake', 'python', 'sql', 'azure', 'dbt', 'adf', 'data factory', 
-                'databricks', 'spark', 'pandas', 'dataiku', 'tableau', 'excel', 'git', 'jira', 'ci/cd'
-            ],
-            response: "Naman is a heavy-hitter in the modern data stack. His core skills include **Snowflake**, **Python**, **SQL**, **Azure**, and **dbt**. He's also specialized in **Databricks**, **Azure Data Factory**, and **Dataiku DSS**."
-        },
-        ai: {
-            keywords: ['ai', 'gen ai', 'llm', 'rag', 'agent', 'langchain', 'crewai', 'ollama', 'gpt', 'bot'],
-            response: "Naman is deeply involved in **Generative AI**. He builds **RAG (Retrieval-Augmented Generation)** systems and **AI Agents** using frameworks like **LangChain**, **CrewAI**, and **Ollama**. He even built me! 😉"
-        },
-        experience: {
-            keywords: ['experience', 'work', 'job', 'uniper', 'zs', 'history', 'background', 'career', 'resume'],
-            response: "He has 3+ years of experience. Currently, he's at **Uniper Energy** architecting trading data systems. Previously, he spent 2 years at **ZS Associates** managing healthcare data at a massive scale (1B+ records)."
-        },
-        projects: {
-            keywords: ['projects', 'build', 'portfolio', 'architecture', 'case study', 'app'],
-            response: "Some of his key works include an **Energy Market Data Hub**, a **Pharma KPI Automation** pipeline, and an **Enterprise RAG Knowledge Agent**. You can see the full details in the **Projects** section of this site!"
-        },
-        contact: {
-            keywords: ['contact', 'email', 'hire', 'call', 'reach', 'linkedin', 'phone', 'message', 'meeting', 'schedule', 'book', 'sync'],
-            response: "You can reach Naman directly at **er.namantaneja@gmail.com** or connect with him on **LinkedIn**. If you'd like to dive straight in, you can **[schedule a sync with him here](https://calendly.com/er-namantaneja/30min)**!"
-        },
-        default: {
-            response: "I'm not quite sure about that yet. I'm trained to answer questions about Naman's **tech stack** (like Snowflake or Python), **projects**, and **work history**. Try asking 'What does he know about Gen AI?'"
-        }
+    // --- Knowledge Base (Loaded from Data Store) ---
+    // Fallback if data.js isn't loaded for some reason
+    const DEFAULT_KB = {
+        default: { response: "I'm having trouble accessing my memory right now. Please try again later." }
     };
+
+    const KNOWLEDGE_BASE = (window.PORTFOLIO_DATA && window.PORTFOLIO_DATA.chatKnowledgeBase) 
+        ? window.PORTFOLIO_DATA.chatKnowledgeBase 
+        : DEFAULT_KB;
 
     // --- UI Logic ---
     chatToggle.addEventListener('click', () => {
