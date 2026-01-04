@@ -69,12 +69,14 @@
                 <a href="#blog" class="nav-link">Blog</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
-            <a href="assets/Naman_Resume.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
-                Download PDF Resume
-            </a>
-            <button class="theme-toggle" aria-label="Toggle dark mode">
-                <i class='bx bx-sun'></i>
-            </button>
+            <div class="header-actions">
+                <a href="assets/Naman_Resume.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
+                    Download PDF Resume
+                </a>
+                <button class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class='bx bx-sun'></i>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -113,7 +115,11 @@
                         <i class='bx bx-download'></i>
                         Download Resume
                     </a>
-                    <a href="#contact" class="btn btn-outline">
+                    <a href="https://calendly.com/er-namantaneja/30min" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                        <i class='bx bx-calendar'></i>
+                        Schedule a Sync
+                    </a>
+                    <a href="#contact" class="btn btn-ghost">
                         <i class='bx bx-envelope'></i>
                         Get in Touch
                     </a>
@@ -860,6 +866,10 @@
                     <h3 class="contact-info-title">Connect With Me</h3>
                     <p class="response-time">I typically respond within 24 hours</p>
                     <div class="contact-socials">
+                        <a href="https://calendly.com/er-namantaneja/30min" target="_blank" rel="noopener noreferrer" class="social-button schedule">
+                            <i class='bx bx-calendar-event'></i>
+                            <span>Schedule a Sync</span>
+                        </a>
                         <a href="https://www.linkedin.com/in/namantaneja167/" target="_blank" rel="noopener noreferrer" class="social-button linkedin">
                             <i class='bx bxl-linkedin-square'></i>
                             <span>LinkedIn</span>
@@ -892,19 +902,74 @@
         <i class='bx bx-chevron-up'></i>
     </button>
 
+    <!-- AI Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-toggle" id="chatToggle" aria-label="Chat with AI Agent">
+            <i class='bx bx-bot'></i>
+            <span class="chat-badge">1</span>
+        </button>
+        
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar">
+                        <i class='bx bx-bot'></i>
+                    </div>
+                    <div class="chat-title">
+                        <h3>Naman's AI Agent</h3>
+                        <span class="status-indicator">Online</span>
+                    </div>
+                </div>
+                <button class="chat-close" id="chatClose" aria-label="Close chat">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will appear here -->
+                <div class="message bot">
+                    <div class="message-content">
+                        Hi there! I'm a simulated AI trained on Naman's professional background. You can ask me about his <strong>skills</strong>, <strong>experience</strong>, or <strong>projects</strong>. How can I help?
+                    </div>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+            
+            <form class="chat-input-area" id="chatForm">
+                <input type="text" id="chatInput" placeholder="Ask me anything..." autocomplete="off">
+                <button type="submit" class="chat-send" aria-label="Send message">
+                    <i class='bx bx-send'></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-line"></div>
-                <a href="#" class="footer-logo">
-                    Naman Taneja
-                </a>
-                <div class="footer-line"></div>
+            <div class="footer-brand">
+                <a href="#" class="footer-logo">Naman Taneja</a>
+                <p class="footer-tagline">Building the future of data and AI.</p>
             </div>
-            <p class="footer-credit">
-                Designed with <span class="heart">♥</span> by Naman Taneja
-            </p>
+            
+            <div class="footer-socials">
+                <a href="https://www.linkedin.com/in/namantaneja167/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class='bx bxl-linkedin'></i>
+                </a>
+                <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                    <i class='bx bxl-medium'></i>
+                </a>
+                <a href="https://x.com/naman_taneja_" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                    <i class='bx bxl-twitter'></i>
+                </a>
+                <a href="https://github.com/namantaneja167" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <i class='bx bxl-github'></i>
+                </a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Naman Taneja. Designed with <span class="heart">♥</span> in India.</p>
+            </div>
         </div>
     </footer>
 

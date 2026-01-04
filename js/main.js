@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initBackToTop();
         initCopyEmail();
         initTheme();
+        initChatWidget();
     } catch (error) {
         console.error('Error initializing application:', error);
     }
@@ -848,4 +849,130 @@ function initTheme() {
             icon.style.transform = 'scale(1) rotate(0deg)';
         }, 200);
     });
+}
+
+/* ============================================
+   AI Chat Widget Logic (Simulated Agent)
+   ============================================ */
+function initChatWidget() {
+    const chatToggle = document.getElementById('chatToggle');
+    const chatClose = document.getElementById('chatClose');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatBadge = chatToggle ? chatToggle.querySelector('.chat-badge') : null;
+
+    if (!chatToggle || !chatWindow || !chatForm) return;
+
+    // --- Knowledge Base ---
+    const KNOWLEDGE_BASE = {
+        greetings: {
+            keywords: ['hi', 'hello', 'hey', 'greetings', 'who are you', 'what is this'],
+            response: "Hello! I'm Naman's AI assistant. I can tell you about his expertise in **Data Engineering**, **Gen AI**, or his work at **Uniper** and **ZS Associates**. What would you like to know?"
+        },
+        skills: {
+            keywords: [
+                'skills', 'tech', 'stack', 'languages', 'tools', 'know', 
+                'snowflake', 'python', 'sql', 'azure', 'dbt', 'adf', 'data factory', 
+                'databricks', 'spark', 'pandas', 'dataiku', 'tableau', 'excel', 'git', 'jira', 'ci/cd'
+            ],
+            response: "Naman is a heavy-hitter in the modern data stack. His core skills include **Snowflake**, **Python**, **SQL**, **Azure**, and **dbt**. He's also specialized in **Databricks**, **Azure Data Factory**, and **Dataiku DSS**."
+        },
+        ai: {
+            keywords: ['ai', 'gen ai', 'llm', 'rag', 'agent', 'langchain', 'crewai', 'ollama', 'gpt', 'bot'],
+            response: "Naman is deeply involved in **Generative AI**. He builds **RAG (Retrieval-Augmented Generation)** systems and **AI Agents** using frameworks like **LangChain**, **CrewAI**, and **Ollama**. He even built me! 😉"
+        },
+        experience: {
+            keywords: ['experience', 'work', 'job', 'uniper', 'zs', 'history', 'background', 'career', 'resume'],
+            response: "He has 3+ years of experience. Currently, he's at **Uniper Energy** architecting trading data systems. Previously, he spent 2 years at **ZS Associates** managing healthcare data at a massive scale (1B+ records)."
+        },
+        projects: {
+            keywords: ['projects', 'build', 'portfolio', 'architecture', 'case study', 'app'],
+            response: "Some of his key works include an **Energy Market Data Hub**, a **Pharma KPI Automation** pipeline, and an **Enterprise RAG Knowledge Agent**. You can see the full details in the **Projects** section of this site!"
+        },
+        contact: {
+            keywords: ['contact', 'email', 'hire', 'call', 'reach', 'linkedin', 'phone', 'message', 'meeting', 'schedule', 'book', 'sync'],
+            response: "You can reach Naman directly at **er.namantaneja@gmail.com** or connect with him on **LinkedIn**. If you'd like to dive straight in, you can **[schedule a sync with him here](https://calendly.com/er-namantaneja/30min)**!"
+        },
+        default: {
+            response: "I'm not quite sure about that yet. I'm trained to answer questions about Naman's **tech stack** (like Snowflake or Python), **projects**, and **work history**. Try asking 'What does he know about Gen AI?'"
+        }
+    };
+
+    // --- UI Logic ---
+    chatToggle.addEventListener('click', () => {
+        chatWindow.classList.add('active');
+        if (chatBadge) chatBadge.style.display = 'none';
+    });
+
+    chatClose.addEventListener('click', () => {
+        chatWindow.classList.remove('active');
+    });
+
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, 'user');
+        chatInput.value = '';
+        
+        // Simulate thinking
+        showTypingIndicator();
+        
+        setTimeout(() => {
+            removeTypingIndicator();
+            const response = getResponse(message);
+            addMessage(response, 'bot');
+        }, 1000 + Math.random() * 1000); // Random delay 1-2s
+    });
+
+    // --- Helper Functions ---
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.innerHTML = text; // Using innerHTML to allow bolding from KB
+        
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'message-time';
+        timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        messageDiv.appendChild(contentDiv);
+        messageDiv.appendChild(timeDiv);
+        chatMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'typing-indicator';
+        indicator.id = 'typingIndicator';
+        indicator.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+        chatMessages.appendChild(indicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+
+    function getResponse(input) {
+        const lowerInput = input.toLowerCase();
+        
+        for (const key in KNOWLEDGE_BASE) {
+            if (KNOWLEDGE_BASE[key].keywords) {
+                const match = KNOWLEDGE_BASE[key].keywords.some(keyword => lowerInput.includes(keyword));
+                if (match) return KNOWLEDGE_BASE[key].response;
+            }
+        }
+        
+        return KNOWLEDGE_BASE.default.response;
+    }
 }
