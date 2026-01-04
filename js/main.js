@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initCopyEmail();
         initTheme();
         initChatWidget();
+        initConstellation();
     } catch (error) {
         console.error('Error initializing application:', error);
     }
@@ -997,7 +998,6 @@ function initChatWidget() {
     if (!chatToggle || !chatWindow || !chatForm) return;
 
     // --- Knowledge Base (Loaded from Data Store) ---
-    // Fallback if data.js isn't loaded for some reason
     const DEFAULT_KB = {
         default: { response: "I'm having trouble accessing my memory right now. Please try again later." }
     };
@@ -1031,27 +1031,21 @@ function initChatWidget() {
             removeTypingIndicator();
             const response = getResponse(message);
             addMessage(response, 'bot');
-        }, 1000 + Math.random() * 1000); // Random delay 1-2s
+        }, 1000 + Math.random() * 1000); 
     });
 
-    // --- Helper Functions ---
     function addMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}`;
-        
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
-        contentDiv.innerHTML = text; // Using innerHTML to allow bolding from KB
-        
+        contentDiv.innerHTML = text;
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
         timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
         messageDiv.appendChild(contentDiv);
         messageDiv.appendChild(timeDiv);
         chatMessages.appendChild(messageDiv);
-        
-        // Scroll to bottom
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
@@ -1071,14 +1065,101 @@ function initChatWidget() {
 
     function getResponse(input) {
         const lowerInput = input.toLowerCase();
-        
         for (const key in KNOWLEDGE_BASE) {
             if (KNOWLEDGE_BASE[key].keywords) {
                 const match = KNOWLEDGE_BASE[key].keywords.some(keyword => lowerInput.includes(keyword));
                 if (match) return KNOWLEDGE_BASE[key].response;
             }
         }
-        
         return KNOWLEDGE_BASE.default.response;
     }
+}
+
+/* ============================================
+   Data Constellation Animation (Canvas)
+   ============================================ */
+function initConstellation() {
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    
+    const particleCount = window.innerWidth < 768 ? 40 : 80;
+    const connectionDistance = 150;
+    const moveSpeed = 0.5;
+
+    function resize() {
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+    }
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * moveSpeed;
+            this.vy = (Math.random() - 0.5) * moveSpeed;
+            this.size = Math.random() * 2 + 1;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+
+        draw() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(37, 99, 235, 0.5)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const lineColor = isDark ? '255, 255, 255' : '37, 99, 235';
+
+        particles.forEach((p, index) => {
+            p.update();
+            p.draw();
+            for (let j = index + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dx = p.x - p2.x;
+                const dy = p.y - p2.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < connectionDistance) {
+                    const opacity = 1 - (distance / connectionDistance);
+                    ctx.strokeStyle = `rgba(${lineColor}, ${opacity * 0.2})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                }
+            }
+        });
+        requestAnimationFrame(animate);
+    }
+
+    resize();
+    initParticles();
+    animate();
+
+    window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+    });
 }
