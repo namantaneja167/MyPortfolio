@@ -23,10 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
         initActiveNavLink();
         initSkillsPagination();
         initMobileMenu();
-        initSkillCardsHover();
-        initTimelineHover();
         initBlogPosts();
         initBackToTop();
+        initCopyEmail();
     } catch (error) {
         console.error('Error initializing application:', error);
     }
@@ -76,7 +75,8 @@ function initSmoothScroll() {
    Counter Animation
    ============================================ */
 function initCounterAnimation() {
-    const counters = document.querySelectorAll('.stat-number');
+    // Counter animation for stat-number, metric-value, and metric-number elements
+    const counters = document.querySelectorAll('.stat-number, .metric-value[data-count], .metric-number[data-count]');
     const speed = 200; // Animation speed
     
     const animateCounter = (counter) => {
@@ -123,7 +123,6 @@ function initCounterAnimation() {
    ============================================ */
 function initHeaderScroll() {
     const header = document.querySelector('.header');
-    let lastScrollY = window.scrollY;
     let ticking = false;
     
     const updateHeader = () => {
@@ -136,18 +135,6 @@ function initHeaderScroll() {
             header.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
         }
         
-        // Hide/show header on scroll direction
-        if (scrollY > 200) {
-            if (scrollY > lastScrollY) {
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                header.style.transform = 'translateY(0)';
-            }
-        } else {
-            header.style.transform = 'translateY(0)';
-        }
-        
-        lastScrollY = scrollY;
         ticking = false;
     };
     
@@ -157,9 +144,6 @@ function initHeaderScroll() {
             ticking = true;
         }
     });
-    
-    // Add transition for smooth hide/show
-    header.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
 }
 
 /* ============================================
@@ -324,51 +308,7 @@ function initFormValidation() {
     });
 }
 
-/* ============================================
-   Skill Cards Hover Effect
-   ============================================ */
-function initSkillCardsHover() {
-    const skillCards = document.querySelectorAll('.skill-card');
-    
-    skillCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-}
 
-/* ============================================
-   Timeline Item Hover Effect
-   ============================================ */
-function initTimelineHover() {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    
-    timelineItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            const marker = this.querySelector('.marker-dot');
-            if (marker) {
-                marker.style.transform = 'scale(1.5)';
-                marker.style.backgroundColor = '#ff6b35';
-                marker.style.borderColor = '#ff6b35';
-            }
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            const marker = this.querySelector('.marker-dot');
-            if (marker && !marker.classList.contains('active')) {
-                marker.style.transform = 'scale(1)';
-                marker.style.backgroundColor = '#ffffff';
-                marker.style.borderColor = '#e0e0e0';
-            } else if (marker) {
-                marker.style.transform = 'scale(1)';
-            }
-        });
-    });
-}
 
 /* ============================================
    Parallax Effect for Hero Section (DISABLED)
@@ -786,13 +726,6 @@ function initBlogPosts() {
 }
 
 /* ============================================
-   Console Easter Egg
-   ============================================ */
-console.log('%c👋 Hey there, curious developer!', 'font-size: 20px; font-weight: bold; color: #ff6b35;');
-console.log('%cInterested in working together? Reach out at er.namantaneja@gmail.com', 'font-size: 14px; color: #666;');
-console.log('%cOr connect on LinkedIn: linkedin.com/in/namantaneja167', 'font-size: 14px; color: #666;');
-
-/* ============================================
    Back to Top Button
    ============================================ */
 function initBackToTop() {
@@ -837,4 +770,60 @@ function initBackToTop() {
     
     // Initial check
     toggleBackToTop();
+}
+
+/* ============================================
+   Copy Email to Clipboard
+   ============================================ */
+function initCopyEmail() {
+    const copyButton = document.querySelector('.copy-email');
+    
+    if (!copyButton) return;
+    
+    copyButton.addEventListener('click', async function() {
+        const email = this.getAttribute('data-email');
+        const icon = this.querySelector('i');
+        
+        try {
+            await navigator.clipboard.writeText(email);
+            
+            // Visual feedback
+            this.classList.add('copied');
+            icon.classList.remove('bx-copy');
+            icon.classList.add('bx-check');
+            
+            // Haptic feedback if available
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            // Reset after 2 seconds
+            setTimeout(() => {
+                this.classList.remove('copied');
+                icon.classList.remove('bx-check');
+                icon.classList.add('bx-copy');
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy email:', err);
+            
+            // Fallback for older browsers
+            const tempInput = document.createElement('input');
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            // Still show success feedback
+            this.classList.add('copied');
+            icon.classList.remove('bx-copy');
+            icon.classList.add('bx-check');
+            
+            setTimeout(() => {
+                this.classList.remove('copied');
+                icon.classList.remove('bx-check');
+                icon.classList.add('bx-copy');
+            }, 2000);
+        }
+    });
 }
