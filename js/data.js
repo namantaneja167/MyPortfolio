@@ -90,35 +90,48 @@ window.PORTFOLIO_DATA = {
     // Chat Bot Knowledge Base
     chatKnowledgeBase: {
         greetings: {
-            keywords: ['hi', 'hello', 'hey', 'greetings', 'who are you', 'what is this'],
-            response: "Hello! I'm Naman's AI assistant. I can tell you about his expertise in **Data Engineering**, **Gen AI**, or his work at **Uniper** and **ZS Associates**. What would you like to know?"
+            keywords: ['hi', 'hello', 'hey', 'greetings', 'who are you', 'what is this', 'start'],
+            response: "Hello! I'm Naman's AI assistant. I can tell you about his work in **Data Engineering** and **Gen AI**, his impact at **ZS Associates**, or his latest **RAG** projects. What's on your mind?"
         },
         skills: {
             keywords: [
                 'skills', 'tech', 'stack', 'languages', 'tools', 'know', 
                 'snowflake', 'python', 'sql', 'azure', 'dbt', 'adf', 'data factory', 
-                'databricks', 'spark', 'pandas', 'dataiku', 'tableau', 'excel', 'git', 'jira', 'ci/cd'
+                'databricks', 'spark', 'pandas', 'dataiku', 'excel', 'git', 'jira', 'ci/cd',
+                'etl', 'orchestration', 'automation'
             ],
-            response: "Naman is a heavy-hitter in the modern data stack. His core skills include **Snowflake**, **Python**, **SQL**, **Azure**, and **dbt**. He's also specialized in **Databricks**, **Azure Data Factory**, and **Dataiku DSS**."
+            response: "Naman's technical arsenal is deep. Key skills include:\n• **Core:** Python, SQL (Snowflake), Databricks, Azure.\n• **ETL/Orchestration:** Dataiku DSS, dbt, Azure Data Factory.\n• **Gen AI:** LangChain, CrewAI, Ollama, RAG pipelines.\n• **Viz:** Tableau, Excel."
         },
         ai: {
-            keywords: ['ai', 'gen ai', 'llm', 'rag', 'agent', 'langchain', 'crewai', 'ollama', 'gpt', 'bot'],
-            response: "Naman is deeply involved in **Generative AI**. He builds **RAG (Retrieval-Augmented Generation)** systems and **AI Agents** using frameworks like **LangChain**, **CrewAI**, and **Ollama**. He even built me! 😉"
+            keywords: ['ai', 'gen ai', 'llm', 'rag', 'agent', 'langchain', 'crewai', 'ollama', 'gpt', 'bot', 'dreambooth', 'stable diffusion', 'llama', 'civitai', '100x'],
+            response: "Naman is a **Gen AI Engineer** (via 100x Engineers Apprenticeship). He specializes in:\n• **Fine-tuning:** DreamBooth, Stable Diffusion, Llama Adapter.\n• **Frameworks:** LangChain, CrewAI, CivitAI.\n• **Deployment:** Building full-stack LLM apps and enterprise RAG solutions."
+        },
+        tableau: {
+            keywords: ['tableau', 'dashboard', 'viz', 'visualization', 'reporting', 'xml', 'rest api'],
+            response: "Naman isn't just a Tableau user; he automates it. He built a **Python-based framework using Tableau REST APIs** that automated data extracts and XML manipulation, achieving **60% time savings** on manual reporting efforts."
+        },
+        impact: {
+            keywords: ['impact', 'achievement', 'accomplishment', 'result', 'metric', 'savings', 'kpi', 'growth', 'champion'],
+            response: "Naman delivers measurable results:\n• **60% Time Savings** via Tableau automation.\n• **25% Faster Processing** for 1B+ records via Snowflake optimization.\n• **20% Efficiency Boost** in ML workflows using MLOps.\n• Recognized as a **Subject Matter Expert** and **Project Champion** at ZS."
         },
         experience: {
-            keywords: ['experience', 'work', 'job', 'uniper', 'zs', 'history', 'background', 'career', 'resume'],
-            response: "He has 3+ years of experience. Currently, he's at **Uniper Energy** architecting trading data systems. Previously, he spent 2 years at **ZS Associates** managing healthcare data at a massive scale (1B+ records)."
+            keywords: ['experience', 'work', 'job', 'uniper', 'zs', 'history', 'background', 'career', 'resume', 'sme'],
+            response: "He has 3+ years of experience:\n• **Uniper Energy (Present):** Architecting trading data systems.\n• **ZS Associates (3 Years):** Managed 1B+ healthcare records, automated 300+ KPIs, and led vendor onboarding as a **Project Champion Lead**."
+        },
+        education: {
+            keywords: ['education', 'college', 'degree', 'btech', 'school', 'university', 'study', 'apprenticeship', '100x'],
+            response: "• **Gen AI Engineer:** 100x Engineers Apprenticeship (2024).\n• **B.Tech (CS):** Guru Gobind Singh Indraprastha University (2018-2022)."
         },
         projects: {
             keywords: ['projects', 'build', 'portfolio', 'architecture', 'case study', 'app'],
-            response: "Some of his key works include an **Energy Market Data Hub**, a **Pharma KPI Automation** pipeline, and an **Enterprise RAG Knowledge Agent**. You can see the full details in the **Projects** section of this site!"
+            response: "Key highlights:\n• **Energy Market Data Hub:** High-frequency trading signals.\n• **Pharma Commercial Intelligence:** 1B+ records, 300+ KPIs.\n• **Tableau Automation Framework:** Python + REST APIs.\nCheck the **Projects** section for more!"
         },
         contact: {
             keywords: ['contact', 'email', 'hire', 'call', 'reach', 'linkedin', 'phone', 'message', 'meeting', 'schedule', 'book', 'sync'],
             response: "You can reach Naman directly at **er.namantaneja@gmail.com** or connect with him on **LinkedIn**. If you'd like to dive straight in, you can **[schedule a sync with him here](https://calendly.com/er-namantaneja/30min)**!"
         },
         default: {
-            response: "I'm not quite sure about that yet. I'm trained to answer questions about Naman's **tech stack** (like Snowflake or Python), **projects**, and **work history**. Try asking 'What does he know about Gen AI?'"
+            response: "I'm tuned to Naman's professional background. Try asking about his **Tableau automation**, **Gen AI projects**, or his **impact at ZS Associates**!"
         }
     }
 };
