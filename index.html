@@ -20,6 +20,20 @@
     <!-- Meta Tags -->
     <meta name="theme-color" content="#2563eb">
     
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        script-src 'self' https://unpkg.com; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; 
+        font-src 'self' https://fonts.gstatic.com https://unpkg.com; 
+        img-src 'self' data: https://*.medium.com; 
+        connect-src 'self' https://api.rss2json.com;
+        form-action 'self' https://formspree.io;
+        object-src 'none';
+        frame-src 'none';
+        base-uri 'self';
+    ">
+    
     <!-- Google Fonts - Modern Professional Pairing -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

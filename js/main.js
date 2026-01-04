@@ -311,30 +311,6 @@ function initFormValidation() {
 
 
 /* ============================================
-   Parallax Effect for Hero Section (DISABLED)
-   Caused visual issues with hero image sliding
-   ============================================ */
-// Parallax disabled - was causing hero image to move unexpectedly on scroll
-
-/* ============================================
-   Typed Effect for Hero Title (Optional)
-   ============================================ */
-function typeWriter(element, text, speed = 50) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-/* ============================================
    Loading Animation
    ============================================ */
 window.addEventListener('load', function() {
@@ -361,7 +337,6 @@ window.addEventListener('load', function() {
 function initMobileMenu() {
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('.nav');
-    const navLinks = document.querySelectorAll('.nav-link');
     const body = document.body;
     
     if (!menuToggle || !nav) return;
@@ -371,15 +346,6 @@ function initMobileMenu() {
         nav.classList.toggle('active');
         this.classList.toggle('active');
         body.classList.toggle('menu-open');
-    });
-    
-    // Close menu when clicking nav links
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            nav.classList.remove('active');
-            menuToggle.classList.remove('active');
-            body.classList.remove('menu-open');
-        });
     });
     
     // Close menu when clicking outside
@@ -563,13 +529,14 @@ const BlogModule = (function() {
     let allBlogPosts = [];
     let resizeTimeout = null;
     
-    // Sanitize HTML to prevent XSS attacks
-    function sanitizeHTML(str) {
-        const temp = document.createElement('div');
-        temp.textContent = str;
-        return temp.innerHTML;
+    // Helper to create an element with classes and text content
+    function createElement(tag, classNames = [], textContent = '') {
+        const el = document.createElement(tag);
+        if (classNames.length) el.classList.add(...classNames);
+        if (textContent) el.textContent = textContent;
+        return el;
     }
-    
+
     function getPostsToShow() {
         return window.innerWidth <= 768 ? 3 : 6;
     }
@@ -584,13 +551,8 @@ const BlogModule = (function() {
     }
     
     function stripHtml(html) {
-        try {
-            const tmp = document.createElement('div');
-            tmp.innerHTML = html;
-            return tmp.textContent || tmp.innerText || '';
-        } catch (error) {
-            return '';
-        }
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || '';
     }
     
     function estimateReadTime(content) {
@@ -604,79 +566,84 @@ const BlogModule = (function() {
         const blogGrid = document.getElementById('blogGrid');
         if (!blogGrid) return;
         
-        blogGrid.innerHTML = `
-            <div class="blog-error">
-                <i class='bx bx-error-circle'></i>
-                <p>Unable to load articles. Please visit my <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer">Medium profile</a> directly.</p>
-            </div>
+        blogGrid.innerHTML = ''; // Clear skeleton loaders
+        const errorContainer = createElement('div', ['blog-error']);
+        errorContainer.innerHTML = `
+            <i class='bx bx-error-circle'></i>
+            <p>Unable to load articles. Please visit my <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer">Medium profile</a> directly.</p>
         `;
+        blogGrid.appendChild(errorContainer);
     }
     
     function displayPosts() {
-        try {
-            const blogGrid = document.getElementById('blogGrid');
-            if (!blogGrid || allBlogPosts.length === 0) return;
+        const blogGrid = document.getElementById('blogGrid');
+        if (!blogGrid || allBlogPosts.length === 0) return;
             
-            blogGrid.innerHTML = '';
-            
-            const postsToShow = getPostsToShow();
-            const posts = allBlogPosts.slice(0, postsToShow);
-            
-            posts.forEach((post, index) => {
-                const thumbnail = extractImageFromContent(post.content) || post.thumbnail || '';
-                const rawExcerpt = stripHtml(post.description).substring(0, 120);
-                const excerpt = sanitizeHTML(rawExcerpt) + '...';
-                const title = sanitizeHTML(post.title);
-                const publishDate = new Date(post.pubDate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                });
-                const readTime = estimateReadTime(post.content);
-                const safeLink = encodeURI(post.link);
-                
-                const card = document.createElement('article');
-                card.className = 'blog-card';
-                card.setAttribute('data-aos', 'fade-up');
-                card.setAttribute('data-aos-delay', (index * 100).toString());
-                
-                // Build thumbnail HTML safely
-                let thumbnailHTML = '';
-                if (thumbnail) {
-                    const img = document.createElement('img');
-                    img.src = thumbnail;
-                    img.alt = title;
-                    img.loading = 'lazy';
-                    thumbnailHTML = `<div class="blog-thumbnail">${img.outerHTML}</div>`;
-                } else {
-                    thumbnailHTML = '<div class="blog-thumbnail blog-thumbnail-placeholder"><i class="bx bx-file-blank"></i></div>';
-                }
-                
-                card.innerHTML = `
-                    <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="blog-card-link">
-                        ${thumbnailHTML}
-                        <div class="blog-card-content">
-                            <div class="blog-meta">
-                                <span class="blog-date"><i class='bx bx-calendar'></i> ${publishDate}</span>
-                                <span class="blog-read-time"><i class='bx bx-time-five'></i> ${readTime} min read</span>
-                            </div>
-                            <h3 class="blog-title">${title}</h3>
-                            <p class="blog-excerpt">${excerpt}</p>
-                            <span class="blog-read-more">Read Article <i class='bx bx-right-arrow-alt'></i></span>
-                        </div>
-                    </a>
-                `;
-                
-                blogGrid.appendChild(card);
-            });
-            
-            // Re-init AOS for new elements
-            if (typeof AOS !== 'undefined') {
-                AOS.refresh();
+        blogGrid.innerHTML = ''; // Clear existing content (skeletons or previous posts)
+        
+        const postsToShow = getPostsToShow();
+        const posts = allBlogPosts.slice(0, postsToShow);
+        
+        posts.forEach((post, index) => {
+            const card = createElement('article', ['blog-card']);
+            card.setAttribute('data-aos', 'fade-up');
+            card.setAttribute('data-aos-delay', (index * 100).toString());
+
+            const link = createElement('a', ['blog-card-link']);
+            link.href = post.link;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+
+            // --- Thumbnail ---
+            const thumbnailSrc = extractImageFromContent(post.content) || post.thumbnail || '';
+            const thumbnailContainer = createElement('div', ['blog-thumbnail']);
+            if (thumbnailSrc) {
+                const img = createElement('img');
+                img.src = thumbnailSrc;
+                img.alt = post.title;
+                img.loading = 'lazy';
+                thumbnailContainer.appendChild(img);
+            } else {
+                thumbnailContainer.classList.add('blog-thumbnail-placeholder');
+                thumbnailContainer.innerHTML = `<i class="bx bx-file-blank"></i>`;
             }
-        } catch (error) {
-            console.error('Error displaying blog posts:', error);
-            showError();
+            link.appendChild(thumbnailContainer);
+
+            // --- Content ---
+            const cardContent = createElement('div', ['blog-card-content']);
+            
+            // Meta
+            const meta = createElement('div', ['blog-meta']);
+            const publishDate = new Date(post.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            const readTime = estimateReadTime(post.content);
+            meta.innerHTML = `
+                <span class="blog-date"><i class='bx bx-calendar'></i> ${publishDate}</span>
+                <span class="blog-read-time"><i class='bx bx-time-five'></i> ${readTime} min read</span>
+            `;
+            cardContent.appendChild(meta);
+
+            // Title
+            const titleEl = createElement('h3', ['blog-title'], post.title);
+            cardContent.appendChild(titleEl);
+
+            // Excerpt
+            const excerptText = stripHtml(post.description).substring(0, 120) + '...';
+            const excerptEl = createElement('p', ['blog-excerpt'], excerptText);
+            cardContent.appendChild(excerptEl);
+
+            // Read More
+            const readMore = createElement('span', ['blog-read-more']);
+            readMore.innerHTML = `Read Article <i class='bx bx-right-arrow-alt'></i>`;
+            cardContent.appendChild(readMore);
+
+            link.appendChild(cardContent);
+            card.appendChild(link);
+            blogGrid.appendChild(card);
+        });
+        
+        // Re-initialize AOS for the newly added elements
+        if (typeof AOS !== 'undefined') {
+            AOS.refresh();
         }
     }
     
@@ -695,26 +662,26 @@ const BlogModule = (function() {
         fetch(`${RSS2JSON_API}?rss_url=${encodeURIComponent(MEDIUM_RSS_URL)}`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
                 }
                 return response.json();
             })
             .then(data => {
                 if (data.status === 'ok' && data.items && data.items.length > 0) {
-                    allBlogPosts = data.items.slice(0, 6);
+                    allBlogPosts = data.items; // Keep more than 6 for responsive resizing
                     displayPosts();
                     window.addEventListener('resize', handleResize);
                 } else {
+                    console.error('API Error:', data.message || 'No items found');
                     showError();
                 }
             })
             .catch(error => {
-                console.error('Error fetching blog posts:', error);
+                console.error('Fetch Error:', error);
                 showError();
             });
     }
     
-    // Public API
     return {
         init: init
     };
