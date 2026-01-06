@@ -22,28 +22,22 @@ window.PORTFOLIO_DATA = {
         {
             title: "Energy Market Data Hub",
             description: "A high-throughput trading data platform designed for North American electricity markets. Ingests millions of real-time market signals to empower trading algorithms.",
-            challenge: "Handling high-frequency time-series data with zero data loss.",
-            outcome: "Reduced query latency by 40% for trading desks.",
             stack: ["Snowflake", "Azure", "dbt", "Airflow"],
             theme: "energy-theme",
             icon: "bx-bolt-circle",
-            type: "Cloud Infrastructure",
-            link: "#",
-            linkText: "Enterprise",
+            link: "",
+            linkText: "Enterprise Project",
             linkIcon: "bx-lock-alt",
             linkClass: "disabled"
         },
         {
             title: "Pharma Commercial Intelligence",
             description: "End-to-end commercial analytics pipeline processing over 1 billion healthcare records. Automated reporting for 300+ KPIs to drive Go-to-Market strategies.",
-            challenge: "Complex data governance and privacy (HIPAA) requirements.",
-            outcome: "Automated 95% of manual reporting workflows.",
             stack: ["Dataiku", "Python", "SQL", "Tableau"],
             theme: "pharma-theme",
             icon: "bx-capsule",
-            type: "Big Data ETL",
-            link: "#",
-            linkText: "Enterprise",
+            link: "",
+            linkText: "Enterprise Project",
             linkIcon: "bx-lock-alt",
             linkClass: "disabled"
         },
@@ -51,13 +45,8 @@ window.PORTFOLIO_DATA = {
             title: "Enterprise RAG Knowledge Agent",
             description: "A Retrieval-Augmented Generation system that allows teams to query internal documentation using natural language. Built with agentic workflows for complex reasoning.",
             stack: ["LangChain", "CrewAI", "Docker", "React"], // Used for "Project Stack" meta row if needed, or tech tags
-            meta: {
-                stack: "LangChain, Pinecone Vector DB, OpenAI API.",
-                outcome: "Instant knowledge retrieval for engineering teams."
-            },
             theme: "ai-theme",
             icon: "bx-brain",
-            type: "Gen AI & RAG",
             link: "https://github.com/namantaneja167",
             linkText: "View Code",
             linkIcon: "bxl-github",
@@ -67,36 +56,37 @@ window.PORTFOLIO_DATA = {
 
     // Skills Section
     skills: [
-        { name: "Snowflake", icon: "bxs-data", class: "snowflake", level: 5 },
-        { name: "Python", icon: "bxl-python", class: "python", level: 5 },
-        { name: "Databricks", icon: "bx-chip", class: "databricks", level: 4 },
-        { name: "Azure", icon: "bxl-microsoft", class: "azure", level: 4 },
-        { name: "Git", icon: "bxl-git", class: "git", level: 5 },
-        { name: "DBT", icon: "bx-transfer", class: "dbt", level: 4 },
-        { name: "Azure Data Factory", icon: "bx-git-merge", class: "adf", level: 4 },
-        { name: "CrewAI", icon: "bx-bot", class: "crewai", level: 4 },
-        { name: "RAG", icon: "bx-search-alt-2", class: "rag", level: 4 },
-        { name: "Dataiku DSS", icon: "bx-cog", class: "dataiku", level: 5 },
-        { name: "SQL", icon: "bx-data", class: "sql", level: 5 },
-        { name: "Tableau", icon: "bx-bar-chart-alt-2", class: "tableau", level: 5 },
-        { name: "LangChain", icon: "bx-link-alt", class: "langchain", level: 4 },
-        { name: "Ollama", icon: "bx-brain", class: "ollama", level: 4 },
-        { name: "Excel", icon: "bx-table", class: "excel", level: 5 },
-        { name: "CI/CD", icon: "bx-infinite", class: "cicd", level: 4 },
-        { name: "Jira", icon: "bxl-trello", class: "jira", level: 4 },
-        { name: "ETL Pipelines", icon: "bx-code-alt", class: "placeholder", level: 5 }
+        { name: "Snowflake", icon: "bxs-data", class: "snowflake", level: 5, category: "Data Engineering" },
+        { name: "Python", icon: "bxl-python", class: "python", level: 5, category: "Languages" },
+        { name: "Databricks", icon: "bx-chip", class: "databricks", level: 4, category: "Data Engineering" },
+        { name: "Azure", icon: "bxl-microsoft", class: "azure", level: 4, category: "Cloud" },
+        { name: "Git", icon: "bxl-git", class: "git", level: 5, category: "Tools" },
+        { name: "DBT", icon: "bx-transfer", class: "dbt", level: 4, category: "Data Engineering" },
+        { name: "Azure Data Factory", icon: "bx-git-merge", class: "adf", level: 4, category: "Data Engineering" },
+        { name: "CrewAI", icon: "bx-bot", class: "crewai", level: 4, category: "Gen AI" },
+        { name: "RAG", icon: "bx-search-alt-2", class: "rag", level: 4, category: "Gen AI" },
+        { name: "Dataiku DSS", icon: "bx-cog", class: "dataiku", level: 5, category: "Data Engineering" },
+        { name: "SQL", icon: "bx-data", class: "sql", level: 5, category: "Languages" },
+        { name: "Tableau", icon: "bx-bar-chart-alt-2", class: "tableau", level: 5, category: "Data Engineering" },
+        { name: "LangChain", icon: "bx-link-alt", class: "langchain", level: 4, category: "Gen AI" },
+        { name: "Ollama", icon: "bx-brain", class: "ollama", level: 4, category: "Gen AI" },
+        { name: "Excel", icon: "bx-table", class: "excel", level: 5, category: "Tools" },
+        { name: "CI/CD", icon: "bx-infinite", class: "cicd", level: 4, category: "Cloud" },
+        { name: "Jira", icon: "bxl-trello", class: "jira", level: 4, category: "Tools" },
+        { name: "ETL Pipelines", icon: "bx-code-alt", class: "placeholder", level: 5, category: "Data Engineering" }
     ],
 
     // Chat Bot Knowledge Base
     chatKnowledgeBase: {
+        quickPrompts: ["Experience?", "Technical Skills", "Contact Info", "Projects"],
         greetings: {
             keywords: ['hi', 'hello', 'hey', 'greetings', 'who are you', 'what is this', 'start'],
             response: "Hello! I'm Naman's AI assistant. I can tell you about his work in **Data Engineering** and **Gen AI**, his impact at **ZS Associates**, or his latest **RAG** projects. What's on your mind?"
         },
         skills: {
             keywords: [
-                'skills', 'tech', 'stack', 'languages', 'tools', 'know', 
-                'snowflake', 'python', 'sql', 'azure', 'dbt', 'adf', 'data factory', 
+                'skills', 'tech', 'stack', 'languages', 'tools', 'know',
+                'snowflake', 'python', 'sql', 'azure', 'dbt', 'adf', 'data factory',
                 'databricks', 'spark', 'pandas', 'dataiku', 'excel', 'git', 'jira', 'ci/cd',
                 'etl', 'orchestration', 'automation'
             ],
