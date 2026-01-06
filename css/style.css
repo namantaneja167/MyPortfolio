@@ -2248,14 +2248,19 @@ img {
 
     .chat-window {
         position: fixed;
-        width: 92vw;
-        max-width: 400px;
-        left: 50%;
-        transform: translateX(-50%);
-        right: auto;
+        left: 20px;
+        right: 20px;
+        width: auto;
+        max-width: none;
         bottom: 90px;
         height: 60vh;
         max-height: 500px;
+        transform: scale(0);
+        /* Ensure initial state matches desktop for animation */
+    }
+
+    .chat-window.active {
+        transform: scale(1);
     }
 }
 
