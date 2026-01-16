@@ -117,7 +117,7 @@
                 <a href="assets/Naman_Resume.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
                     Download PDF Resume
                 </a>
-                <button class="theme-toggle" aria-label="Toggle dark mode">
+                <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
                     <i class='bx bx-sun' aria-hidden="true"></i>
                 </button>
             </div>
@@ -196,7 +196,8 @@
                 <div class="hero-visual">
                     <div class="hero-image-wrapper">
                         <div class="hero-image-bg"></div>
-                        <img src="images/profile.jpg" alt="Naman Taneja" class="hero-image">
+                        <img src="images/profile.jpg" alt="Naman Taneja" class="hero-image" width="350" height="350"
+                            loading="eager">
                     </div>
                 </div>
             </div>
@@ -695,7 +696,9 @@
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- Custom JavaScript -->
+    <!-- Custom JavaScript (Order: StateManager → ChatService → Data → Main) -->
+    <script src="js/StateManager.js"></script>
+    <script src="js/ChatService.js"></script>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
 </body>
