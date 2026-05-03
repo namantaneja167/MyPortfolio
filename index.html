@@ -75,11 +75,11 @@
         base-uri 'self';
     ">
 
-    <!-- Google Fonts - Modern Professional Pairing -->
+    <!-- Google Fonts - Cinematic Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Figtree:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
     <!-- AOS Animation Library -->
@@ -96,190 +96,100 @@
     <!-- Skip to Content Link (Accessibility) -->
     <a href="#hero" class="skip-to-content">Skip to main content</a>
 
-    <!-- Header / Navigation -->
-    <header class="header">
-        <div class="container">
-            <a href="#" class="logo">
-                <span class="logo-icon">N</span>
-            </a>
-            <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+    <!-- Navbar - Cinematic Design -->
+    <header class="navbar" id="navbar">
+        <div class="navbar-container">
+            <!-- Logo -->
+            <a href="#" class="navbar-logo">NAMAN</a>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
                 <span class="hamburger"></span>
             </button>
-            <nav class="nav" id="main-nav">
-                <a href="#about" class="nav-link">About</a>
-                <a href="#experience" class="nav-link">Experience</a>
-                <a href="#skills" class="nav-link">Skills</a>
-                <a href="#projects" class="nav-link">Projects</a>
-                <a href="#blog" class="nav-link">Blog</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </nav>
-            <div class="header-actions">
-                <a href="assets/Naman_Resume.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
-                    Download PDF Resume
-                </a>
-                <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
-                    <i class='bx bx-sun' aria-hidden="true"></i>
+
+            <!-- Navigation Links -->
+            <nav class="navbar-nav" id="main-nav">
+                <a href="#projects" class="navbar-link">Work</a>
+                <a href="#about" class="navbar-link">About</a>
+                <a href="#blog" class="navbar-link">Writing</a>
+                <a href="assets/Naman_Resume.pdf" class="navbar-link" target="_blank" rel="noopener noreferrer">Resume</a>
+                <a href="#contact" class="navbar-btn">Contact</a>
+                <button class="theme-toggle" aria-label="Switch to light mode" aria-pressed="true">
+                    <i class='bx bx-moon' aria-hidden="true"></i>
                 </button>
-            </div>
+            </nav>
         </div>
     </header>
 
     <!-- Main Content -->
     <main id="main-content">
 
-        <!-- Hero Section - Professional Impact -->
-        <section class="hero" id="hero">
-            <canvas id="heroCanvas"></canvas>
+        <!-- Hero Section -->
+        <section class="hero cinematic-hero" id="hero">
             <div class="container hero-container">
                 <div class="hero-content">
-                    <h2 class="hero-greeting">Hi, I'm Naman Taneja.</h2>
-                    <div class="hero-label">Data Engineer | Cloud Data Specialist</div>
+                    <h1 class="hero-name">Naman<br>Taneja</h1>
+                    <hr class="hero-rule" aria-hidden="true">
+                    <p class="hero-discipline">Data Engineer&nbsp;&nbsp;·&nbsp;&nbsp;Cloud Architecture&nbsp;&nbsp;·&nbsp;&nbsp;Enterprise Scale</p>
 
-                    <h1 class="hero-title">
-                        Building <span class="text-gradient">Scalable Data Infrastructure</span> for Enterprise Impact
-                    </h1>
-
-                    <p class="hero-description">
-                        Specializing in cloud data warehousing, ETL pipeline optimization, and Gen AI solutions.
-                        Currently architecting trading data systems for North America's electricity markets at
-                        <strong>Uniper Energy</strong>.
-                    </p>
-
-                    <div class="hero-metrics">
-                        <div class="metric-card">
-                            <div class="metric-number" data-count="3">0</div>
-                            <div class="metric-label">Years Experience</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-number">1B+</div>
-                            <div class="metric-label">Records Processed</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-number" data-count="50">0</div>
-                            <div class="metric-label">KPIs Automated</div>
-                        </div>
-                    </div>
-
-                    <div class="hero-cta">
-                        <a href="assets/Naman_Resume.pdf" class="btn btn-primary" target="_blank"
-                            rel="noopener noreferrer">
-                            <i class='bx bx-download' aria-hidden="true"></i>
-                            Download Resume
-                        </a>
-                        <a href="https://calendly.com/er-namantaneja/30min" target="_blank" rel="noopener noreferrer"
-                            class="btn btn-outline">
-                            <i class='bx bx-calendar'></i>
-                            Schedule a Sync
-                        </a>
-                        <a href="#contact" class="btn btn-ghost">
-                            <i class='bx bx-envelope'></i>
-                            Get in Touch
-                        </a>
-                    </div>
-
-                    <div class="hero-social">
-                        <a href="https://www.linkedin.com/in/namantaneja167/" target="_blank" rel="noopener noreferrer"
-                            class="social-link" aria-label="Visit Naman's LinkedIn profile">
-                            <i class='bx bxl-linkedin' aria-hidden="true"></i>
-                        </a>
-                        <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer"
-                            class="social-link" aria-label="Read Naman's articles on Medium">
-                            <i class='bx bxl-medium' aria-hidden="true"></i>
-                        </a>
-                        <a href="https://x.com/naman_taneja_" target="_blank" rel="noopener noreferrer"
-                            class="social-link" aria-label="Follow Naman on X (Twitter)">
-                            <i class='bx bxl-twitter' aria-hidden="true"></i>
-                        </a>
+                    <div class="hero-bottom">
+                        <p class="hero-stats">Energy markets &amp; enterprise pharma — pipelines at scale</p>
+                        <a href="#contact" class="btn btn-hero-primary">Get in Touch &rarr;</a>
                     </div>
                 </div>
 
                 <div class="hero-visual">
                     <div class="hero-image-wrapper">
-                        <div class="hero-image-bg"></div>
-                        <img src="images/profile.jpg" alt="Naman Taneja" class="hero-image" width="350" height="350"
-                            loading="eager">
+                        <img src="images/profile.jpg" alt="Naman Taneja — Data Engineer" class="hero-image-cinematic">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- About Section - Professional Story -->
+        <!-- About Section -->
         <section class="about section" id="about">
             <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">About Me</h2>
-                    <p class="section-subtitle">Transforming Complex Data into Business Value</p>
-                </div>
                 <div class="about-content">
-                    <div class="about-story" data-aos="fade-up" data-aos-delay="100">
+                    <div class="about-header" data-aos="fade-up">
+                        <span class="section-number">01</span>
+                        <h2 class="section-title">About</h2>
+                    </div>
+
+                    <blockquote class="about-pullquote" data-aos="fade-up" data-aos-delay="100">
+                        I build the pipelines that turn enterprise data chaos into decisions.
+                    </blockquote>
+
+                    <div class="about-story" data-aos="fade-up" data-aos-delay="200">
                         <p class="about-text">
                             I'm a Data Engineer with <strong>3+ years of experience</strong> specializing in cloud data
                             infrastructure, ETL pipeline optimization, and large-scale data processing across pharma and
-                            energy industries. My passion lies in building robust, scalable data solutions that drive
-                            measurable business outcomes.
+                            energy industries.
                         </p>
                         <p class="about-text">
                             From healthcare analytics at <strong>ZS Associates</strong> to energy trading systems at
-                            <strong>Uniper</strong>, I've architected ETL pipelines processing <strong>billions of
-                                records</strong>, automated complex reporting workflows, and delivered enterprise Gen AI
+                            <strong>Uniper</strong>, I've architected ETL pipelines processing billions of
+                            records, automated complex reporting workflows, and delivered enterprise Gen AI
                             solutions using RAG and agentic architectures.
                         </p>
                         <p class="about-text">
                             I thrive at the intersection of technical expertise and business impact — translating
-                            stakeholder requirements into efficient data architectures, optimizing query performance for
-                            10x faster insights, and building solutions that teams can confidently rely on.
+                            stakeholder requirements into efficient data architectures and building solutions teams can rely on.
                         </p>
                         <button class="read-more-btn" id="readMoreBtn">Read More</button>
                     </div>
 
-                    <div class="about-highlights">
-                        <div class="highlight-card" data-aos="fade-up" data-aos-delay="200">
-                            <div class="highlight-icon">
-                                <i class='bx bx-trending-up'></i>
-                            </div>
-                            <h3 class="highlight-title">Impact</h3>
-                            <p class="highlight-text">Reduced processing time by 25%, automated 50+ KPIs, delivered 10x
-                                query performance improvements</p>
-                        </div>
-                        <div class="highlight-card" data-aos="fade-up" data-aos-delay="300">
-                            <div class="highlight-icon">
-                                <i class='bx bx-server'></i>
-                            </div>
-                            <h3 class="highlight-title">Scale</h3>
-                            <p class="highlight-text">Managed 1B+ healthcare records, built systems for 300+ KPIs,
-                                architected trading data pipelines</p>
-                        </div>
-                        <div class="highlight-card" data-aos="fade-up" data-aos-delay="400">
-                            <div class="highlight-icon">
-                                <i class='bx bx-brain'></i>
-                            </div>
-                            <h3 class="highlight-title">Innovation</h3>
-                            <p class="highlight-text">Pioneered Gen AI solutions with RAG, implemented CI/CD pipelines,
-                                modernized data architectures</p>
-                        </div>
+                    <div class="about-stack" data-aos="fade-up" data-aos-delay="300">
+                        <span class="about-stack-label">Stack</span>
+                        <span class="about-stack-list">Snowflake · Python · SQL · Azure · DBT · Power BI · Docker · Airflow</span>
                     </div>
 
-                    <div class="tech-stack-section" data-aos="fade-up" data-aos-delay="500">
-                        <h3 class="tech-stack-title">Core Technologies</h3>
-                        <div class="tech-badges">
-                            <span class="tech-badge-pro">Snowflake</span>
-                            <span class="tech-badge-pro">Python</span>
-                            <span class="tech-badge-pro">SQL</span>
-                            <span class="tech-badge-pro">Azure</span>
-                            <span class="tech-badge-pro">DBT</span>
-                            <span class="tech-badge-pro">Power BI</span>
-                            <span class="tech-badge-pro">Docker</span>
-                            <span class="tech-badge-pro">Airflow</span>
-                        </div>
-                    </div>
-
-                    <div class="about-meta" data-aos="fade-up" data-aos-delay="600">
+                    <div class="about-meta" data-aos="fade-up" data-aos-delay="400">
                         <div class="meta-item">
-                            <i class='bx bx-map'></i>
+                            <i class='bx bx-map' aria-hidden="true"></i>
                             <span>Based in India</span>
                         </div>
                         <div class="meta-item">
-                            <i class='bx bx-world'></i>
+                            <i class='bx bx-world' aria-hidden="true"></i>
                             <span>English, Hindi</span>
                         </div>
                     </div>
@@ -287,318 +197,315 @@
             </div>
         </section>
 
-        <!-- Experience Section - Professional Timeline -->
-        <section class="experience section" id="experience">
+        <!-- Experience Section -->
+        <section class="cinematic-experience section" id="experience">
             <div class="container">
                 <div class="section-header" data-aos="fade-up">
+                    <span class="section-number">02</span>
                     <h2 class="section-title">Experience</h2>
-                    <p class="section-subtitle">Building Data Solutions Across Industries</p>
                 </div>
-                <div class="experience-timeline">
-                    <!-- Uniper -->
-                    <div class="experience-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="experience-logo">
-                            <div class="company-logo">
-                                <i class='bx bx-bolt-circle'></i>
+
+                <div class="exp-list">
+                    <!-- Role 1: Uniper -->
+                    <div class="exp-entry" data-aos="fade-up">
+                        <div class="exp-main">
+                            <div class="exp-left">
+                                <h3 class="exp-company">Uniper Energy</h3>
+                                <p class="exp-role">Data Engineering Consultant</p>
                             </div>
-                            <div class="timeline-line"></div>
+                            <div class="exp-right">
+                                <span class="exp-date">Oct 2024 – Present</span>
+                            </div>
                         </div>
-                        <div class="experience-content">
-                            <div class="experience-header">
-                                <div class="company-info">
-                                    <h3 class="company-name">
-                                        <a href="https://www.uniper.energy/" target="_blank"
-                                            rel="noopener noreferrer">Uniper Energy</a>
-                                        <span class="current-badge">Current Role</span>
-                                    </h3>
-                                    <p class="job-title">Data Engineering Consultant</p>
-                                </div>
-                                <div class="duration">
-                                    <i class='bx bx-calendar'></i>
-                                    <span>Oct 2024 - Present</span>
-                                </div>
-                            </div>
-                            <p class="experience-description">
-                                Architecting trading data systems for North America's electricity markets, managing
-                                complex data migration projects, and implementing end-to-end cloud data solutions.
-                            </p>
-                            <ul class="achievement-list">
-                                <li>Built scalable data pipelines for <strong>millions of trading records</strong> using
-                                    Snowflake and Azure</li>
-                                <li>Designed and implemented DBT-based data transformations with <strong>CI/CD
-                                        automation</strong></li>
-                                <li>Delivered data solutions supporting <strong>critical business
-                                        decision-making</strong></li>
-                            </ul>
-                            <div class="tech-tags">
-                                <span class="tech-tag">Snowflake</span>
-                                <span class="tech-tag">Azure</span>
-                                <span class="tech-tag">DBT</span>
-                                <span class="tech-tag">CI/CD</span>
-                            </div>
+                        <p class="exp-description">
+                            Architecting trading data systems for North America's electricity markets, managing complex data migration projects. Built scalable pipelines for millions of trading records using Snowflake and Azure. Designed DBT-based transformations with CI/CD automation.
+                        </p>
+                        <div class="exp-tags">
+                            <span class="tech-pill">Snowflake</span>
+                            <span class="tech-pill">Azure</span>
+                            <span class="tech-pill">DBT</span>
+                            <span class="tech-pill">CI/CD</span>
                         </div>
                     </div>
 
-                    <!-- ZS Associates - Full Time -->
-                    <div class="experience-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="experience-logo">
-                            <div class="company-logo">
-                                <i class='bx bx-line-chart'></i>
+                    <!-- Role 2: ZS Associates -->
+                    <div class="exp-entry" data-aos="fade-up" data-aos-delay="80">
+                        <div class="exp-main">
+                            <div class="exp-left">
+                                <h3 class="exp-company">ZS Associates</h3>
+                                <p class="exp-role">BTSA Associate — Data Engineer</p>
                             </div>
-                            <div class="timeline-line"></div>
+                            <div class="exp-right">
+                                <span class="exp-date">2022 – 2024</span>
+                            </div>
                         </div>
-                        <div class="experience-content">
-                            <div class="experience-header">
-                                <div class="company-info">
-                                    <h3 class="company-name">
-                                        <a href="https://www.zs.com/" target="_blank" rel="noopener noreferrer">ZS
-                                            Associates</a>
-                                    </h3>
-                                    <p class="job-title">BTSA Associate - Data Engineer</p>
-                                </div>
-                                <div class="duration">
-                                    <i class='bx bx-calendar'></i>
-                                    <span>2022 - 2024</span>
-                                </div>
-                            </div>
-                            <p class="experience-description">
-                                Partnered with the largest US pharma company to develop Go-to-Market reports and
-                                advanced analytics solutions for <strong>300+ business KPIs</strong>.
-                            </p>
-                            <ul class="achievement-list">
-                                <li>Managed ETL processes for <strong>1 billion+ healthcare records</strong> using
-                                    Snowflake and Dataiku DSS</li>
-                                <li>Cut processing time by <strong>25%</strong> through query optimization and workflow
-                                    automation</li>
-                                <li>Built automated reporting dashboards and maintained data accuracy through rigorous
-                                    QA/QC cycles</li>
-                            </ul>
-                            <div class="tech-tags">
-                                <span class="tech-tag">Snowflake</span>
-                                <span class="tech-tag">Dataiku DSS</span>
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Tableau</span>
-                            </div>
+                        <p class="exp-description">
+                            Partnered with a top US pharma company to develop Go-to-Market reports for 300+ business KPIs. Managed ETL processes for 1B+ healthcare records using Snowflake and Dataiku. Cut processing time by 25% through query optimization.
+                        </p>
+                        <div class="exp-tags">
+                            <span class="tech-pill">Snowflake</span>
+                            <span class="tech-pill">Dataiku DSS</span>
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Tableau</span>
                         </div>
                     </div>
 
-                    <!-- ZS Associates - Intern -->
-                    <div class="experience-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="experience-logo">
-                            <div class="company-logo">
-                                <i class='bx bx-line-chart'></i>
+                    <!-- Role 3: ZS Intern -->
+                    <div class="exp-entry" data-aos="fade-up" data-aos-delay="160">
+                        <div class="exp-main">
+                            <div class="exp-left">
+                                <h3 class="exp-company">ZS Associates</h3>
+                                <p class="exp-role">BTSA Associate Intern</p>
                             </div>
-                            <div class="timeline-line"></div>
+                            <div class="exp-right">
+                                <span class="exp-date">2022</span>
+                            </div>
                         </div>
-                        <div class="experience-content">
-                            <div class="experience-header">
-                                <div class="company-info">
-                                    <h3 class="company-name">
-                                        <a href="https://www.zs.com/" target="_blank" rel="noopener noreferrer">ZS
-                                            Associates</a>
-                                    </h3>
-                                    <p class="job-title">BTSA Associate Intern</p>
-                                </div>
-                                <div class="duration">
-                                    <i class='bx bx-calendar'></i>
-                                    <span>2022</span>
-                                </div>
-                            </div>
-                            <p class="experience-description">
-                                Streamlined machine learning workflows and implemented MLOps best practices to improve
-                                model deployment scalability.
-                            </p>
-                            <ul class="achievement-list">
-                                <li>Improved ML workflow scalability by <strong>20%</strong> using MLOps automation</li>
-                                <li>Implemented <strong>CI/CD pipelines</strong> and data orchestration for faster
-                                    deployments</li>
-                                <li>Centralized configuration management and data versioning for <strong>better team
-                                        collaboration</strong></li>
-                            </ul>
-                            <div class="tech-tags">
-                                <span class="tech-tag">MLOps</span>
-                                <span class="tech-tag">CI/CD</span>
-                                <span class="tech-tag">Data Versioning</span>
-                            </div>
+                        <p class="exp-description">
+                            Streamlined machine learning workflows and implemented MLOps best practices. Improved ML workflow scalability by 20% through automation.
+                        </p>
+                        <div class="exp-tags">
+                            <span class="tech-pill">MLOps</span>
+                            <span class="tech-pill">CI/CD</span>
+                            <span class="tech-pill">Data Versioning</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Education & Skills Section -->
-        <section class="skills section" id="skills">
+        <!-- Skills Section -->
+        <section class="skills-hud section" id="skills">
             <div class="container">
                 <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">Capabilities</h2>
-                    <p class="section-subtitle">Education & Technical Expertise</p>
+                    <span class="section-number">03</span>
+                    <h2 class="section-title">Skills</h2>
                 </div>
-                <div class="skills-content">
-                    <div class="education" data-aos="fade-right" data-aos-delay="200">
-                        <div class="education-item">
-                            <div class="edu-icon">
-                                <i class='bx bxs-graduation'></i>
-                            </div>
-                            <div class="edu-info">
-                                <h3 class="edu-title">Gen AI Engineer Apprenticeship - 2024</h3>
-                                <p class="edu-description">
-                                    100x Engineers. Intensive program covering model fine-tuning (DreamBooth, Stable
-                                    Diffusion), full-stack LLM applications, RAG architectures, and AI agents using
-                                    LangChain, CrewAI, and Ollama.
-                                </p>
-                            </div>
+
+                <div class="skills-grid-editorial" data-aos="fade-up" data-aos-delay="100">
+                    <div class="skills-row">
+                        <span class="skills-category">Data Engineering</span>
+                        <span class="skills-list">Snowflake, DBT, Databricks, Azure Data Factory, Dataiku, Tableau</span>
+                    </div>
+                    <div class="skills-row skills-row--cool">
+                        <span class="skills-category">Gen AI</span>
+                        <span class="skills-list">RAG, LangChain, CrewAI, Ollama, Agentic Workflows</span>
+                    </div>
+                    <div class="skills-row skills-row--cool">
+                        <span class="skills-category">Cloud</span>
+                        <span class="skills-list">Azure, CI/CD Pipelines, Infrastructure as Code</span>
+                    </div>
+                    <div class="skills-row">
+                        <span class="skills-category">Languages</span>
+                        <span class="skills-list">Python, SQL</span>
+                    </div>
+                    <div class="skills-row">
+                        <span class="skills-category">Tools</span>
+                        <span class="skills-list">Git, Power BI, Docker, Airflow, Jira, Excel</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="cinematic-projects section" id="projects">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-number">04</span>
+                    <h2 class="section-title">Projects</h2>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- Project 1: Energy Market Data Hub -->
+                    <div class="system-card" data-aos="fade-up">
+                        <div class="card-meta-row">
+                            <span class="card-type">Enterprise · NDA</span>
                         </div>
-                        <div class="education-item">
-                            <div class="edu-icon">
-                                <i class='bx bxs-certification'></i>
-                            </div>
-                            <div class="edu-info">
-                                <h3 class="edu-title">B.Tech in Computer Science - 2022</h3>
-                                <p class="edu-description">
-                                    Guru Gobind Singh Indraprastha University, Delhi.
-                                </p>
-                            </div>
+                        <h3 class="card-title">Energy Market Data Hub</h3>
+                        <p class="card-description">
+                            High-throughput trading data platform for North American electricity markets. Ingests
+                            millions of real-time market signals and powers downstream analytics.
+                        </p>
+                        <div class="card-tech-stack">
+                            Snowflake, Azure, dbt, Airflow
                         </div>
-                        <div class="education-item">
-                            <div class="edu-icon">
-                                <i class='bx bxs-school'></i>
-                            </div>
-                            <div class="edu-info">
-                                <h3 class="edu-title">Non Medical Science - 2018</h3>
-                                <p class="edu-description">
-                                    Ryan International School, Delhi.
-                                </p>
-                            </div>
+                        <div class="card-actions">
+                            <button class="btn-card disabled" disabled aria-label="Enterprise project — code not public">
+                                Not Public
+                            </button>
                         </div>
                     </div>
-                    <div class="skills-grid-wrapper" data-aos="fade-left" data-aos-delay="200">
-                        <div class="skills-filter" id="skillsFilter">
-                            <!-- Filters will be generated dynamically -->
+
+                    <!-- Project 2: Pharma Commercial Intelligence -->
+                    <div class="system-card" data-aos="fade-up" data-aos-delay="80">
+                        <div class="card-meta-row">
+                            <span class="card-type">Enterprise · NDA</span>
                         </div>
-                        <div class="skills-grid" id="skillsGrid">
-                            <!-- Skills will be rendered dynamically -->
+                        <h3 class="card-title">Pharma Commercial Intelligence</h3>
+                        <p class="card-description">
+                            End-to-end commercial analytics pipeline processing 1B+ healthcare records. Automated
+                            reporting for 300+ KPIs with a 25% reduction in processing time.
+                        </p>
+                        <div class="card-tech-stack">
+                            Dataiku, Python, SQL, Tableau
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-card disabled" disabled aria-label="Enterprise project — code not public">
+                                Not Public
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Enterprise RAG Agent -->
+                    <div class="system-card" data-aos="fade-up" data-aos-delay="160">
+                        <div class="card-meta-row">
+                            <span class="card-type">Open Source</span>
+                        </div>
+                        <h3 class="card-title">Enterprise RAG Knowledge Agent</h3>
+                        <p class="card-description">
+                            Retrieval-Augmented Generation system for natural language queries on internal docs.
+                            Agentic workflows for complex multi-step reasoning.
+                        </p>
+                        <div class="card-tech-stack">
+                            LangChain, CrewAI, Docker, React
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://github.com/namantaneja167" target="_blank" rel="noopener noreferrer" class="btn-card btn-live">
+                                <i class='bx bxl-github' aria-hidden="true"></i> View Code
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section - Featured Architectures -->
-        <section class="projects section" id="projects">
+        <!-- Blog Section -->
+        <section class="cinematic-blog section" id="blog">
             <div class="container">
                 <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">Featured Architectures</h2>
-                    <p class="section-subtitle">Engineering Scalable Solutions & Intelligent Systems</p>
+                    <span class="section-number">05</span>
+                    <h2 class="section-title">Writing</h2>
                 </div>
-                <div class="projects-grid" id="projectsGrid">
-                    <!-- Projects will be rendered dynamically -->
-                </div>
-            </div>
-        </section>
 
-        <!-- Blog Section - Matrix Feed -->
-        <section class="blog section" id="blog">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">Latest Articles</h2>
-                    <p class="section-subtitle">Insights on Data Engineering, Cloud Architecture & Analytics</p>
-                </div>
-                <div class="blog-content" data-aos="fade-up" data-aos-delay="200">
-                    <div class="blog-grid" id="blogGrid">
-                        <!-- Skeleton loading cards removed -->
+                <div class="blog-feed-container">
+                    <div class="blog-feed" id="cinematicBlogGrid">
+                        <!-- Placeholder 1 -->
+                        <div class="feed-card" data-aos="fade-up">
+                            <div class="card-meta">
+                                <span class="feed-date">Jan 2026</span>
+                                <span class="feed-tag">Data Engineering</span>
+                            </div>
+                            <h3 class="feed-title">Optimizing Snowflake Storage for Scale</h3>
+                            <p class="feed-excerpt">Analyzing the impact of micro-partitions on query performance and
+                                storage costs in high-volume environments.</p>
+                            <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer" class="feed-link">Read <i
+                                    class='bx bx-right-arrow-alt' aria-hidden="true"></i></a>
+                        </div>
+
+                        <!-- Placeholder 2 -->
+                        <div class="feed-card" data-aos="fade-up" data-aos-delay="80">
+                            <div class="card-meta">
+                                <span class="feed-date">Jan 2026</span>
+                                <span class="feed-tag">Cloud Architecture</span>
+                            </div>
+                            <h3 class="feed-title">Building Resilient Data Pipelines</h3>
+                            <p class="feed-excerpt">Strategies for implementing fault tolerance and automated recovery
+                                in Azure Data Factory pipelines.</p>
+                            <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer" class="feed-link">Read <i
+                                    class='bx bx-right-arrow-alt' aria-hidden="true"></i></a>
+                        </div>
+
+                        <!-- Placeholder 3 -->
+                        <div class="feed-card" data-aos="fade-up" data-aos-delay="160">
+                            <div class="card-meta">
+                                <span class="feed-date">Dec 2025</span>
+                                <span class="feed-tag">AI Engineering</span>
+                            </div>
+                            <h3 class="feed-title">RAG Systems in Production</h3>
+                            <p class="feed-excerpt">Lessons learned from deploying retrieval-augmented generation agents
+                                for enterprise knowledge bases.</p>
+                            <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer" class="feed-link">Read <i
+                                    class='bx bx-right-arrow-alt' aria-hidden="true"></i></a>
+                        </div>
                     </div>
-                    <div class="blog-cta">
-                        <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer"
-                            class="btn btn-outline">
-                            View All Articles on Medium
-                            <i class='bx bx-right-arrow-alt'></i>
+
+                    <div class="feed-cta" data-aos="fade-up" data-aos-delay="200">
+                        <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer" class="btn-outline-accent">
+                            <i class='bx bxl-medium' aria-hidden="true"></i> Read All Articles
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section - Terminal Interface -->
+        <!-- Contact Section -->
         <section class="contact section" id="contact">
             <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">Get In Touch</h2>
-                    <p class="section-subtitle">Let's discuss how I can help with your data engineering needs</p>
-                </div>
-                <div class="contact-content">
-                    <div class="contact-form-wrapper" data-aos="fade-right" data-aos-delay="200">
-                        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xvgebpon"
-                            method="POST">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="name">Name *</label>
-                                    <input type="text" id="name" name="name" required>
+                <div class="contact-layout" data-aos="fade-up">
+                    <div class="contact-left">
+                        <span class="section-number">06</span>
+                        <h2 class="contact-heading">Let's Work<br>Together</h2>
+                        <p class="contact-intro">
+                            Open to data engineering roles, consulting projects, and collaborations. Reach out directly or fill out the form.
+                        </p>
+
+                        <div class="contact-details">
+                            <div class="contact-detail-row">
+                                <span class="contact-detail-label">Email</span>
+                                <div class="email-copy">
+                                    <span class="email-text">er.namantaneja@gmail.com</span>
+                                    <button class="copy-btn copy-email" data-email="er.namantaneja@gmail.com" aria-label="Copy email address">
+                                        <i class='bx bx-copy' aria-hidden="true"></i>
+                                    </button>
                                 </div>
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="contact-detail-row">
+                                <span class="contact-detail-label">Status</span>
+                                <div class="status-indicator">
+                                    <span class="status-dot"></span>
+                                    <span>Available — responds within 24h</span>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="message">Message *</label>
-                                <textarea id="message" name="message" rows="5" required></textarea>
+                            <div class="contact-detail-row">
+                                <span class="contact-detail-label">Connect</span>
+                                <div class="social-links-mini">
+                                    <a href="https://www.linkedin.com/in/namantaneja167/" target="_blank" rel="noopener noreferrer" class="mini-link">LinkedIn</a>
+                                    <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer" class="mini-link">Medium</a>
+                                    <a href="https://x.com/naman_taneja_" target="_blank" rel="noopener noreferrer" class="mini-link">X</a>
+                                    <a href="https://github.com/namantaneja167" target="_blank" rel="noopener noreferrer" class="mini-link">GitHub</a>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" id="submitBtn">
-                                <span class="btn-text">Send Message</span>
-                                <span class="btn-loading" style="display: none;">
-                                    <i class='bx bx-loader-alt bx-spin'></i>
-                                    Sending...
-                                </span>
-                                <i class='bx bx-send btn-icon'></i>
-                            </button>
-                        </form>
-                        <!-- Success Message -->
-                        <div class="form-success" id="formSuccess" style="display: none;">
-                            <div class="success-icon">
-                                <i class='bx bx-check-circle'></i>
-                            </div>
-                            <h3>Message Sent!</h3>
-                            <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
-                            <button class="btn btn-outline" id="sendAnother">
-                                <i class='bx bx-envelope'></i>
-                                Send Another Message
-                            </button>
                         </div>
                     </div>
-                    <div class="contact-info" data-aos="fade-left" data-aos-delay="200">
-                        <h3 class="contact-info-title">Connect With Me</h3>
-                        <p class="response-time">I typically respond within 24 hours</p>
-                        <div class="contact-socials">
-                            <a href="https://calendly.com/er-namantaneja/30min" target="_blank"
-                                rel="noopener noreferrer" class="social-button schedule">
-                                <i class='bx bx-calendar-event'></i>
-                                <span>Schedule a Sync</span>
-                            </a>
-                            <a href="https://www.linkedin.com/in/namantaneja167/" target="_blank"
-                                rel="noopener noreferrer" class="social-button linkedin">
-                                <i class='bx bxl-linkedin-square'></i>
-                                <span>LinkedIn</span>
-                            </a>
-                            <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer"
-                                class="social-button medium">
-                                <i class='bx bxl-medium-square'></i>
-                                <span>Medium</span>
-                            </a>
-                            <a href="https://x.com/naman_taneja_" target="_blank" rel="noopener noreferrer"
-                                class="social-button twitter">
-                                <i class='bx bxl-twitter'></i>
-                                <span>X / Twitter</span>
-                            </a>
-                        </div>
-                        <div class="contact-details">
-                            <div class="email-card">
-                                <i class='bx bx-envelope'></i>
-                                <a href="mailto:er.namantaneja@gmail.com"
-                                    class="email-link">er.namantaneja@gmail.com</a>
-                                <button class="copy-email" data-email="er.namantaneja@gmail.com" title="Copy email">
-                                    <i class='bx bx-copy'></i>
+
+                    <div class="contact-right" data-aos="fade-up" data-aos-delay="100">
+                        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xvgebpon" method="POST">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-input" required autocomplete="name" placeholder="Your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-input" required autocomplete="email" placeholder="your@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea id="message" name="message" rows="5" class="form-input" required placeholder="What would you like to discuss?"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">
+                                    <span class="btn-text">Send Message</span>
+                                    <span class="btn-loading" style="display: none;">
+                                        <i class='bx bx-loader-alt bx-spin' aria-hidden="true"></i> Sending…
+                                    </span>
                                 </button>
                             </div>
+                        </form>
+
+                        <!-- Success State -->
+                        <div class="contact-success" id="formSuccess" style="display: none;">
+                            <p class="success-message">Message sent. I'll be in touch soon.</p>
+                            <button class="btn-outline" id="sendAnother">Send Another</button>
                         </div>
                     </div>
                 </div>
@@ -660,35 +567,30 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-brand">
-                <a href="#" class="footer-logo">Naman Taneja</a>
-                <p class="footer-tagline">Building the future of data and AI.</p>
-            </div>
-
+    <!-- Footer - Cinematic Design -->
+    <footer class="cinematic-footer">
+        <div class="footer-container">
+            <!-- Social Links -->
             <div class="footer-socials">
-                <a href="https://www.linkedin.com/in/namantaneja167/" target="_blank" rel="noopener noreferrer"
-                    aria-label="LinkedIn">
-                    <i class='bx bxl-linkedin'></i>
-                </a>
-                <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer"
-                    aria-label="Medium">
-                    <i class='bx bxl-medium'></i>
-                </a>
-                <a href="https://x.com/naman_taneja_" target="_blank" rel="noopener noreferrer"
-                    aria-label="X (Twitter)">
-                    <i class='bx bxl-twitter'></i>
-                </a>
                 <a href="https://github.com/namantaneja167" target="_blank" rel="noopener noreferrer"
-                    aria-label="GitHub">
-                    <i class='bx bxl-github'></i>
+                    class="footer-social-link">
+                    GitHub
+                </a>
+                <span class="footer-divider">·</span>
+                <a href="https://www.linkedin.com/in/namantaneja167/" target="_blank" rel="noopener noreferrer"
+                    class="footer-social-link">
+                    LinkedIn
+                </a>
+                <span class="footer-divider">·</span>
+                <a href="https://x.com/naman_taneja_" target="_blank" rel="noopener noreferrer"
+                    class="footer-social-link">
+                    X / Twitter
                 </a>
             </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2026 Naman Taneja. Designed with <span class="heart">♥</span> in India.</p>
+            <!-- Copyright -->
+            <div class="footer-copyright">
+                <p>© 2026 Naman Taneja. Designed in India.</p>
             </div>
         </div>
     </footer>

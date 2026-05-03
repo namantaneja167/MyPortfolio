@@ -6,7 +6,17 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     try {
-        AOS.init({ duration: 600, easing: 'ease-out', once: true, offset: 100 });
+        // AOS CDN fallback - gracefully degrade if CDN failed
+        if (typeof AOS !== 'undefined') {
+            AOS.init({ duration: 600, easing: 'ease-out', once: true, offset: 100 });
+        } else {
+            console.warn('AOS library not loaded - animations disabled');
+            // Remove data-aos attributes to prevent invisible elements
+            document.querySelectorAll('[data-aos]').forEach(function (el) {
+                el.removeAttribute('data-aos');
+                el.removeAttribute('data-aos-delay');
+            });
+        }
 
         // Initialize ChatService with knowledge base
         var chatService = new window.ChatService(window.PORTFOLIO_DATA.chatKnowledgeBase);
@@ -18,14 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
         initFormValidation();
         initActiveNavLink();
         initProjects();
-        initSkillsFilter();
+        initSkillsHUD();
         initMobileMenu();
         initBlogPosts();
         initBackToTop();
         initCopyEmail();
         initTheme();
         initChatWidget(chatService);
-        initConstellation();
+        // initConstellation(); — canvas removed from hero
         initReadMore();
 
         console.log('Application initialized successfully.');
@@ -42,7 +52,7 @@ function initSmoothScroll() {
             e.preventDefault();
             var target = document.querySelector(href);
             if (target) {
-                var headerHeight = document.querySelector('.header').offsetHeight;
+                var headerHeight = (document.querySelector('.navbar') || { offsetHeight: 70 }).offsetHeight;
                 window.scrollTo({ top: target.offsetTop - headerHeight, behavior: 'smooth' });
                 // Auto-close mobile menu using StateManager
                 closeMobileMenu();
@@ -52,8 +62,8 @@ function initSmoothScroll() {
 }
 
 function closeMobileMenu() {
-    var nav = document.querySelector('.nav');
-    var toggle = document.querySelector('.menu-toggle');
+    var nav = document.querySelector('.navbar-nav');
+    var toggle = document.querySelector('.navbar-toggle');
     if (nav && toggle) {
         nav.classList.remove('active');
         toggle.classList.remove('active');
@@ -63,7 +73,7 @@ function closeMobileMenu() {
 }
 
 function initCounterAnimation() {
-    var counters = document.querySelectorAll('.metric-number[data-count]');
+    var counters = document.querySelectorAll('.metric-value[data-count]');
     if (!counters.length) return;
 
     var observer = new IntersectionObserver(function (entries) {
@@ -89,7 +99,7 @@ function initCounterAnimation() {
 }
 
 function initHeaderScroll() {
-    var header = document.querySelector('.header');
+    var header = document.querySelector('.navbar');
     if (!header) return;
     window.addEventListener('scroll', function () {
         if (window.scrollY > 50) header.style.boxShadow = 'var(--shadow-md)';
@@ -99,7 +109,7 @@ function initHeaderScroll() {
 
 function initActiveNavLink() {
     var sections = document.querySelectorAll('section[id]');
-    var navLinks = document.querySelectorAll('.nav-link');
+    var navLinks = document.querySelectorAll('.navbar-link');
     if (!sections.length || !navLinks.length) return;
 
     window.addEventListener('scroll', function () {
@@ -216,124 +226,150 @@ function initProjects() {
     });
 }
 
-function initSkillsFilter() {
-    'use strict';
-    try {
-        var grid = document.getElementById('skillsGrid');
-        var filterContainer = document.getElementById('skillsFilter');
+function initSkillsHUD() {
+    var tabs = document.querySelectorAll('.hud-tab');
+    var grids = document.querySelectorAll('.skill-grid');
 
-        if (!grid || !filterContainer || !window.PORTFOLIO_DATA || !window.PORTFOLIO_DATA.skills) return;
+    if (!tabs.length || !grids.length) return;
 
-        var skills = window.PORTFOLIO_DATA.skills;
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            // Remove active from all tabs
+            tabs.forEach(function (t) { t.classList.remove('active'); });
+            // Add active to clicked
+            this.classList.add('active');
 
-        // 1. Generate Categories
-        var categorySet = new Set(skills.map(function (s) { return s.category; }).filter(Boolean));
-        var categories = ['All'].concat(Array.from(categorySet));
-
-        // 2. Render Filter Buttons
-        filterContainer.innerHTML = categories.map(function (cat) {
-            return '<button class="filter-btn ' + (cat === 'All' ? 'active' : '') + '" data-category="' + cat + '">' +
-                cat +
-                '</button>';
-        }).join('');
-
-        // 3. Render Initial Skills (All)
-        renderSkills('All');
-
-        // 4. Add Click Listeners
-        filterContainer.querySelectorAll('.filter-btn').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                // Update Active Button
-                filterContainer.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
-                btn.classList.add('active');
-
-                // Filter Grid
-                var category = btn.getAttribute('data-category');
-                renderSkills(category);
+            // Hide all grids and show target
+            var targetId = this.getAttribute('data-target');
+            grids.forEach(function (g) {
+                g.classList.remove('active');
+                if (g.id === targetId) {
+                    g.classList.add('active');
+                }
             });
         });
-
-        function renderSkills(category) {
-            // Fade out
-            grid.style.opacity = '0';
-
-            setTimeout(function () {
-                var filtered = category === 'All'
-                    ? skills
-                    : skills.filter(function (s) { return s.category === category; });
-
-                grid.innerHTML = filtered.map(function (s, index) {
-                    return '<div class="skill-card active" style="animation-delay: ' + (index * 50) + 'ms">' +
-                        '<div class="skill-icon"><i class=\'bx ' + s.icon + '\'></i></div>' +
-                        '<div class="skill-name">' + s.name + '</div>' +
-                        '<div class="skill-level">' + Array(5).fill(0).map(function (_, i) {
-                            return '<span class="dot ' + (i < s.level ? 'filled' : '') + '"></span>';
-                        }).join('') + '</div>' +
-                        '</div>';
-                }).join('');
-
-                // Fade in
-                grid.style.opacity = '1';
-            }, 300);
-        }
-
-    } catch (e) { console.error('Skills error:', e); }
+    });
 }
 
 function initMobileMenu() {
-    var toggle = document.querySelector('.menu-toggle');
-    var nav = document.querySelector('.nav');
+    var toggle = document.querySelector('.navbar-toggle');
+    var nav = document.querySelector('.navbar-nav');
     if (!toggle || !nav) return;
 
     toggle.addEventListener('click', function () {
         var isExpanded = window.StateManager.toggleMobileMenu();
+        updateMenuState(isExpanded);
+    });
+
+    // Keyboard trap fix: Close on Escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && window.StateManager.getMobileMenuOpen()) {
+            window.StateManager.setMobileMenuOpen(false);
+            updateMenuState(false);
+            toggle.focus(); // Return focus to toggle button
+        }
+    });
+
+    // Close on nav link click (already handled in smooth scroll, but reinforce)
+    nav.querySelectorAll('.navbar-link, .navbar-btn').forEach(function (link) {
+        link.addEventListener('click', function () {
+            if (window.StateManager.getMobileMenuOpen()) {
+                window.StateManager.setMobileMenuOpen(false);
+                updateMenuState(false);
+            }
+        });
+    });
+
+    function updateMenuState(isExpanded) {
         nav.classList.toggle('active', isExpanded);
         toggle.classList.toggle('active', isExpanded);
         toggle.setAttribute('aria-expanded', isExpanded);
-    });
+        // Prevent body scroll when menu is open
+        document.body.style.overflow = isExpanded ? 'hidden' : '';
+    }
 }
 
 function initBlogPosts() {
-    var grid = document.getElementById('blogGrid');
+    var grid = document.getElementById('cinematicBlogGrid');
     if (!grid) return;
+
+    // Show skeleton loaders while fetching
+    grid.innerHTML = [0, 1, 2].map(function () {
+        return '<div class="feed-card skeleton">' +
+            '<div class="card-meta">' +
+            '<div class="skeleton-box" style="width:80px;height:12px;"></div>' +
+            '<div class="skeleton-box" style="width:120px;height:12px;"></div>' +
+            '</div>' +
+            '<div class="skeleton-box" style="width:90%;height:22px;margin:12px 0 8px;"></div>' +
+            '<div class="skeleton-box" style="width:100%;height:56px;"></div>' +
+            '</div>';
+    }).join('');
+
     var RSS_URL = 'https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@namantaneja167';
-    fetch(RSS_URL).then(function (res) { return res.json(); }).then(function (data) {
-        if (data.status === 'ok' && data.items) {
-            grid.innerHTML = data.items.slice(0, 6).map(function (item, index) {
-                // Extract thumbnail from content
-                var thumbnail = '';
-                if (item.thumbnail) {
-                    thumbnail = item.thumbnail;
-                } else {
-                    // Try to extract first image from content
-                    var imgMatch = item.content ? item.content.match(/<img[^>]+src="([^">]+)"/) : null;
-                    thumbnail = imgMatch ? imgMatch[1] : (item.enclosure ? item.enclosure.link : '') || '';
-                }
+    var TIMEOUT_MS = 10000;
 
-                var excerpt = item.description.replace(/<[^>]*>/g, '').substring(0, 150);
-                var date = new Date(item.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    // Fetch with timeout
+    var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timeoutId = setTimeout(function () {
+        if (controller) controller.abort();
+    }, TIMEOUT_MS);
 
-                return '<div class="blog-card" data-aos="fade-up" data-aos-delay="' + (index * 100) + '">' +
-                    '<div class="blog-thumbnail">' +
-                    '<img src="' + thumbnail + '" alt="' + item.title + '" loading="lazy" onerror="this.style.display=\'none\'; this.parentElement.style.display=\'none\';">' +
-                    '</div>' +
-                    '<div class="blog-card-content">' +
-                    '<div class="blog-meta">' +
-                    '<span><i class=\'bx bx-calendar\'></i> ' + date + '</span>' +
-                    '</div>' +
-                    '<h3 class="blog-title">' + item.title + '</h3>' +
-                    '<p class="blog-excerpt">' + excerpt + '...</p>' +
-                    '<a href="' + item.link + '" target="_blank" rel="noopener noreferrer" class="blog-link">' +
-                    'Read More <i class=\'bx bx-right-arrow-alt\'></i>' +
-                    '</a>' +
-                    '</div>' +
-                    '</div>';
-            }).join('');
-        }
-    }).catch(function (err) {
-        console.error('Blog Fetch Error:', err);
-        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Unable to load articles. Please visit <a href="https://medium.com/@namantaneja167" target="_blank" style="color: var(--primary-blue);">Medium</a> directly.</p>';
-    });
+    var fetchOptions = controller ? { signal: controller.signal } : {};
+
+    fetch(RSS_URL, fetchOptions)
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+            clearTimeout(timeoutId);
+            if (data.status === 'ok' && data.items) {
+                grid.innerHTML = data.items.slice(0, 3).map(function (item, index) {
+                    // Sanitize: use textContent approach for user-provided data
+                    var titleEl = document.createElement('span');
+                    titleEl.textContent = item.title || '';
+                    var safeTitle = titleEl.innerHTML;
+
+                    var rawExcerpt = (item.description || '').replace(/<[^>]*>/g, '').substring(0, 150);
+                    var excerptEl = document.createElement('span');
+                    excerptEl.textContent = rawExcerpt;
+                    var safeExcerpt = excerptEl.innerHTML;
+
+                    var safeLink = (item.link || 'https://medium.com/@namantaneja167').replace(/['"<>]/g, '');
+                    var date = new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+                    // Detect topic tag from categories
+                    var rawTag = (item.categories && item.categories[0]) ? item.categories[0] : 'Data Engineering';
+                    // Title-case: capitalize first letter of each word
+                    var titleTag = rawTag.replace(/-/g, ' ').replace(/\w\S*/g, function(w) {
+                        return w.charAt(0).toUpperCase() + w.substr(1).toLowerCase();
+                    });
+                    var tagEl = document.createElement('span');
+                    tagEl.textContent = titleTag;
+                    var safeTag = tagEl.innerHTML;
+
+                    return '<div class="feed-card" data-aos="fade-up" data-aos-delay="' + (index * 100) + '">' +
+                        '<div class="card-meta">' +
+                        '<span class="feed-date">' + date + '</span>' +
+                        '<span class="feed-tag">' + safeTag + '</span>' +
+                        '</div>' +
+                        '<h3 class="feed-title">' + safeTitle + '</h3>' +
+                        '<p class="feed-excerpt">' + safeExcerpt + '...</p>' +
+                        '<a href="' + safeLink + '" target="_blank" rel="noopener noreferrer" class="feed-link">' +
+                        'Read <i class=\'bx bx-right-arrow-alt\' aria-hidden="true"></i>' +
+                        '</a>' +
+                        '</div>';
+                }).join('');
+            } else {
+                showFallback();
+            }
+        })
+        .catch(function (err) {
+            clearTimeout(timeoutId);
+            console.error('Blog Fetch Error:', err);
+            showFallback();
+        });
+
+    function showFallback() {
+        grid.innerHTML = '<p class="blog-fallback">Unable to load articles. <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer">Read on Medium →</a></p>';
+    }
 }
 
 function initBackToTop() {
@@ -404,17 +440,35 @@ function initChatWidget(chatService) {
 
     if (!toggle || !windowEl || !form) return;
 
-    // 1. Toggle Chat
+    // 1. Toggle Chat with Focus Management
     toggle.addEventListener('click', function () {
+        var isOpening = !windowEl.classList.contains('active');
         windowEl.classList.toggle('active');
+
         // Clear new message badge on open
         var badge = toggle.querySelector('.chat-badge');
-        if (badge && windowEl.classList.contains('active')) badge.style.display = 'none';
+        if (badge && isOpening) badge.style.display = 'none';
+
+        // Focus management for accessibility
+        if (isOpening && input) {
+            setTimeout(function () { input.focus(); }, 100);
+        }
     });
 
     if (closeBtn) {
-        closeBtn.addEventListener('click', function () { windowEl.classList.remove('active'); });
+        closeBtn.addEventListener('click', function () {
+            windowEl.classList.remove('active');
+            toggle.focus(); // Return focus to toggle
+        });
     }
+
+    // Escape key to close chat
+    windowEl.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            windowEl.classList.remove('active');
+            toggle.focus();
+        }
+    });
 
     // 2. Load History from StateManager
     var history = window.StateManager.getChatHistory();
@@ -474,7 +528,14 @@ function initChatWidget(chatService) {
         if (save === undefined) save = true;
         var div = document.createElement('div');
         div.className = 'message ' + sender;
-        var formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+
+        // XSS Protection: Escape HTML entities first, then apply safe formatting
+        var escaped = escapeHtml(text);
+        var formatted = escaped
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>')
+            .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
         div.innerHTML = '<div class="message-content">' + formatted + '</div>';
         messages.appendChild(div);
         messages.scrollTop = messages.scrollHeight;
@@ -482,6 +543,20 @@ function initChatWidget(chatService) {
         if (save) {
             window.StateManager.addChatMessage(text, sender);
         }
+    }
+
+    // HTML Entity Escaping - prevents XSS attacks
+    function escapeHtml(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function (char) {
+            return map[char];
+        });
     }
 }
 
