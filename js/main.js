@@ -27,16 +27,14 @@ document.addEventListener('DOMContentLoaded', function () {
         initHeaderScroll();
         initFormValidation();
         initActiveNavLink();
-        initProjects();
-        initSkillsHUD();
         initMobileMenu();
         initBlogPosts();
         initBackToTop();
         initCopyEmail();
         initTheme();
         initChatWidget(chatService);
-        // initConstellation(); — canvas removed from hero
         initReadMore();
+        initNavbarGlassmorphism();
 
         console.log('Application initialized successfully.');
     } catch (error) {
@@ -109,10 +107,10 @@ function initHeaderScroll() {
 
 function initActiveNavLink() {
     var sections = document.querySelectorAll('section[id]');
-    var navLinks = document.querySelectorAll('.navbar-link');
+    var navLinks = document.querySelectorAll('.navbar-link[href^="#"]');
     if (!sections.length || !navLinks.length) return;
 
-    window.addEventListener('scroll', function () {
+    function updateActiveLink() {
         var current = '';
         var scrollPos = window.scrollY || window.pageYOffset;
 
@@ -123,9 +121,15 @@ function initActiveNavLink() {
 
         navLinks.forEach(function (link) {
             link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) link.classList.add('active');
+            if (!current) return;
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
         });
-    });
+    }
+
+    window.addEventListener('scroll', updateActiveLink);
+    updateActiveLink();
 }
 
 function initFormValidation() {
@@ -195,60 +199,6 @@ function initFormValidation() {
             }
         });
     }
-}
-
-function initProjects() {
-    var grid = document.getElementById('projectsGrid');
-    if (!grid || !window.PORTFOLIO_DATA || !window.PORTFOLIO_DATA.projects) return;
-
-    grid.innerHTML = '';
-    window.PORTFOLIO_DATA.projects.forEach(function (p) {
-        var card = document.createElement('div');
-        card.className = 'project-card';
-
-        // Build the link HTML
-        var linkHTML = '';
-        if (p.linkClass === 'disabled') {
-            linkHTML = '<div class="project-links"><span class="link-item disabled"><i class=\'bx ' + p.linkIcon + '\'></i> ' + p.linkText + '</span></div>';
-        } else {
-            linkHTML = '<div class="project-links"><a href="' + p.link + '" class="link-item" target="_blank" rel="noopener noreferrer"><i class=\'bx ' + p.linkIcon + '\'></i> ' + p.linkText + '</a></div>';
-        }
-
-        card.innerHTML =
-            '<div class="project-visual ' + p.theme + '"><i class=\'bx ' + p.icon + ' project-icon\'></i></div>' +
-            '<div class="project-content">' +
-            '<h3 class="project-title">' + p.title + '</h3>' +
-            '<p class="project-description">' + p.description + '</p>' +
-            '<div class="project-tech">' + p.stack.map(function (s) { return '<span>' + s + '</span>'; }).join('') + '</div>' +
-            linkHTML +
-            '</div>';
-        grid.appendChild(card);
-    });
-}
-
-function initSkillsHUD() {
-    var tabs = document.querySelectorAll('.hud-tab');
-    var grids = document.querySelectorAll('.skill-grid');
-
-    if (!tabs.length || !grids.length) return;
-
-    tabs.forEach(function (tab) {
-        tab.addEventListener('click', function () {
-            // Remove active from all tabs
-            tabs.forEach(function (t) { t.classList.remove('active'); });
-            // Add active to clicked
-            this.classList.add('active');
-
-            // Hide all grids and show target
-            var targetId = this.getAttribute('data-target');
-            grids.forEach(function (g) {
-                g.classList.remove('active');
-                if (g.id === targetId) {
-                    g.classList.add('active');
-                }
-            });
-        });
-    });
 }
 
 function initMobileMenu() {
@@ -333,7 +283,7 @@ function initBlogPosts() {
                     var safeExcerpt = excerptEl.innerHTML;
 
                     var safeLink = (item.link || 'https://medium.com/@namantaneja167').replace(/['"<>]/g, '');
-                    var date = new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                    var date = new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 
                     // Detect topic tag from categories
                     var rawTag = (item.categories && item.categories[0]) ? item.categories[0] : 'Data Engineering';
@@ -368,7 +318,7 @@ function initBlogPosts() {
         });
 
     function showFallback() {
-        grid.innerHTML = '<p class="blog-fallback">Unable to load articles. <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer">Read on Medium →</a></p>';
+        grid.innerHTML = '<p class="blog-fallback">Latest articles are unavailable right now. <a href="https://medium.com/@namantaneja167" target="_blank" rel="noopener noreferrer">Read on Medium →</a></p>';
     }
 }
 
@@ -386,11 +336,37 @@ function initCopyEmail() {
     document.querySelectorAll('.copy-email').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var email = btn.getAttribute('data-email');
-            navigator.clipboard.writeText(email);
             var icon = btn.querySelector('i');
-            if (icon) {
-                icon.className = 'bx bx-check';
-                setTimeout(function () { icon.className = 'bx bx-copy'; }, 2000);
+
+            function showCopiedState() {
+                if (icon) {
+                    icon.className = 'bx bx-check';
+                    setTimeout(function () { icon.className = 'bx bx-copy'; }, 2000);
+                }
+            }
+
+            function fallbackCopy(text) {
+                var textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.setAttribute('readonly', '');
+                textArea.style.position = 'fixed';
+                textArea.style.top = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showCopiedState();
+                } finally {
+                    document.body.removeChild(textArea);
+                }
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(email)
+                    .then(showCopiedState)
+                    .catch(function () { fallbackCopy(email); });
+            } else {
+                fallbackCopy(email);
             }
         });
     });
@@ -404,12 +380,14 @@ function initTheme() {
     var savedTheme = window.StateManager.getTheme();
     html.setAttribute('data-theme', savedTheme);
     updateToggleState(savedTheme);
+    window.dispatchEvent(new Event('themechange'));
 
     if (btn) {
         btn.addEventListener('click', function () {
             var newTheme = window.StateManager.toggleTheme();
             html.setAttribute('data-theme', newTheme);
             updateToggleState(newTheme);
+            window.dispatchEvent(new Event('themechange'));
         });
     }
 
@@ -630,3 +608,27 @@ function initReadMore() {
             : '<i class="bx bx-chevron-down"></i> Read More';
     });
 }
+
+function initNavbarGlassmorphism() {
+    var navbar = document.getElementById('navbar');
+    var aboutSection = document.getElementById('about');
+    var html = document.documentElement;
+    
+    if (!navbar || !aboutSection) return;
+
+    function updateNavbarSurface() {
+        var aboutRect = aboutSection.getBoundingClientRect();
+        var theme = html.getAttribute('data-theme') || 'light';
+        var isOverAbout = aboutRect.top <= 94 && aboutRect.bottom >= 50;
+        // Light nav surface should only appear in light theme.
+        navbar.classList.toggle('nav-light-mode', theme === 'light' && isOverAbout);
+    }
+
+    window.addEventListener('scroll', updateNavbarSurface);
+    window.addEventListener('resize', updateNavbarSurface);
+    window.addEventListener('themechange', updateNavbarSurface);
+    
+    // Trigger once on load
+    updateNavbarSurface();
+}
+
