@@ -5,6 +5,7 @@ export const ExperienceItemSchema = z.object({
   title: z.string().min(1),
   period: z.string().min(1),
   description: z.string().min(1),
+  highlights: z.array(z.string().min(1)).default([]),
   tags: z.array(z.string().min(1)).min(1),
 });
 
@@ -46,6 +47,7 @@ export const ProfileSchema = z.object({
   status: z.string().min(1),
   stack: z.string().min(1),
   currentEmployer: z.string().min(1),
+  currentTeam: z.string().min(1),
   socials: z.object({
     github: z.string().url(),
     linkedin: z.string().url(),
@@ -57,4 +59,25 @@ export const ProfileSchema = z.object({
     .array(z.object({ value: z.string().min(1), label: z.string().min(1) }))
     .min(1),
   resume: z.string().min(1),
+});
+
+export const CredentialsSchema = z.object({
+  certifications: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        issuer: z.string().min(1),
+        date: z.string(),
+      }),
+    )
+    .min(1),
+  education: z
+    .array(
+      z.object({
+        qualification: z.string().min(1),
+        institution: z.string().min(1),
+        period: z.string().min(1),
+      }),
+    )
+    .min(1),
 });

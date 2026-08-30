@@ -10,7 +10,7 @@ export interface Props {
 
 const {
   title = `${profile.name} | ${profile.role}`,
-  description = 'Data Engineer building Snowflake and Azure pipelines for energy and pharma teams. 1B+ records processed, 300+ KPIs automated.',
+  description = 'Senior Technical Consultant building enterprise data platforms on Snowflake, DBT and Azure. Led a CXL to Endur ETRM migration processing 500M+ records daily.',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -63,8 +63,11 @@ const ogImage = new URL(`${import.meta.env.BASE_URL}/og.jpg`.replace(/\/+/g, '/'
     sameAs: Object.values(profile.socials),
     description,
     worksFor: { '@type': 'Organization', name: profile.currentEmployer },
-    alumniOf: { '@type': 'Organization', name: 'ZS Associates' },
-    knowsAbout: ['Data Engineering', 'Snowflake', 'Azure', 'dbt', 'Python', 'SQL', 'ETL'],
+    alumniOf: { '@type': 'Organization', name: 'Guru Gobind Singh Indraprastha University' },
+    knowsAbout: [
+      'Data Engineering', 'Snowflake', 'DBT', 'Azure Data Factory', 'Snowpipe',
+      'ETRM', 'Endur', 'Python', 'SQL', 'ETL', 'Data Governance',
+    ],
   })} />
 
   <script is:inline>

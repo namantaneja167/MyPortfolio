@@ -24,7 +24,7 @@ import profile from '../content/profile.json';
             <span class="absolute inline-flex w-full h-full rounded-full bg-[rgb(var(--harbor-success))] opacity-60 motion-safe:animate-ping"></span>
             <span class="relative inline-flex w-2 h-2 rounded-full bg-[rgb(var(--harbor-success))]"></span>
           </span>
-          Open to data engineering roles
+          Open to senior data engineering roles
         </p>
       )}
 
@@ -39,8 +39,9 @@ import profile from '../content/profile.json';
       </p>
 
       <p class="mt-6 text-fluid-lead leading-relaxed text-fg-muted max-w-xl">
-        {profile.tagline}. Currently at <span class="text-fg font-medium">{profile.currentEmployer}</span>,
-        turning fragmented enterprise inputs into decisions teams trust.
+        {profile.tagline}. Currently <span class="text-fg font-medium">{profile.role}</span> on
+        <span class="text-fg font-medium">{profile.currentEmployer}'s {profile.currentTeam}</span> team,
+        where I led the CXL to Endur ETRM migration end to end.
       </p>
 
       <div class="mt-9 flex flex-col sm:flex-row gap-3">

@@ -1,23 +1,40 @@
 [
   {
-    "company": "Uniper Energy",
-    "title": "Data Engineering Consultant",
-    "period": "Oct 2024 – Present",
-    "description": "Architecting trading data systems for North America's electricity markets, managing complex data migration projects. Built scalable pipelines for millions of trading records using Snowflake and Azure. Designed DBT-based transformations with CI/CD automation.",
-    "tags": ["Snowflake", "Azure", "DBT", "CI/CD"]
+    "company": "Uniper (India GCC), Noida",
+    "title": "Senior Technical Consultant, UGCNA Data Strategy",
+    "period": "Jun 2025 – Present",
+    "description": "Led the end-to-end transition of Uniper's ETRM system from CXL to Endur, architecting the full data flow from source ingestion through business-ready reporting for 500M+ records a day. Took Endur live to production — resolving RBAC, running QA and data-governance checks, and coordinating with Snowflake DBAs. First India-based hire for the UGCNA team, now leading and mentoring new joiners.",
+    "highlights": [
+      "Cut Endur report latency from ~5 minutes to under 10 seconds with incremental DBT load logic handling deduplication, re-ranking and clustering keys",
+      "Reduced daily file sync from ~120 minutes to ~2 minutes by parallelising batch transfers, with schema-drift detection and corrupt-data alerting via a custom Azure Function App",
+      "Implemented Snowpipe ingestion bringing raw-zone load time to ~10 seconds with dynamic schema-drift handling",
+      "Cut ADF job runtime ~30% by optimising dynamic table refresh orchestration",
+      "Integrated Morningstar, AESO, Genscape and ARGUS market data through centralised ADF pipelines"
+    ],
+    "tags": ["Snowflake", "DBT", "Azure Function Apps", "ADF", "Snowpipe", "Azure DevOps", "Python", "C#"]
   },
   {
-    "company": "ZS Associates",
-    "title": "BTSA Associate — Data Engineer",
-    "period": "2022 – 2024",
-    "description": "Partnered with a top US pharma company to develop Go-to-Market reports for 300+ business KPIs. Managed ETL processes for 1B+ healthcare records using Snowflake and Dataiku. Cut processing time by 25% through query optimization.",
-    "tags": ["Snowflake", "Dataiku DSS", "Python", "Tableau"]
+    "company": "ZS Associates, Gurugram",
+    "title": "Business Technology Solution Associate",
+    "period": "Dec 2022 – May 2025",
+    "description": "Partnered with the largest US pharma company to build a Go-to-Market reporting platform evaluating 300+ KPIs. Oversaw ETL for 1 billion+ healthcare records on Snowflake and Dataiku DSS, and translated client requirements into automated dashboards and ETL workflows.",
+    "highlights": [
+      "Reduced processing time 25% by optimising data ingestion across 1B+ healthcare records",
+      "Built a Python framework over the Tableau REST API that cut manual reporting effort 60%",
+      "Ran weekly QA/QC checks and resolved data issues via Jira, maintaining high data accuracy"
+    ],
+    "tags": ["Snowflake", "Dataiku DSS", "Tableau", "Python", "SQL", "Jira"]
   },
   {
-    "company": "ZS Associates",
-    "title": "BTSA Associate Intern",
-    "period": "2022",
-    "description": "Streamlined machine learning workflows and implemented MLOps best practices. Improved ML workflow scalability by 20% through automation.",
-    "tags": ["MLOps", "CI/CD", "Data Versioning"]
+    "company": "ZS Associates, Gurugram",
+    "title": "Business Technology Solution Associate Intern",
+    "period": "Jun 2022 – Dec 2022",
+    "description": "Streamlined machine learning workflows for 3 brands using MLOps practices, improving scalability and operational efficiency by almost 20% while enabling seamless model updates across platforms.",
+    "highlights": [
+      "Implemented CI/CD and data orchestration to speed up and stabilise deployments",
+      "Mitigated data and model drift to keep performance consistent over time",
+      "Centralised configuration management and data versioning for traceability"
+    ],
+    "tags": ["MLOps", "CI/CD", "Data Versioning", "Python"]
   }
 ]

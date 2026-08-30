@@ -21,21 +21,26 @@ import profile from '../content/profile.json';
     <div class="lg:col-span-7 flex flex-col gap-8 reveal" style="--reveal-delay: 90ms">
       <div class="space-y-5 text-fluid-lead leading-relaxed text-fg-muted">
         <p>
-          I'm a Data Engineer with <strong class="text-fg font-semibold">3+ years</strong> across
-          pharma and energy, focused on cloud data infrastructure, ETL pipeline optimisation, and
-          large-scale processing.
+          I'm a Senior Technical Consultant with <strong class="text-fg font-semibold">3+ years</strong>
+          delivering enterprise-scale data engineering across energy trading and pharma analytics.
         </p>
         <p>
-          From healthcare analytics at <strong class="text-fg font-semibold">ZS Associates</strong> to
-          energy trading systems at <strong class="text-fg font-semibold">Uniper</strong>, I've built
-          pipelines handling billions of records, automated reporting workflows that used to run by
-          hand, and shipped enterprise Gen AI using RAG and agentic architectures.
+          At <strong class="text-fg font-semibold">Uniper</strong> I led the end-to-end migration of a
+          mission-critical ETRM system from CXL to Endur — architecting the full data flow from source
+          ingestion through business-ready reporting, and taking it live to production. I was the first
+          India-based hire on the UGCNA Data Strategy team and now lead and mentor the engineers who
+          joined after me.
+        </p>
+        <p>
+          Before that, at <strong class="text-fg font-semibold">ZS Associates</strong>, I ran ETL over
+          a billion healthcare records for the largest US pharma client and automated the reporting
+          that analysts had been assembling by hand.
         </p>
       </div>
 
       <div class="p-6 surface-card">
         <span class="block mb-3 font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent-2">
-          Stack
+          Core stack
         </span>
         <p class="font-mono text-sm sm:text-base leading-relaxed text-fg">
           {profile.stack}
@@ -45,7 +50,7 @@ import profile from '../content/profile.json';
       <div class="flex flex-wrap gap-x-8 gap-y-4 text-sm font-medium text-fg-subtle">
         <span class="inline-flex items-center gap-2.5">
           <Icon name="mapPin" size={17} class="text-accent" />
-          Based in {profile.location}
+          {profile.location}
         </span>
         <span class="inline-flex items-center gap-2.5">
           <Icon name="globe" size={17} class="text-accent" />

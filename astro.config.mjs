@@ -14,6 +14,11 @@ export default defineConfig({
   // Static output — the site ships no framework runtime
   output: 'static',
 
+  // Astro 7 defaults to 'jsx', which drops the space between an inline element
+  // and adjacent prose on the next line ("3+ years</strong>\ndelivering").
+  // HTML-aware compression keeps that space, so copy can be edited safely.
+  compressHTML: true,
+
   build: {
     assets: '_astro',
     // 'always' was measurably worse: a large inline <style> delays the preload

@@ -1,16 +1,18 @@
 ---
 import SectionHeading from '../components/SectionHeading.astro';
 import rawExperience from '../content/experience.json';
-import { ExperienceCollectionSchema } from '../content/schema';
+import rawCredentials from '../content/credentials.json';
+import { ExperienceCollectionSchema, CredentialsSchema } from '../content/schema';
 
 const experiences = ExperienceCollectionSchema.parse(rawExperience);
+const { certifications, education } = CredentialsSchema.parse(rawCredentials);
 ---
 <section id="experience" class="py-24 sm:py-28 border-t border-[rgb(var(--harbor-border)/0.08)]">
   <div class="max-w-[var(--harbor-container-xl)] mx-auto px-5 sm:px-6 w-full">
     <SectionHeading
       index="02"
       title="Experience"
-      lead="Three years turning enterprise data mess into systems people rely on."
+      lead="Three years turning enterprise data mess into systems people trade and plan on."
       class="mb-14"
     />
 
@@ -27,7 +29,7 @@ const experiences = ExperienceCollectionSchema.parse(rawExperience);
           class="reveal relative grid md:grid-cols-[11rem_1fr] gap-y-3 pb-12 last:pb-0"
           style={`--reveal-delay: ${i * 90}ms`}
         >
-          <div class="md:pr-10 md:text-right pl-8 md:pl-0">
+          <div class="md:pr-10 md:text-right md:pt-0.5 pl-8 md:pl-0">
             <span class="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-accent">
               {exp.period}
             </span>
@@ -44,7 +46,18 @@ const experiences = ExperienceCollectionSchema.parse(rawExperience);
               <p class="mt-1 font-mono text-sm font-semibold text-accent-2">{exp.company}</p>
               <p class="mt-4 leading-relaxed text-fg-muted">{exp.description}</p>
 
-              <ul class="mt-5 flex flex-wrap gap-2">
+              {exp.highlights.length > 0 && (
+                <ul class="mt-5 space-y-2.5">
+                  {exp.highlights.map((item) => (
+                    <li class="flex gap-3 text-sm leading-relaxed text-fg-muted">
+                      <span class="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <ul class="mt-6 flex flex-wrap gap-2">
                 {exp.tags.map((tag) => <li class="tag">{tag}</li>)}
               </ul>
             </div>
@@ -52,14 +65,38 @@ const experiences = ExperienceCollectionSchema.parse(rawExperience);
         </li>
       ))}
     </ol>
+
+    <div class="reveal mt-16 grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="p-6 sm:p-7 surface-card">
+        <h3 class="font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent-2">
+          Certifications
+        </h3>
+        <ul class="mt-5 space-y-4">
+          {certifications.map((cert) => (
+            <li class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <span class="text-sm font-semibold text-fg">{cert.name}</span>
+              <span class="font-mono text-xs text-fg-subtle">
+                {cert.date ? `${cert.issuer} · ${cert.date}` : cert.issuer}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="p-6 sm:p-7 surface-card">
+        <h3 class="font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent-2">
+          Education
+        </h3>
+        <ul class="mt-5 space-y-4">
+          {education.map((item) => (
+            <li>
+              <p class="text-sm font-semibold text-fg">{item.qualification}</p>
+              <p class="mt-0.5 text-sm text-fg-muted">{item.institution}</p>
+              <p class="mt-0.5 font-mono text-xs text-fg-subtle">{item.period}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
-
-<style>
-  /* The rail starts under the period label on mobile, beside it on desktop. */
-  @media (min-width: 768px) {
-    li > div:first-child {
-      padding-top: 0.125rem;
-    }
-  }
-</style>

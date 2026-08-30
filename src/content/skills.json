@@ -1,27 +1,27 @@
 [
   {
     "category": "Data Engineering",
-    "items": "Snowflake, DBT, Databricks, Azure Data Factory, Dataiku, Tableau",
+    "items": "Snowflake, DBT, Snowpipe, Databricks, Dataiku DSS, ETL Pipelines, Job Orchestration, Data Governance",
+    "cool": true
+  },
+  {
+    "category": "Azure & Cloud",
+    "items": "Azure Data Factory, Azure Function Apps, Azure DevOps, CI/CD",
+    "cool": true
+  },
+  {
+    "category": "Languages",
+    "items": "Python, SQL, C#",
     "cool": false
   },
   {
     "category": "Gen AI",
     "items": "RAG, LangChain, CrewAI, Ollama, Agentic Workflows",
-    "cool": true
-  },
-  {
-    "category": "Cloud",
-    "items": "Azure, CI/CD Pipelines, Infrastructure as Code",
-    "cool": true
-  },
-  {
-    "category": "Languages",
-    "items": "Python, SQL",
     "cool": false
   },
   {
-    "category": "Tools",
-    "items": "Git, Power BI, Docker, Airflow, Jira, Excel",
+    "category": "Analytics & Tools",
+    "items": "Tableau, Excel, Git, Jira",
     "cool": false
   }
 ]

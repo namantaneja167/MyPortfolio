@@ -1,15 +1,16 @@
 {
   "name": "Naman Taneja",
-  "role": "Data Engineer",
-  "discipline": "Data Engineering · Cloud Platforms · Business-Critical Analytics",
-  "tagline": "Building reliable Snowflake and Azure pipelines for energy and pharma teams",
-  "pullquote": "I design data platforms that turn fragmented enterprise inputs into decisions teams trust.",
+  "role": "Senior Technical Consultant",
+  "discipline": "Data Engineering · ETRM Platforms · Snowflake & Azure",
+  "tagline": "I build enterprise data platforms for energy trading and pharma analytics",
+  "pullquote": "I turn fragmented enterprise feeds into pipelines that traders and analysts trust at 500M records a day.",
   "email": "er.namantaneja@gmail.com",
-  "location": "India",
+  "location": "Noida, India",
   "languages": "English, Hindi",
   "status": "Available - replies within 24 hours",
-  "stack": "Snowflake · Python · SQL · Azure · DBT · Power BI · Docker · Airflow",
-  "currentEmployer": "Uniper Energy",
+  "stack": "Snowflake · DBT · Azure Data Factory · Azure Function Apps · Snowpipe · Python · SQL · C#",
+  "currentEmployer": "Uniper",
+  "currentTeam": "UGCNA Data Strategy",
   "socials": {
     "github": "https://github.com/namantaneja167",
     "linkedin": "https://www.linkedin.com/in/namantaneja167/",
@@ -18,10 +19,10 @@
   },
   "available": true,
   "metrics": [
-    { "value": "1B+", "label": "Records processed" },
-    { "value": "300+", "label": "KPIs automated" },
-    { "value": "60%", "label": "Reporting time saved" },
-    { "value": "3+ yrs", "label": "Pharma & energy data" }
+    { "value": "500M+", "label": "Records processed daily" },
+    { "value": "30×", "label": "Faster ETRM reporting" },
+    { "value": "60×", "label": "Faster daily file sync" },
+    { "value": "1B+", "label": "Healthcare records" }
   ],
   "resume": "/MyPortfolio/assets/Naman_Resume.pdf"
 }
