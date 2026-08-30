@@ -1,26 +1,57 @@
 [
   {
     "title": "Energy Market Data Hub",
-    "type": "Enterprise · NDA",
-    "description": "High-throughput trading data platform for North American electricity markets. Ingests millions of real-time market signals and powers downstream analytics.",
-    "stack": ["Snowflake", "Azure", "dbt", "Airflow"],
-    "cardClass": "project-wide",
+    "type": "Uniper Energy",
+    "icon": "zap",
+    "confidential": true,
+    "problem": "North American power trading desks were reconciling market signals across disconnected vendor feeds, so positions lagged the market.",
+    "approach": "Built ingestion and dbt transformation layers on Snowflake and Azure, with CI/CD and data-quality gates on every load.",
+    "impact": [
+      { "value": "Millions", "label": "of trading records per day" },
+      { "value": "Near real-time", "label": "signal availability" }
+    ],
+    "stack": ["Snowflake", "Azure", "dbt", "Airflow", "CI/CD"],
     "link": ""
   },
   {
     "title": "Pharma Commercial Intelligence",
-    "type": "Enterprise · NDA",
-    "description": "End-to-end commercial analytics pipeline processing 1B+ healthcare records. Automated reporting for 300+ KPIs with a 25% reduction in processing time.",
-    "stack": ["Dataiku", "Python", "SQL", "Tableau"],
-    "cardClass": "project-main",
+    "type": "ZS Associates",
+    "icon": "activity",
+    "confidential": true,
+    "problem": "A top-5 US pharma client needed go-to-market reporting across hundreds of KPIs, rebuilt by hand each cycle.",
+    "approach": "Designed an end-to-end Dataiku and Snowflake pipeline with automated KPI computation and query-level optimisation.",
+    "impact": [
+      { "value": "1B+", "label": "healthcare records" },
+      { "value": "300+", "label": "KPIs automated" },
+      { "value": "25%", "label": "faster processing" }
+    ],
+    "stack": ["Dataiku", "Snowflake", "Python", "SQL", "Tableau"],
     "link": ""
   },
   {
+    "title": "Tableau Automation Framework",
+    "type": "Open source",
+    "icon": "code",
+    "confidential": false,
+    "problem": "Refreshing extracts and editing workbook XML by hand consumed days of analyst time every reporting cycle.",
+    "approach": "Wrote a Python framework over the Tableau REST API that scripts extract refreshes and workbook XML edits.",
+    "impact": [
+      { "value": "60%", "label": "reporting time saved" }
+    ],
+    "stack": ["Python", "Tableau REST API", "XML"],
+    "link": "https://github.com/namantaneja167"
+  },
+  {
     "title": "Enterprise RAG Knowledge Agent",
-    "type": "Open Source",
-    "description": "Retrieval-Augmented Generation system for natural language queries on internal docs. Agentic workflows for complex multi-step reasoning.",
-    "stack": ["LangChain", "CrewAI", "Docker", "React"],
-    "cardClass": "project-secondary",
+    "type": "Open source",
+    "icon": "brain",
+    "confidential": false,
+    "problem": "Internal documentation was searchable by keyword only, so answers spanning several documents were never found.",
+    "approach": "Retrieval-augmented generation over an internal corpus, with agentic workflows for multi-step reasoning.",
+    "impact": [
+      { "value": "Multi-step", "label": "reasoning over internal docs" }
+    ],
+    "stack": ["LangChain", "CrewAI", "Ollama", "Docker"],
     "link": "https://github.com/namantaneja167"
   }
 ]

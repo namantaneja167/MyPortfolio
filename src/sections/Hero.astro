@@ -1,45 +1,108 @@
 ---
-// Hero section
+import { Image } from 'astro:assets';
+import Icon from '../components/Icon.astro';
+import portrait from '../assets/profile.jpg';
+import profile from '../content/profile.json';
 ---
-<section class="min-h-[90vh] flex items-center justify-center py-20 relative overflow-hidden" id="hero">
-  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-    
-    {/* Left Column: Text Content */}
-    <div class="lg:col-span-7 flex flex-col items-start text-left">
-      <h1 class="font-display font-extrabold text-6xl md:text-8xl tracking-tighter text-[rgb(var(--harbor-text))] leading-[0.95] uppercase">
+<section
+  id="hero"
+  class="relative min-h-[calc(100svh-var(--nav-h))] flex items-center py-24 sm:py-28 overflow-hidden"
+>
+  <!-- Static gradient wash. Replaces the animated SVG aurora, which ran a
+       requestAnimationFrame loop yet rendered at near-zero opacity. -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute -top-1/4 -left-[10%] w-[70vw] h-[70vw] max-w-[900px] max-h-[900px] rounded-full blur-[120px] opacity-[0.16] bg-accent"></div>
+    <div class="absolute top-1/3 -right-[15%] w-[55vw] h-[55vw] max-w-[720px] max-h-[720px] rounded-full blur-[120px] opacity-[0.12] bg-accent-2"></div>
+  </div>
+
+  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-5 sm:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-16 items-center">
+
+    <div class="lg:col-span-7 order-2 lg:order-1">
+      {profile.available && (
+        <p class="inline-flex items-center gap-2.5 mb-7 pl-2.5 pr-3.5 py-1.5 rounded-full text-xs font-medium border border-[rgb(var(--harbor-success)/0.30)] bg-[rgb(var(--harbor-success)/0.10)] text-[rgb(var(--harbor-success))]">
+          <span class="relative flex w-2 h-2">
+            <span class="absolute inline-flex w-full h-full rounded-full bg-[rgb(var(--harbor-success))] opacity-60 motion-safe:animate-ping"></span>
+            <span class="relative inline-flex w-2 h-2 rounded-full bg-[rgb(var(--harbor-success))]"></span>
+          </span>
+          Open to data engineering roles
+        </p>
+      )}
+
+      <h1 class="text-fluid-hero font-display font-bold tracking-tight uppercase text-fg">
         Naman<br />Taneja
       </h1>
-      
-      <div class="w-16 h-[3px] bg-accent my-6 rounded" aria-hidden="true"></div>
-      
-      <p class="text-xs md:text-sm font-mono font-bold tracking-widest text-accent-2 uppercase">
-        Data Engineering &nbsp;·&nbsp; Cloud Platforms &nbsp;·&nbsp; Business-Critical Analytics
+
+      <div class="w-14 h-[3px] bg-accent my-7 rounded-full" aria-hidden="true"></div>
+
+      <p class="font-mono text-[0.7rem] sm:text-xs font-semibold tracking-[0.18em] uppercase text-accent-2">
+        {profile.discipline}
       </p>
 
-      <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-6">
-        <p class="text-sm md:text-base leading-relaxed text-[rgb(var(--harbor-text-muted))] max-w-md">
-          Building reliable Snowflake and Azure pipelines for energy and pharma teams.
-        </p>
+      <p class="mt-6 text-fluid-lead leading-relaxed text-fg-muted max-w-xl">
+        {profile.tagline}. Currently at <span class="text-fg font-medium">{profile.currentEmployer}</span>,
+        turning fragmented enterprise inputs into decisions teams trust.
+      </p>
+
+      <div class="mt-9 flex flex-col sm:flex-row gap-3">
+        <a
+          href="#projects"
+          class="btn-accent inline-flex items-center justify-center gap-2 min-h-12 px-6 text-sm font-semibold rounded-xl"
+        >
+          See the work
+          <Icon name="arrowRight" size={17} />
+        </a>
+        <a
+          href={profile.resume}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost inline-flex items-center justify-center gap-2 min-h-12 px-6 text-sm font-semibold rounded-xl"
+        >
+          <Icon name="download" size={17} />
+          Download résumé
+        </a>
       </div>
 
-      <a
-        href="#contact"
-        class="mt-8 px-6 py-3.5 text-sm font-semibold rounded-lg bg-accent text-[rgb(var(--harbor-brand-fg))] hover:bg-accent-3 hover:scale-[1.02] shadow-[var(--harbor-shadow-sm)] active:scale-95 transition-all flex items-center gap-2"
-      >
-        Get in Touch <span>&rarr;</span>
-      </a>
+      <dl class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-7 max-w-xl">
+        {profile.metrics.map((metric) => (
+          <div>
+            <dt class="sr-only">{metric.label}</dt>
+            <dd>
+              <span class="block font-display font-bold text-3xl sm:text-4xl tracking-tight text-fg">
+                {metric.value}
+              </span>
+              <span class="block mt-1 text-xs leading-snug text-fg-subtle">
+                {metric.label}
+              </span>
+            </dd>
+          </div>
+        ))}
+      </dl>
     </div>
 
-    {/* Right Column: Cinematic Image Visual */}
-    <div class="lg:col-span-5 flex justify-center w-full">
-      <div class="relative w-full max-w-sm md:max-w-md lg:max-w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 shadow-[var(--harbor-shadow-lg)] group">
-        <img
-          src="/MyPortfolio/images/profile.jpg"
-          alt="Naman Taneja — Data Engineer"
-          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-        />
-        {/* Cinematic gradient overlay */}
-        <div class="absolute inset-0 bg-gradient-to-t from-[var(--harbor-bg)]/80 via-transparent to-transparent pointer-events-none"></div>
+    <div class="lg:col-span-5 order-1 lg:order-2">
+      <div class="relative mx-auto w-full max-w-[280px] sm:max-w-[340px] lg:max-w-none">
+        <div class="relative aspect-[4/5] rounded-3xl overflow-hidden border border-[rgb(var(--harbor-border)/0.12)]">
+          <Image
+            src={portrait}
+            alt={`${profile.name}, ${profile.role}`}
+            widths={[280, 480, 720, 960]}
+            sizes="(min-width: 1024px) 420px, (min-width: 640px) 340px, 280px"
+            format="avif"
+            quality={70}
+            loading="eager"
+            decoding="sync"
+            fetchpriority="high"
+            class="w-full h-full object-cover object-top"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-[rgb(var(--harbor-bg))] via-[rgb(var(--harbor-bg)/0.12)] to-transparent"
+            aria-hidden="true"
+          ></div>
+        </div>
+
+        <p class="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-2 rounded-xl text-xs font-mono font-medium bg-[rgb(var(--harbor-bg-elev-2))] border border-[rgb(var(--harbor-border)/0.12)] text-fg-muted shadow-[var(--card-shadow)]">
+          <span class="text-accent">{profile.currentEmployer}</span> · {profile.location}
+        </p>
       </div>
     </div>
 

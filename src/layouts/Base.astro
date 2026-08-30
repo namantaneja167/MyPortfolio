@@ -1,6 +1,7 @@
 ---
-// Base layout — provides <html>, <head>, global meta, and CDN links
+import { Font } from 'astro:assets';
 import '../styles/global.css';
+import profile from '../content/profile.json';
 
 export interface Props {
   title?: string;
@@ -8,95 +9,125 @@ export interface Props {
 }
 
 const {
-  title = 'Naman Taneja | Data Engineer',
-  description = 'Naman Taneja - Data Engineer specializing in cloud data platforms, ETL pipelines, and analytics. Currently building trading data infrastructure at Uniper.',
+  title = `${profile.name} | ${profile.role}`,
+  description = 'Data Engineer building Snowflake and Azure pipelines for energy and pharma teams. 1B+ records processed, 300+ KPIs automated.',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(`${import.meta.env.BASE_URL}/og.jpg`.replace(/\/+/g, '/'), Astro.site);
 ---
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content={description} />
-  <meta name="keywords" content="Data Engineer, Snowflake, Azure, DBT, Python, SQL, ETL, Data Pipeline" />
-  <meta name="author" content="Naman Taneja" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonicalURL} />
-  <meta property="og:image" content="/MyPortfolio/images/profile.jpg" />
+  <meta name="author" content={profile.name} />
   <link rel="canonical" href={canonicalURL} />
-
   <title>{title}</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23C06D6D'/><text x='50' y='65' font-family='Arial' font-size='50' font-weight='bold' fill='white' text-anchor='middle'>N</text></svg>" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
 
-  <!-- PWA -->
-  <link rel="manifest" href="/MyPortfolio/manifest.json" />
-  <meta name="theme-color" content="#C06D6D" />
-  <script is:inline>
-    if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-      navigator.serviceWorker.register('/MyPortfolio/sw.js')
-        .then(() => console.log('Service Worker Registered'))
-        .catch((err) => console.log('Service Worker Failed', err));
-    }
-  </script>
+  <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/icon.svg`.replace(/\/+/g, '/')} />
+  <link rel="manifest" href={`${import.meta.env.BASE_URL}/manifest.json`.replace(/\/+/g, '/')} />
+  <link rel="sitemap" href={`${import.meta.env.BASE_URL}/sitemap-index.xml`.replace(/\/+/g, '/')} />
+  <meta name="theme-color" content="#100e0d" />
 
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Naman Taneja",
-    "jobTitle": "Data Engineer",
-    "email": "er.namantaneja@gmail.com",
-    "url": "https://namantaneja.com",
-    "sameAs": [
-      "https://www.linkedin.com/in/namantaneja167/",
-      "https://medium.com/@namantaneja167",
-      "https://x.com/naman_taneja_",
-      "https://github.com/namantaneja167"
-    ],
-    "description": "Data Engineer specializing in cloud data platforms, ETL pipelines, and Gen AI solutions.",
-    "worksFor": { "@type": "Organization", "name": "Uniper Energy" },
-    "alumniOf": { "@type": "Organization", "name": "ZS Associates" }
+  <!-- Only the display face is preloaded. Preloading more competes with the
+       hero image, which is the LCP element. -->
+  <Font cssVariable="--font-barlow" preload />
+  <Font cssVariable="--font-figtree" />
+  <Font cssVariable="--font-inconsolata" />
+
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; form-action 'none'; object-src 'none'; base-uri 'self'"
+  />
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: profile.name,
+    jobTitle: profile.role,
+    email: profile.email,
+    url: canonicalURL.href,
+    image: ogImage.href,
+    sameAs: Object.values(profile.socials),
+    description,
+    worksFor: { '@type': 'Organization', name: profile.currentEmployer },
+    alumniOf: { '@type': 'Organization', name: 'ZS Associates' },
+    knowsAbout: ['Data Engineering', 'Snowflake', 'Azure', 'dbt', 'Python', 'SQL', 'ETL'],
   })} />
 
-  <!-- Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' https://unpkg.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com;
-    font-src 'self' https://fonts.gstatic.com https://unpkg.com;
-    img-src 'self' data: https://*.medium.com https://img.icons8.com;
-    connect-src 'self' https://api.rss2json.com https://formspree.io;
-    form-action 'self' https://formspree.io;
-    object-src 'none';
-    frame-src 'none';
-    base-uri 'self';
-  " />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
-  <!-- Boxicons -->
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-
+  <script is:inline>
+    // Runs before paint: applies the stored theme so there is no light/dark
+    // flash, and flags that JS is alive so `.reveal` may hide its content.
+    (() => {
+      const root = document.documentElement;
+      let theme;
+      try { theme = localStorage.getItem('theme'); } catch {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+      root.setAttribute('data-theme', theme);
+      root.classList.add('js');
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'light' ? '#faf8f5' : '#100e0d');
+    })();
+  </script>
 </head>
 
 <body>
-  <!-- Skip to content (accessibility) -->
-  <a href="#hero" class="skip-to-content">Skip to main content</a>
-
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
   <slot />
 
+  <script>
+    // Reveal-on-scroll. The CSS only hides `.reveal` while `html.js` is set,
+    // so a JS failure leaves every section readable.
+    const targets = document.querySelectorAll<HTMLElement>('.reveal');
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+      );
+      targets.forEach((el) => observer.observe(el));
+    } else {
+      targets.forEach((el) => el.classList.add('is-visible'));
+    }
+
+    // Cursor position for `.spotlight` surfaces. Pointer-precision only, so
+    // touch devices never pay for it.
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll<HTMLElement>('.spotlight').forEach((card) => {
+        card.addEventListener('pointermove', (e) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+        });
+      });
+    }
+
+    // The pre-Astro build shipped a service worker that pre-cached files which
+    // no longer exist. Tear it down so returning visitors escape stale HTML.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
+      if (window.caches) caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
+    }
+  </script>
 </body>
 </html>

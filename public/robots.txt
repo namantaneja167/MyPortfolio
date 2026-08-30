@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://namantaneja167.github.io/MyPortfolio/sitemap-index.xml

@@ -1,20 +1,18 @@
 {
     "name": "Naman Taneja | Data Engineer",
     "short_name": "Naman Taneja",
+    "description": "Data Engineer building Snowflake and Azure pipelines for energy and pharma teams.",
     "start_url": "/MyPortfolio/",
+    "scope": "/MyPortfolio/",
     "display": "standalone",
-    "background_color": "#0D0B09",
-    "theme_color": "#C06D6D",
+    "background_color": "#100e0d",
+    "theme_color": "#c06d6d",
     "icons": [
       {
-        "src": "https://img.icons8.com/fluency/192/000000/console--v1.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "https://img.icons8.com/fluency/512/000000/console--v1.png",
-        "sizes": "512x512",
-        "type": "image/png"
+        "src": "/MyPortfolio/icon.svg",
+        "sizes": "any",
+        "type": "image/svg+xml",
+        "purpose": "any"
       }
     ]
 }

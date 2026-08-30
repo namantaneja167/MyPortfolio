@@ -1,17 +1,92 @@
 ---
-import { ProjectCards } from '../components/ProjectCards';
----
-<section class="py-20 border-t border-[color:var(--harbor-border-subtle)]" id="projects">
-  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-6 w-full">
-    
-    {/* Section Header */}
-    <div class="flex items-center gap-2 mb-12">
-      <span class="text-xs font-mono font-bold text-accent tracking-widest uppercase">04</span>
-      <h2 class="text-4xl font-display font-extrabold text-[rgb(var(--harbor-text))] tracking-tight uppercase">
-        Projects
-      </h2>
-    </div>
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import rawProjects from '../content/projects.json';
+import { ProjectCollectionSchema } from '../content/schema';
 
-    <ProjectCards client:visible />
+const projects = ProjectCollectionSchema.parse(rawProjects);
+---
+<section id="projects" class="py-24 sm:py-28 border-t border-[rgb(var(--harbor-border)/0.08)]">
+  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-5 sm:px-6 w-full">
+    <SectionHeading
+      index="04"
+      title="Projects"
+      lead="Client work is under NDA, so each card leads with the problem and the measured outcome rather than a repository link."
+      class="mb-14"
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      {projects.map((project, i) => (
+        <article
+          class="reveal p-6 sm:p-8 surface-card spotlight flex flex-col"
+          style={`--reveal-delay: ${i * 80}ms`}
+        >
+          <div class="flex items-start justify-between gap-4">
+            <span class="grid place-items-center w-11 h-11 shrink-0 rounded-xl bg-[rgb(var(--harbor-accent)/0.12)] border border-[rgb(var(--harbor-accent)/0.22)] text-accent">
+              <Icon name={project.icon} size={21} />
+            </span>
+            <span class="font-mono text-[0.625rem] font-bold uppercase tracking-[0.16em] text-fg-subtle pt-1.5">
+              {project.type}
+            </span>
+          </div>
+
+          <h3 class="mt-5 font-display font-bold text-xl sm:text-2xl text-fg">
+            {project.title}
+          </h3>
+
+          <dl class="mt-5 space-y-3.5 text-sm leading-relaxed">
+            <div>
+              <dt class="font-mono text-[0.625rem] font-bold uppercase tracking-[0.16em] text-accent-2">
+                Problem
+              </dt>
+              <dd class="mt-1 text-fg-muted">{project.problem}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-[0.625rem] font-bold uppercase tracking-[0.16em] text-accent-2">
+                Approach
+              </dt>
+              <dd class="mt-1 text-fg-muted">{project.approach}</dd>
+            </div>
+          </dl>
+
+          <dl class="mt-6 pt-5 flex flex-wrap gap-x-8 gap-y-4 border-t border-[rgb(var(--harbor-border)/0.10)]">
+            {project.impact.map((item) => (
+              <div>
+                <dt class="sr-only">{item.label}</dt>
+                <dd>
+                  <span class="block font-display font-bold text-2xl tracking-tight text-accent">
+                    {item.value}
+                  </span>
+                  <span class="block mt-0.5 text-xs text-fg-subtle">{item.label}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {project.stack.map((tech) => <li class="tag">{tech}</li>)}
+          </ul>
+
+          <div class="mt-7 pt-5 border-t border-[rgb(var(--harbor-border)/0.10)] flex items-center justify-between gap-4 mt-auto">
+            {project.link ? (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-ghost inline-flex items-center gap-2 min-h-11 px-4 text-sm font-semibold rounded-lg"
+              >
+                <Icon name="github" size={16} />
+                View code
+              </a>
+            ) : (
+              <p class="inline-flex items-center gap-2 text-sm text-fg-subtle">
+                <Icon name="lock" size={15} />
+                Client-confidential — happy to walk through it
+              </p>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
   </div>
 </section>

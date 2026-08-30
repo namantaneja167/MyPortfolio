@@ -1,0 +1,21 @@
+---
+export interface Props {
+  index: string;
+  title: string;
+  lead?: string;
+  class?: string;
+}
+
+const { index, title, lead, class: className = '' } = Astro.props;
+---
+<div class={`reveal ${className}`}>
+  <div class="flex items-baseline gap-3">
+    <span class="font-mono text-xs font-bold tracking-[0.2em] text-accent">{index}</span>
+    <h2 class="text-fluid-h2 font-display font-bold tracking-tight uppercase text-fg">
+      {title}
+    </h2>
+  </div>
+  {lead && (
+    <p class="mt-4 max-w-2xl text-fluid-lead leading-relaxed text-fg-muted">{lead}</p>
+  )}
+</div>

@@ -1,11 +1,6 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import react from '@astrojs/react';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,25 +11,53 @@ export default defineConfig({
   // Change to '/' if deploying as a user site (username.github.io)
   base: '/MyPortfolio',
 
-  // Static output — zero JS by default, perfect for a portfolio
+  // Static output — the site ships no framework runtime
   output: 'static',
 
-  // Build to dist/ (default; explicit for clarity)
   build: {
     assets: '_astro',
+    // 'always' was measurably worse: a large inline <style> delays the preload
+    // scanner from discovering the LCP image (LCP 1.7s -> 2.1s).
+    inlineStylesheets: 'auto',
   },
+
+  // Astro downloads, subsets and self-hosts these, and generates
+  // metric-matched fallbacks so swapping the webfont in does not shift layout.
+  fonts: [
+    {
+      name: 'Figtree',
+      cssVariable: '--font-figtree',
+      provider: fontProviders.fontsource(),
+      weights: ['300 700'],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
+    },
+    {
+      name: 'Barlow Semi Condensed',
+      cssVariable: '--font-barlow',
+      provider: fontProviders.fontsource(),
+      weights: [600, 700],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['sans-serif'],
+    },
+    {
+      name: 'Inconsolata',
+      cssVariable: '--font-inconsolata',
+      provider: fontProviders.fontsource(),
+      // Static weights only: the variable file carries a width axis we never
+      // use and costs ~79kB against ~20kB for the two weights we do use.
+      weights: [400, 700],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['monospace'],
+    },
+  ],
+
+  integrations: [sitemap()],
 
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      alias: {
-        '@infinibay/harbor': path.resolve(__dirname, './harbor_source/src/components/index.ts'),
-        '@infinibay/harbor/src': path.resolve(__dirname, './harbor_source/src'),
-        '@infinibay/harbor/components': path.resolve(__dirname, './harbor_source/src/components'),
-        '@infinibay/harbor/recipes': path.resolve(__dirname, './harbor_source/src/recipes'),
-      }
-    }
   },
-
-  integrations: [react()],
 });

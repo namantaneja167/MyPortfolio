@@ -1,1 +1,9 @@
 node_modules
+dist/
+.astro/
+.lighthouseci/
+.lhtmp/
+.playwright-mcp/
+scratch/
+*.local
+.DS_Store

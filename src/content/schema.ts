@@ -21,9 +21,14 @@ export const SkillCollectionSchema = z.array(SkillRowSchema).min(1);
 export const ProjectSchema = z.object({
   title: z.string().min(1),
   type: z.string().min(1),
-  description: z.string().min(1),
+  icon: z.enum(['zap', 'activity', 'code', 'brain']),
+  confidential: z.boolean(),
+  problem: z.string().min(1),
+  approach: z.string().min(1),
+  impact: z
+    .array(z.object({ value: z.string().min(1), label: z.string().min(1) }))
+    .min(1),
   stack: z.array(z.string().min(1)).min(1),
-  cardClass: z.enum(['project-wide', 'project-main', 'project-secondary']),
   link: z.string(),
 });
 
@@ -47,6 +52,9 @@ export const ProfileSchema = z.object({
     medium: z.string().url(),
     twitter: z.string().url(),
   }),
-  formspree: z.string().min(1),
+  available: z.boolean(),
+  metrics: z
+    .array(z.object({ value: z.string().min(1), label: z.string().min(1) }))
+    .min(1),
   resume: z.string().min(1),
 });

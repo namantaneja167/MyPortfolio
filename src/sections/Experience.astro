@@ -1,17 +1,65 @@
 ---
-import { ExperienceTimeline } from '../components/ExperienceTimeline';
----
-<section class="py-20 border-t border-[color:var(--harbor-border-subtle)]" id="experience">
-  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-6 w-full">
-    
-    {/* Section Header */}
-    <div class="flex items-center gap-2 mb-12">
-      <span class="text-xs font-mono font-bold text-accent tracking-widest uppercase">02</span>
-      <h2 class="text-4xl font-display font-extrabold text-[rgb(var(--harbor-text))] tracking-tight uppercase">
-        Experience
-      </h2>
-    </div>
+import SectionHeading from '../components/SectionHeading.astro';
+import rawExperience from '../content/experience.json';
+import { ExperienceCollectionSchema } from '../content/schema';
 
-    <ExperienceTimeline client:visible />
+const experiences = ExperienceCollectionSchema.parse(rawExperience);
+---
+<section id="experience" class="py-24 sm:py-28 border-t border-[rgb(var(--harbor-border)/0.08)]">
+  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-5 sm:px-6 w-full">
+    <SectionHeading
+      index="02"
+      title="Experience"
+      lead="Three years turning enterprise data mess into systems people rely on."
+      class="mb-14"
+    />
+
+    <ol class="relative">
+      <!-- Single rail on every breakpoint: alternating timelines force an
+           awkward reading order and collapse badly on narrow screens. -->
+      <div
+        class="absolute left-[7px] sm:left-[9px] md:left-[calc(11rem+7px)] top-2 bottom-2 w-px bg-[rgb(var(--harbor-border)/0.14)]"
+        aria-hidden="true"
+      ></div>
+
+      {experiences.map((exp, i) => (
+        <li
+          class="reveal relative grid md:grid-cols-[11rem_1fr] gap-y-3 pb-12 last:pb-0"
+          style={`--reveal-delay: ${i * 90}ms`}
+        >
+          <div class="md:pr-10 md:text-right pl-8 md:pl-0">
+            <span class="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+              {exp.period}
+            </span>
+          </div>
+
+          <div class="relative pl-8 md:pl-10">
+            <span
+              class="absolute left-0 md:-left-[5px] top-1.5 w-[15px] h-[15px] rounded-full bg-accent ring-4 ring-[rgb(var(--harbor-bg))]"
+              aria-hidden="true"
+            ></span>
+
+            <div class="p-6 sm:p-7 surface-card spotlight">
+              <h3 class="font-display font-bold text-xl sm:text-2xl text-fg">{exp.title}</h3>
+              <p class="mt-1 font-mono text-sm font-semibold text-accent-2">{exp.company}</p>
+              <p class="mt-4 leading-relaxed text-fg-muted">{exp.description}</p>
+
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {exp.tags.map((tag) => <li class="tag">{tag}</li>)}
+              </ul>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
   </div>
 </section>
+
+<style>
+  /* The rail starts under the period label on mobile, beside it on desktop. */
+  @media (min-width: 768px) {
+    li > div:first-child {
+      padding-top: 0.125rem;
+    }
+  }
+</style>

@@ -16,6 +16,12 @@
     "medium": "https://medium.com/@namantaneja167",
     "twitter": "https://x.com/naman_taneja_"
   },
-  "formspree": "xvgebpon",
+  "available": true,
+  "metrics": [
+    { "value": "1B+", "label": "Records processed" },
+    { "value": "300+", "label": "KPIs automated" },
+    { "value": "60%", "label": "Reporting time saved" },
+    { "value": "3+ yrs", "label": "Pharma & energy data" }
+  ],
   "resume": "/MyPortfolio/assets/Naman_Resume.pdf"
 }
