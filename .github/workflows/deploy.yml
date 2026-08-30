@@ -32,7 +32,13 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        # `npm ci` cannot be used here. The lockfile is generated on Windows, where
+        # npm does not resolve the `wasm32-wasi` optional subtrees of sharp,
+        # tailwindcss and Astro's Satteri processor, so it lacks the @emnapi
+        # packages that Linux resolution expects. `npm ci` treats that as a fatal
+        # mismatch; `npm install` fills the gap while still honouring the lockfile.
+        # Regenerate the lockfile on Linux to switch back to `npm ci`.
+        run: npm install --no-audit --no-fund
 
       - name: Type check
         run: npm run check
