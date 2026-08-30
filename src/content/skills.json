@@ -1,0 +1,27 @@
+[
+  {
+    "category": "Data Engineering",
+    "items": "Snowflake, DBT, Databricks, Azure Data Factory, Dataiku, Tableau",
+    "cool": false
+  },
+  {
+    "category": "Gen AI",
+    "items": "RAG, LangChain, CrewAI, Ollama, Agentic Workflows",
+    "cool": true
+  },
+  {
+    "category": "Cloud",
+    "items": "Azure, CI/CD Pipelines, Infrastructure as Code",
+    "cool": true
+  },
+  {
+    "category": "Languages",
+    "items": "Python, SQL",
+    "cool": false
+  },
+  {
+    "category": "Tools",
+    "items": "Git, Power BI, Docker, Airflow, Jira, Excel",
+    "cool": false
+  }
+]

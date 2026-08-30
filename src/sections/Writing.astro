@@ -1,0 +1,17 @@
+---
+import { WritingCards } from '../components/WritingCards';
+---
+<section class="py-20 border-t border-[color:var(--harbor-border-subtle)]" id="blog">
+  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-6 w-full">
+    
+    {/* Section Header */}
+    <div class="flex items-center gap-2 mb-12">
+      <span class="text-xs font-mono font-bold text-accent tracking-widest uppercase">05</span>
+      <h2 class="text-4xl font-display font-extrabold text-[rgb(var(--harbor-text))] tracking-tight uppercase">
+        Writing
+      </h2>
+    </div>
+
+    <WritingCards client:visible />
+  </div>
+</section>

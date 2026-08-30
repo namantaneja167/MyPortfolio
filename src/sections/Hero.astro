@@ -1,0 +1,47 @@
+---
+// Hero section
+---
+<section class="min-h-[90vh] flex items-center justify-center py-20 relative overflow-hidden" id="hero">
+  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    
+    {/* Left Column: Text Content */}
+    <div class="lg:col-span-7 flex flex-col items-start text-left">
+      <h1 class="font-display font-extrabold text-6xl md:text-8xl tracking-tighter text-[rgb(var(--harbor-text))] leading-[0.95] uppercase">
+        Naman<br />Taneja
+      </h1>
+      
+      <div class="w-16 h-[3px] bg-accent my-6 rounded" aria-hidden="true"></div>
+      
+      <p class="text-xs md:text-sm font-mono font-bold tracking-widest text-accent-2 uppercase">
+        Data Engineering &nbsp;·&nbsp; Cloud Platforms &nbsp;·&nbsp; Business-Critical Analytics
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-6">
+        <p class="text-sm md:text-base leading-relaxed text-[rgb(var(--harbor-text-muted))] max-w-md">
+          Building reliable Snowflake and Azure pipelines for energy and pharma teams.
+        </p>
+      </div>
+
+      <a
+        href="#contact"
+        class="mt-8 px-6 py-3.5 text-sm font-semibold rounded-lg bg-accent text-[rgb(var(--harbor-brand-fg))] hover:bg-accent-3 hover:scale-[1.02] shadow-[var(--harbor-shadow-sm)] active:scale-95 transition-all flex items-center gap-2"
+      >
+        Get in Touch <span>&rarr;</span>
+      </a>
+    </div>
+
+    {/* Right Column: Cinematic Image Visual */}
+    <div class="lg:col-span-5 flex justify-center w-full">
+      <div class="relative w-full max-w-sm md:max-w-md lg:max-w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 shadow-[var(--harbor-shadow-lg)] group">
+        <img
+          src="/MyPortfolio/images/profile.jpg"
+          alt="Naman Taneja — Data Engineer"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        {/* Cinematic gradient overlay */}
+        <div class="absolute inset-0 bg-gradient-to-t from-[var(--harbor-bg)]/80 via-transparent to-transparent pointer-events-none"></div>
+      </div>
+    </div>
+
+  </div>
+</section>

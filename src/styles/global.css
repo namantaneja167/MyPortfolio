@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/* Scan Harbor UI source files for class names */
+@source "../../harbor_source/src";
+
+/* Import Harbor UI base tokens and index styles */
+@import "../../harbor_source/src/tokens.css";
+@import "../../harbor_source/src/index.css";
+
+/* Naman's Custom Cinematic Terracotta Dark Theme Overrides */
+:root {
+  /* Cinematic warm-tinted off-blacks (RGB triplets) */
+  --harbor-bg: 16 14 13;             /* page background */
+  --harbor-bg-elev-1: 24 21 20;      /* inputs, cards, sections */
+  --harbor-bg-elev-2: 32 29 28;      /* dropdowns, hover elements */
+  --harbor-bg-elev-3: 40 37 36;      /* dialogs, floating panels */
+
+  /* Cinematic branding colors (RGB triplets) */
+  --harbor-accent: 192 109 109;       /* terracotta/burnt rose (primary) */
+  --harbor-accent-2: 112 153 182;     /* muted steel-blue */
+  --harbor-accent-3: 215 158 135;     /* peach/terracotta-light */
+
+  --harbor-brand: var(--harbor-accent);
+  --harbor-brand-fg: 255 255 255;
+
+  /* Warm text colors (RGB triplets) */
+  --harbor-text: 245 242 240;        /* warm off-white */
+  --harbor-text-muted: 180 174 170;  /* warm gray */
+  --harbor-text-subtle: 130 124 120; /* dark warm gray */
+
+  --harbor-border: 245 242 240;
+
+  /* Fonts */
+  --harbor-font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --harbor-font-mono: "Inconsolata", ui-monospace, monospace;
+}
+
+/* Configure Tailwind v4 theme mapping for Harbor UI tokens */
+@theme {
+  --color-accent: rgb(var(--harbor-accent));
+  --color-accent-2: rgb(var(--harbor-accent-2));
+  --color-accent-3: rgb(var(--harbor-accent-3));
+  --color-brand: rgb(var(--harbor-brand));
+  --color-brand-fg: rgb(var(--harbor-brand-fg));
+  --color-success: rgb(var(--harbor-success));
+  --color-warning: rgb(var(--harbor-warning));
+  --color-danger: rgb(var(--harbor-danger));
+  --color-info: rgb(var(--harbor-info));
+  --color-surface: rgb(var(--harbor-bg));
+  --color-surface-1: rgb(var(--harbor-bg-elev-1));
+  --color-surface-2: rgb(var(--harbor-bg-elev-2));
+  --color-surface-3: rgb(var(--harbor-bg-elev-3));
+  --color-fg: rgb(var(--harbor-text));
+  --color-fg-muted: rgb(var(--harbor-text-muted));
+  --color-fg-subtle: rgb(var(--harbor-text-subtle));
+
+  --radius-sm: var(--harbor-radius-sm);
+  --radius-md: var(--harbor-radius-md);
+  --radius-lg: var(--harbor-radius-lg);
+  --radius-xl: var(--harbor-radius-xl);
+  --radius-2xl: var(--harbor-radius-2xl);
+
+  --shadow-harbor-sm: var(--harbor-shadow-sm);
+  --shadow-harbor-md: var(--harbor-shadow-md);
+  --shadow-harbor-lg: var(--harbor-shadow-lg);
+  --shadow-harbor-glow: var(--harbor-shadow-glow);
+
+  --font-sans: var(--harbor-font-sans);
+  --font-mono: var(--harbor-font-mono);
+  --font-display: "Barlow Semi Condensed", sans-serif;
+
+  --animate-breathe: breathe 3s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-mesh: mesh 18s ease-in-out infinite;
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+  }
+  @keyframes mesh {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.1); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
+  }
+}
+
+/* Global Reset & Base Styling using cinematic terracotta choices */
+body {
+  background-color: var(--harbor-surface-canvas);
+  color: var(--harbor-text-primary);
+  font-family: var(--harbor-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Custom transitions and scroll behaviors */
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: rgb(var(--harbor-accent) / 0.3);
+  color: var(--harbor-text-primary);
+}
+
+/* Accessibility Skip-to-Content link styling */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-to-content:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  background-color: rgb(var(--harbor-bg-elev-2));
+  color: rgb(var(--harbor-accent));
+  border: 1px solid rgb(var(--harbor-border) / var(--harbor-target-border-alpha));
+  border-radius: var(--harbor-radius-md);
+  z-index: 1000;
+  outline: none;
+  box-shadow: var(--harbor-focus-shadow);
+}

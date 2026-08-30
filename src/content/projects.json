@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Energy Market Data Hub",
+    "type": "Enterprise · NDA",
+    "description": "High-throughput trading data platform for North American electricity markets. Ingests millions of real-time market signals and powers downstream analytics.",
+    "stack": ["Snowflake", "Azure", "dbt", "Airflow"],
+    "cardClass": "project-wide",
+    "link": ""
+  },
+  {
+    "title": "Pharma Commercial Intelligence",
+    "type": "Enterprise · NDA",
+    "description": "End-to-end commercial analytics pipeline processing 1B+ healthcare records. Automated reporting for 300+ KPIs with a 25% reduction in processing time.",
+    "stack": ["Dataiku", "Python", "SQL", "Tableau"],
+    "cardClass": "project-main",
+    "link": ""
+  },
+  {
+    "title": "Enterprise RAG Knowledge Agent",
+    "type": "Open Source",
+    "description": "Retrieval-Augmented Generation system for natural language queries on internal docs. Agentic workflows for complex multi-step reasoning.",
+    "stack": ["LangChain", "CrewAI", "Docker", "React"],
+    "cardClass": "project-secondary",
+    "link": "https://github.com/namantaneja167"
+  }
+]

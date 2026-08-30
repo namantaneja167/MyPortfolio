@@ -1,0 +1,52 @@
+import { z } from 'zod';
+
+export const ExperienceItemSchema = z.object({
+  company: z.string().min(1),
+  title: z.string().min(1),
+  period: z.string().min(1),
+  description: z.string().min(1),
+  tags: z.array(z.string().min(1)).min(1),
+});
+
+export const ExperienceCollectionSchema = z.array(ExperienceItemSchema).min(1);
+
+export const SkillRowSchema = z.object({
+  category: z.string().min(1),
+  items: z.string().min(1),
+  cool: z.boolean(),
+});
+
+export const SkillCollectionSchema = z.array(SkillRowSchema).min(1);
+
+export const ProjectSchema = z.object({
+  title: z.string().min(1),
+  type: z.string().min(1),
+  description: z.string().min(1),
+  stack: z.array(z.string().min(1)).min(1),
+  cardClass: z.enum(['project-wide', 'project-main', 'project-secondary']),
+  link: z.string(),
+});
+
+export const ProjectCollectionSchema = z.array(ProjectSchema).min(1);
+
+export const ProfileSchema = z.object({
+  name: z.string().min(1),
+  role: z.string().min(1),
+  discipline: z.string().min(1),
+  tagline: z.string().min(1),
+  pullquote: z.string().min(1),
+  email: z.string().email(),
+  location: z.string().min(1),
+  languages: z.string().min(1),
+  status: z.string().min(1),
+  stack: z.string().min(1),
+  currentEmployer: z.string().min(1),
+  socials: z.object({
+    github: z.string().url(),
+    linkedin: z.string().url(),
+    medium: z.string().url(),
+    twitter: z.string().url(),
+  }),
+  formspree: z.string().min(1),
+  resume: z.string().min(1),
+});

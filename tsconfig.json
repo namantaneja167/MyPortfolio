@@ -1,0 +1,12 @@
+{
+  "extends": "astro/tsconfigs/base",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@infinibay/harbor": ["./harbor_source/src/components/index.ts"],
+      "@infinibay/harbor/*": ["./harbor_source/src/*"]
+    }
+  }
+}

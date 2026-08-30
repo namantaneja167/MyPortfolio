@@ -1,0 +1,21 @@
+{
+  "name": "Naman Taneja",
+  "role": "Data Engineer",
+  "discipline": "Data Engineering · Cloud Platforms · Business-Critical Analytics",
+  "tagline": "Building reliable Snowflake and Azure pipelines for energy and pharma teams",
+  "pullquote": "I design data platforms that turn fragmented enterprise inputs into decisions teams trust.",
+  "email": "er.namantaneja@gmail.com",
+  "location": "India",
+  "languages": "English, Hindi",
+  "status": "Available - replies within 24 hours",
+  "stack": "Snowflake · Python · SQL · Azure · DBT · Power BI · Docker · Airflow",
+  "currentEmployer": "Uniper Energy",
+  "socials": {
+    "github": "https://github.com/namantaneja167",
+    "linkedin": "https://www.linkedin.com/in/namantaneja167/",
+    "medium": "https://medium.com/@namantaneja167",
+    "twitter": "https://x.com/naman_taneja_"
+  },
+  "formspree": "xvgebpon",
+  "resume": "/MyPortfolio/assets/Naman_Resume.pdf"
+}

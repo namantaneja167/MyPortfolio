@@ -4,21 +4,19 @@
  * for dynamic content (RSS feed, external assets)
  */
 
-const CACHE_NAME = 'portfolio-v2';
-const STATIC_CACHE = 'portfolio-static-v2';
-const DYNAMIC_CACHE = 'portfolio-dynamic-v2';
+const CACHE_NAME = 'portfolio-v3';
+const STATIC_CACHE = 'portfolio-static-v3';
+const DYNAMIC_CACHE = 'portfolio-dynamic-v3';
 
 // Static assets - Cache First strategy
 const STATIC_ASSETS = [
-    './',
-    './index.html',
-    './css/style.css',
-    './js/StateManager.js',
-    './js/ChatService.js',
-    './js/data.js',
-    './js/main.js',
-    './images/profile.jpg',
-    './assets/Naman_Resume.pdf'
+    '/MyPortfolio/',
+    '/MyPortfolio/js/StateManager.js',
+    '/MyPortfolio/js/ChatService.js',
+    '/MyPortfolio/js/data.js',
+    '/MyPortfolio/js/main.js',
+    '/MyPortfolio/images/profile.jpg',
+    '/MyPortfolio/assets/Naman_Resume.pdf'
 ];
 
 // External assets - Stale While Revalidate strategy
@@ -113,7 +111,7 @@ function cacheFirst(request) {
                 .catch(function (error) {
                     console.log('SW: Network error for:', request.url);
                     // Return offline fallback if available
-                    return caches.match('./index.html');
+                    return caches.match('/MyPortfolio/');
                 });
         });
 }

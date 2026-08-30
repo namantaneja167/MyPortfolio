@@ -10,12 +10,12 @@
 
 :root {
     /* ===== Design Tokens ===== */
-    /* Backgrounds — warm-tinted off-blacks (terracotta hue h≈30) */
+    /* Backgrounds ΓÇö warm-tinted off-blacks (terracotta hue hΓëê30) */
     --bg-primary: #0D0B09;
     --bg-secondary: #181411;
     --bg-3: #1C1916;
     --bg-4: #100E0C;
-    --bg-white: #141210;    /* surface color — warm dark in dark theme */
+    --bg-white: #141210;    /* surface color ΓÇö warm dark in dark theme */
     --bg-light: #181411;
     --bg-gray: #1E1B18;
     --nav-bg: rgba(24, 20, 17, 0.45);
@@ -27,33 +27,33 @@
     --text-on-light-muted: #6B6560;
     --border-on-light: #DDD9D4;
 
-    /* Text — warm whites */
+    /* Text ΓÇö warm whites */
     --text-primary: #F0EDE8;
     --text-secondary: #B3AEA8;
     --text-muted: #847F7A;
     --text-inverse: #0D0B09;
 
-    /* Accent — primary (terracotta/burnt rose) = actions/CTAs */
+    /* Accent ΓÇö primary (terracotta/burnt rose) = actions/CTAs */
     --accent: #C06D6D;
     --accent-dark: #8A4444;
     --accent-light: #D49090;
     --accent-orange: #C06D6D; /* alias for backwards compat */
 
-    /* Accent cool — secondary (muted steel-blue) = metadata/dates/waypoints */
+    /* Accent cool ΓÇö secondary (muted steel-blue) = metadata/dates/waypoints */
     --accent-cool: #4F8FAD;
     --accent-cool-dark: #366D89;
     --accent-cool-subtle: oklch(34% 0.065 225);  /* very dark tint for surfaces */
 
-    /* Card hover border — just slightly lighter than border-light */
+    /* Card hover border ΓÇö just slightly lighter than border-light */
     --border-hover: #3A3734;
 
-    /* Legacy aliases — kept for component compatibility */
+    /* Legacy aliases ΓÇö kept for component compatibility */
     --primary-blue: #C06D6D;
     --primary-blue-dark: #8A4444;
     --primary-blue-light: #D49090;
     --color-red: #C06D6D;
 
-    /* No gradient — solid accent only */
+    /* No gradient ΓÇö solid accent only */
     --gradient-primary: #C06D6D;
 
     /* Palette */
@@ -77,14 +77,14 @@
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
 
     /* ===== Typography ===== */
-    /* Body/prose: Figtree — warm, precise, highly readable */
+    /* Body/prose: Figtree ΓÇö warm, precise, highly readable */
     --font-primary: 'Figtree', sans-serif;
-    /* Mono/labels/dates: Inconsolata — only for labels, dates, tech pills, categories */
+    /* Mono/labels/dates: Inconsolata ΓÇö only for labels, dates, tech pills, categories */
     --font-mono: 'Inconsolata', monospace;
-    /* Display/headings: Barlow Semi Condensed — editorial condensed for big moments */
+    /* Display/headings: Barlow Semi Condensed ΓÇö editorial condensed for big moments */
     --font-display: 'Barlow Semi Condensed', sans-serif;
 
-    /* Fluid type scale using clamp() — headings breathe on wider screens */
+    /* Fluid type scale using clamp() ΓÇö headings breathe on wider screens */
     --text-xs: 0.875rem;      /* 14px */
     --text-sm: 1rem;          /* 16px */
     --text-base: 1.125rem;    /* 18px */
@@ -250,7 +250,7 @@ img {
     z-index: 1;
 }
 
-/* text-gradient intentionally removed — gradient text is an AI design tell */
+/* text-gradient intentionally removed ΓÇö gradient text is an AI design tell */
 /* Use solid color + weight contrast for emphasis instead */
 
 /* Section Headers */
@@ -699,7 +699,7 @@ img {
     z-index: 1;
 }
 
-/* The big editorial name — single focal point */
+/* The big editorial name ΓÇö single focal point */
 .hero-name {
     font-family: var(--font-display);
     font-size: clamp(4.5rem, 10vw, 8.5rem);
@@ -820,7 +820,7 @@ img {
 
 
 /* ------------------------------------------------------------------
-   6. ABOUT SECTION — Light cream, editorial
+   6. ABOUT SECTION ΓÇö Light cream, editorial
    ------------------------------------------------------------------ */
 .about {
     background: var(--bg-about-light);
@@ -973,7 +973,7 @@ img {
 }
 
 /* ------------------------------------------------------------------
-   7. EXPERIENCE SECTION — Editorial list, no timeline dots
+   7. EXPERIENCE SECTION ΓÇö Editorial list, no timeline dots
    ------------------------------------------------------------------ */
 .exp-list {
     margin-top: 56px;
@@ -1096,7 +1096,7 @@ img {
 }
 
 /* ------------------------------------------------------------------
-   8. SKILLS SECTION — Typographic editorial grid, no tabs
+   8. SKILLS SECTION ΓÇö Typographic editorial grid, no tabs
    ------------------------------------------------------------------ */
 .skills-grid-editorial {
     margin-top: 56px;
@@ -1167,7 +1167,7 @@ img {
 }
 
 /* ------------------------------------------------------------------
-   9. PROJECTS SECTION — Clean cards, no decorative icons
+   9. PROJECTS SECTION ΓÇö Clean cards, no decorative icons
    ------------------------------------------------------------------ */
 .projects-grid {
     display: grid;
@@ -1333,7 +1333,7 @@ img {
     align-items: start;
 }
 
-/* Featured first card — bigger title */
+/* Featured first card ΓÇö bigger title */
 .blog-feed .feed-card:first-child .feed-title {
     font-size: 1.35rem;
 }
@@ -1498,7 +1498,7 @@ img {
 }
 
 /* ------------------------------------------------------------------
-   11. CONTACT SECTION — Clean, editorial
+   11. CONTACT SECTION ΓÇö Clean, editorial
    ------------------------------------------------------------------ */
 .contact {
     background: var(--bg-3);

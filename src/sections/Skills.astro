@@ -1,0 +1,63 @@
+---
+// Skills section
+import rawSkillRows from '../content/skills.json';
+import { SkillCollectionSchema } from '../content/schema';
+
+const skillRows = SkillCollectionSchema.parse(rawSkillRows).map(row => ({
+  ...row,
+  itemsList: row.items.split(', ')
+}));
+---
+<section class="py-20 border-t border-[color:var(--harbor-border-subtle)]" id="skills">
+  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-6 w-full">
+    
+    {/* Section Header */}
+    <div class="flex items-center gap-2 mb-12">
+      <span class="text-xs font-mono font-bold text-accent tracking-widest uppercase">03</span>
+      <h2 class="text-4xl font-display font-extrabold text-[rgb(var(--harbor-text))] tracking-tight uppercase">
+        Skills
+      </h2>
+    </div>
+
+    {/* Bento-style Skills Grid */}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {skillRows.map((row) => (
+        <div
+          class={`p-6 rounded-2xl border transition-all duration-300 ${
+            row.category === "Data Engineering" ? "md:col-span-2 lg:col-span-2" : ""
+          } ${
+            row.cool
+              ? "border-accent/30 bg-[var(--harbor-bg-elev-1)] hover:border-accent shadow-[var(--harbor-shadow-glow)]/10 hover:shadow-[var(--harbor-shadow-glow)]/20"
+              : "border-[color:var(--harbor-border-default)] bg-[var(--harbor-bg-elev-1)] hover:border-white/20 shadow-[var(--harbor-shadow-sm)] hover:shadow-[var(--harbor-shadow-md)]"
+          }`}
+        >
+          {/* Category Header */}
+          <div class="flex items-center justify-between mb-4">
+            <h3 class={`text-lg font-bold font-display uppercase tracking-wider ${
+              row.cool ? "text-accent" : "text-accent-2"
+            }`}>
+              {row.category}
+            </h3>
+            {row.cool && (
+              <span class="px-2 py-0.5 text-[9px] font-mono font-bold tracking-widest uppercase rounded bg-accent/15 text-accent border border-accent/20">
+                Core Area
+              </span>
+            )}
+          </div>
+
+          {/* Tags List */}
+          <div class="flex flex-wrap gap-2">
+            {row.itemsList.map((item) => (
+              <span
+                class="px-2.5 py-1 text-xs font-mono rounded bg-white/[0.03] text-[rgb(var(--harbor-text-muted))] border border-white/[0.05] hover:text-[rgb(var(--harbor-text))] hover:bg-white/[0.05] transition-all duration-200"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

@@ -1,10 +1,10 @@
 {
     "name": "Naman Taneja | Data Engineer",
     "short_name": "Naman Taneja",
-    "start_url": "./index.html",
+    "start_url": "/MyPortfolio/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#2563eb",
+    "background_color": "#0D0B09",
+    "theme_color": "#C06D6D",
     "icons": [
       {
         "src": "https://img.icons8.com/fluency/192/000000/console--v1.png",

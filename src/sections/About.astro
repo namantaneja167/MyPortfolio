@@ -1,0 +1,59 @@
+---
+// About section
+---
+<section class="py-20 border-t border-[color:var(--harbor-border-subtle)]" id="about">
+  <div class="max-w-[var(--harbor-container-xl)] mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    
+    {/* Left Column: Title & Pullquote */}
+    <div class="lg:col-span-4 flex flex-col items-start">
+      <div class="flex items-center gap-2 mb-6">
+        <span class="text-xs font-mono font-bold text-accent tracking-widest uppercase">01</span>
+        <h2 class="text-4xl font-display font-extrabold text-[rgb(var(--harbor-text))] tracking-tight uppercase">
+          About
+        </h2>
+      </div>
+
+      <blockquote class="text-xl md:text-2xl font-display font-medium text-accent-3 border-l-[3px] border-accent pl-6 py-1 my-4 leading-snug">
+        I design data platforms that turn fragmented enterprise inputs into decisions teams trust.
+      </blockquote>
+    </div>
+
+    {/* Right Column: Bio & Technical Stack */}
+    <div class="lg:col-span-8 flex flex-col gap-6">
+      <div class="text-base md:text-lg leading-relaxed text-[rgb(var(--harbor-text-muted))] space-y-4">
+        <p>
+          I'm a Data Engineer with <strong>3+ years of experience</strong> specializing in cloud data
+          infrastructure, ETL pipeline optimization, and large-scale data processing across pharma and
+          energy industries.
+        </p>
+        <p>
+          From healthcare analytics at <strong>ZS Associates</strong> to energy trading systems at
+          <strong>Uniper</strong>, I've architected ETL pipelines processing billions of
+          records, automated complex reporting workflows, and delivered enterprise Gen AI
+          solutions using RAG and agentic architectures.
+        </p>
+      </div>
+
+      {/* Stack summary container */}
+      <div class="p-5 rounded-xl border border-[color:var(--harbor-border-default)] bg-[var(--harbor-bg-elev-1)] mt-4">
+        <span class="text-xs font-mono font-bold text-accent-2 uppercase tracking-wider block mb-2">Stack</span>
+        <p class="text-sm md:text-base font-mono text-[rgb(var(--harbor-text))] tracking-wide leading-relaxed">
+          Snowflake · Python · SQL · Azure · DBT · Power BI · Docker · Airflow
+        </p>
+      </div>
+
+      {/* Bio Metadata */}
+      <div class="flex flex-wrap gap-6 mt-4 text-sm text-[rgb(var(--harbor-text-subtle))] font-medium">
+        <div class="flex items-center gap-2">
+          <i class="bx bx-map text-lg text-accent" aria-hidden="true" />
+          <span>Based in India</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="bx bx-world text-lg text-accent" aria-hidden="true" />
+          <span>English, Hindi</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

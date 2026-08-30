@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import { NavBar } from '../components/NavBar';
+import Hero from '../sections/Hero.astro';
+import About from '../sections/About.astro';
+import Experience from '../sections/Experience.astro';
+import Skills from '../sections/Skills.astro';
+import Projects from '../sections/Projects.astro';
+import Writing from '../sections/Writing.astro';
+import Contact from '../sections/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { ChatWidget } from '../components/ChatWidget';
+import { Aurora } from '@infinibay/harbor';
+import rawProfile from '../content/profile.json';
+import { ProfileSchema } from '../content/schema';
+
+ProfileSchema.parse(rawProfile);
+---
+
+<Base>
+  <!-- Beautiful flowing SVG Aurora background behind the entire page -->
+  <Aurora
+    client:load
+    bands={4}
+    palette={["#c06d6d", "#7099b6", "#1e1b1a", "#d79e87"]}
+    intensity={0.3}
+    className="fixed inset-0 z-[-1] opacity-35"
+  />
+
+  <NavBar client:load />
+
+  <main id="main-content">
+    <Hero />
+    <About />
+    <Experience />
+    <Skills />
+    <Projects />
+    <Writing />
+    <Contact />
+  </main>
+
+  <ChatWidget client:load />
+  <Footer />
+</Base>

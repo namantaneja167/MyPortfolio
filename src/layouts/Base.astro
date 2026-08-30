@@ -1,0 +1,102 @@
+---
+// Base layout — provides <html>, <head>, global meta, and CDN links
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Naman Taneja | Data Engineer',
+  description = 'Naman Taneja - Data Engineer specializing in cloud data platforms, ETL pipelines, and analytics. Currently building trading data infrastructure at Uniper.',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="keywords" content="Data Engineer, Snowflake, Azure, DBT, Python, SQL, ETL, Data Pipeline" />
+  <meta name="author" content="Naman Taneja" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content="/MyPortfolio/images/profile.jpg" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <title>{title}</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23C06D6D'/><text x='50' y='65' font-family='Arial' font-size='50' font-weight='bold' fill='white' text-anchor='middle'>N</text></svg>" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="/MyPortfolio/manifest.json" />
+  <meta name="theme-color" content="#C06D6D" />
+  <script is:inline>
+    if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+      navigator.serviceWorker.register('/MyPortfolio/sw.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch((err) => console.log('Service Worker Failed', err));
+    }
+  </script>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Naman Taneja",
+    "jobTitle": "Data Engineer",
+    "email": "er.namantaneja@gmail.com",
+    "url": "https://namantaneja.com",
+    "sameAs": [
+      "https://www.linkedin.com/in/namantaneja167/",
+      "https://medium.com/@namantaneja167",
+      "https://x.com/naman_taneja_",
+      "https://github.com/namantaneja167"
+    ],
+    "description": "Data Engineer specializing in cloud data platforms, ETL pipelines, and Gen AI solutions.",
+    "worksFor": { "@type": "Organization", "name": "Uniper Energy" },
+    "alumniOf": { "@type": "Organization", "name": "ZS Associates" }
+  })} />
+
+  <!-- Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://unpkg.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com;
+    font-src 'self' https://fonts.gstatic.com https://unpkg.com;
+    img-src 'self' data: https://*.medium.com https://img.icons8.com;
+    connect-src 'self' https://api.rss2json.com https://formspree.io;
+    form-action 'self' https://formspree.io;
+    object-src 'none';
+    frame-src 'none';
+    base-uri 'self';
+  " />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth,wght@50..200,200..900&family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+  <!-- Skip to content (accessibility) -->
+  <a href="#hero" class="skip-to-content">Skip to main content</a>
+
+  <slot />
+
+</body>
+</html>
