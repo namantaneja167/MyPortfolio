@@ -6,7 +6,12 @@
   },
   {
     "category": "Azure & Cloud",
-    "items": "Azure Data Factory, Azure Function Apps, Azure DevOps, CI/CD",
+    "items": "Azure Data Factory, Azure Function Apps, Azure VNets, Azure DevOps, Git, CI/CD",
+    "cool": true
+  },
+  {
+    "category": "Applied Gen AI",
+    "items": "RAG, AI Agents, Agentic Workflows, LangChain, CrewAI, Ollama",
     "cool": true
   },
   {
@@ -15,13 +20,8 @@
     "cool": false
   },
   {
-    "category": "Gen AI",
-    "items": "RAG, LangChain, CrewAI, Ollama, Agentic Workflows",
-    "cool": false
-  },
-  {
     "category": "Analytics & Tools",
-    "items": "Tableau, Excel, Git, Jira",
+    "items": "Tableau, Excel, Jira, GitHub Copilot, Claude Code",
     "cool": false
   }
 ]

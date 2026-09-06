@@ -80,4 +80,13 @@ export const CredentialsSchema = z.object({
       }),
     )
     .min(1),
+  recognition: z
+    .array(
+      z.object({
+        title: z.string().min(1),
+        org: z.string().min(1),
+        detail: z.string().min(1),
+      }),
+    )
+    .min(1),
 });

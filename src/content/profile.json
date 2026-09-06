@@ -1,14 +1,14 @@
 {
   "name": "Naman Taneja",
-  "role": "Senior Technical Consultant",
-  "discipline": "Data Engineering · ETRM Platforms · Snowflake & Azure",
+  "role": "Senior Data Engineer",
+  "discipline": "Data Engineering · ETRM Platforms · Applied Gen AI",
   "tagline": "I build enterprise data platforms for energy trading and pharma analytics",
   "pullquote": "I turn fragmented enterprise feeds into pipelines that traders and analysts trust at 500M records a day.",
   "email": "er.namantaneja@gmail.com",
   "location": "Noida, India",
   "languages": "English, Hindi",
   "status": "Available - replies within 24 hours",
-  "stack": "Snowflake · DBT · Azure Data Factory · Azure Function Apps · Snowpipe · Python · SQL · C#",
+  "stack": "Snowflake · DBT · Snowpipe · Azure Data Factory · Azure Function Apps · Python · SQL · C#",
   "currentEmployer": "Uniper",
   "currentTeam": "UGCNA Data Strategy",
   "socials": {
@@ -24,5 +24,5 @@
     { "value": "60×", "label": "Faster daily file sync" },
     { "value": "1B+", "label": "Healthcare records" }
   ],
-  "resume": "/MyPortfolio/assets/Naman_Resume.pdf"
+  "resume": "/MyPortfolio/assets/Naman-Taneja-Data-Engineer-Resume.pdf"
 }

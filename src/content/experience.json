@@ -1,17 +1,19 @@
 [
   {
     "company": "Uniper (India GCC), Noida",
-    "title": "Senior Technical Consultant, UGCNA Data Strategy",
+    "title": "Senior Data Engineer",
     "period": "Jun 2025 – Present",
-    "description": "Led the end-to-end transition of Uniper's ETRM system from CXL to Endur, architecting the full data flow from source ingestion through business-ready reporting for 500M+ records a day. Took Endur live to production — resolving RBAC, running QA and data-governance checks, and coordinating with Snowflake DBAs. First India-based hire for the UGCNA team, now leading and mentoring new joiners.",
+    "description": "Lead the data architecture for Uniper's North America ETRM operations. When the outgoing implementation vendor transitioned out, I reverse-engineered the codebase solo and took Endur live independently with zero external support, then onboarded the rest of the team onto it. Architected the end-to-end migration from CXL to Endur, covering source ingestion through business-ready reporting for 500M+ records a day.",
     "highlights": [
       "Cut Endur report latency from ~5 minutes to under 10 seconds with incremental DBT load logic handling deduplication, re-ranking and clustering keys",
-      "Reduced daily file sync from ~120 minutes to ~2 minutes by parallelising batch transfers, with schema-drift detection and corrupt-data alerting via a custom Azure Function App",
-      "Implemented Snowpipe ingestion bringing raw-zone load time to ~10 seconds with dynamic schema-drift handling",
+      "Reduced daily file sync from ~120 minutes to ~2 minutes by parallelising batch transfers across Azure VNets",
+      "Converted undeployed local scripts into production Azure Functions, adding Azure infrastructure that refreshes Endur data end-to-end with monitoring, logging and error handling",
       "Cut ADF job runtime ~30% by optimising dynamic table refresh orchestration",
-      "Integrated Morningstar, AESO, Genscape and ARGUS market data through centralised ADF pipelines"
+      "Integrated Morningstar, AESO, Genscape and ARGUS market data feeds",
+      "Serve as the project's Scrum Master, designing sprints and structuring team task planning",
+      "First India-based hire for the UGCNA team; mentor a direct report as the India practice scales"
     ],
-    "tags": ["Snowflake", "DBT", "Azure Function Apps", "ADF", "Snowpipe", "Azure DevOps", "Python", "C#"]
+    "tags": ["Snowflake", "DBT", "Snowpipe", "Azure Functions", "ADF", "Azure VNets", "Azure DevOps", "Python", "C#"]
   },
   {
     "company": "ZS Associates, Gurugram",

@@ -10,7 +10,7 @@ export interface Props {
 
 const {
   title = `${profile.name} | ${profile.role}`,
-  description = 'Senior Technical Consultant building enterprise data platforms on Snowflake, DBT and Azure. Led a CXL to Endur ETRM migration processing 500M+ records daily.',
+  description = 'AI-enabled Senior Data Engineer building enterprise data platforms on Snowflake, DBT and Azure. Took a CXL to Endur ETRM migration live, processing 500M+ records daily.',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -65,8 +65,9 @@ const ogImage = new URL(`${import.meta.env.BASE_URL}/og.jpg`.replace(/\/+/g, '/'
     worksFor: { '@type': 'Organization', name: profile.currentEmployer },
     alumniOf: { '@type': 'Organization', name: 'Guru Gobind Singh Indraprastha University' },
     knowsAbout: [
-      'Data Engineering', 'Snowflake', 'DBT', 'Azure Data Factory', 'Snowpipe',
-      'ETRM', 'Endur', 'Python', 'SQL', 'ETL', 'Data Governance',
+      'Data Engineering', 'Snowflake', 'DBT', 'Snowpipe', 'Azure Data Factory',
+      'Azure Functions', 'ETRM', 'Endur', 'Python', 'SQL', 'ETL', 'Data Governance',
+      'Retrieval-Augmented Generation', 'Agentic Workflows',
     ],
   })} />
 

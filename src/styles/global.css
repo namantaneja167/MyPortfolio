@@ -122,47 +122,52 @@
 
 /* ==========================================================================
    Base
+   Wrapped in `@layer base` so Tailwind utilities win. Unlayered element rules
+   outrank anything in `@layer utilities` regardless of specificity, which
+   silently killed `whitespace-nowrap` against the `p { text-wrap }` rule below.
    ========================================================================== */
-* {
-  box-sizing: border-box;
-}
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-html {
-  scroll-behavior: smooth;
-  /* The fixed header would otherwise cover the heading of every anchor target. */
-  scroll-padding-top: calc(var(--nav-h) + 1.5rem);
-  -webkit-text-size-adjust: 100%;
-}
+  html {
+    scroll-behavior: smooth;
+    /* The fixed header would otherwise cover the heading of every anchor target. */
+    scroll-padding-top: calc(var(--nav-h) + 1.5rem);
+    -webkit-text-size-adjust: 100%;
+  }
 
-body {
-  margin: 0;
-  background-color: rgb(var(--harbor-bg));
-  color: rgb(var(--harbor-text));
-  font-family: var(--harbor-font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: clip;
-  transition: background-color 220ms ease, color 220ms ease;
-}
+  body {
+    margin: 0;
+    background-color: rgb(var(--harbor-bg));
+    color: rgb(var(--harbor-text));
+    font-family: var(--harbor-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    transition: background-color 220ms ease, color 220ms ease;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
 
-p {
-  text-wrap: pretty;
-}
+  p {
+    text-wrap: pretty;
+  }
 
-section[id] {
-  scroll-margin-top: calc(var(--nav-h) + 1.5rem);
-}
+  section[id] {
+    scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+  }
 
-::selection {
-  background-color: rgb(var(--harbor-accent) / 0.28);
-  color: rgb(var(--harbor-text));
+  ::selection {
+    background-color: rgb(var(--harbor-accent) / 0.28);
+    color: rgb(var(--harbor-text));
+  }
 }
 
 ::-webkit-scrollbar {

@@ -59,7 +59,7 @@ import profile from '../content/profile.json';
           class="btn-ghost inline-flex items-center justify-center gap-2 min-h-12 px-6 text-sm font-semibold rounded-xl"
         >
           <Icon name="download" size={17} />
-          Download résumé
+          Download resume
         </a>
       </div>
 
@@ -81,29 +81,27 @@ import profile from '../content/profile.json';
     </div>
 
     <div class="lg:col-span-5 order-1 lg:order-2">
-      <div class="relative mx-auto w-full max-w-[280px] sm:max-w-[340px] lg:max-w-none">
-        <div class="relative aspect-[4/5] rounded-3xl overflow-hidden border border-[rgb(var(--harbor-border)/0.12)]">
+      <!-- Square frame matches the source, and the width is capped so the
+           400px original is never upscaled into softness. -->
+      <div class="relative mx-auto w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[360px]">
+        <div class="relative aspect-square rounded-3xl overflow-hidden border border-[rgb(var(--harbor-border)/0.12)]">
           <Image
             src={portrait}
             alt={`${profile.name}, ${profile.role}`}
-            widths={[280, 480, 720, 960]}
-            sizes="(min-width: 1024px) 420px, (min-width: 640px) 340px, 280px"
+            widths={[240, 300, 400]}
+            sizes="(min-width: 1024px) 360px, (min-width: 640px) 300px, 240px"
             format="avif"
-            quality={70}
+            quality={78}
             loading="eager"
             decoding="sync"
             fetchpriority="high"
-            class="w-full h-full object-cover object-top"
+            class="w-full h-full object-cover"
           />
           <div
-            class="absolute inset-0 bg-gradient-to-t from-[rgb(var(--harbor-bg))] via-[rgb(var(--harbor-bg)/0.12)] to-transparent"
+            class="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[rgb(var(--harbor-bg)/0.55)] to-transparent"
             aria-hidden="true"
           ></div>
         </div>
-
-        <p class="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-2 rounded-xl text-xs font-mono font-medium bg-[rgb(var(--harbor-bg-elev-2))] border border-[rgb(var(--harbor-border)/0.12)] text-fg-muted shadow-[var(--card-shadow)]">
-          <span class="text-accent">{profile.currentEmployer}</span> · {profile.location}
-        </p>
       </div>
     </div>
 

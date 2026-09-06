@@ -4,8 +4,8 @@
     "type": "Uniper",
     "icon": "zap",
     "confidential": true,
-    "problem": "Uniper's North American trading desks ran on a legacy CXL ETRM system. Migrating to Endur meant rebuilding the entire data flow — ingestion through business-ready reporting — without interrupting trading.",
-    "approach": "Architected the full Snowflake and Azure data flow, built incremental DBT models handling deduplication, re-ranking and clustering keys, and took the platform live including RBAC, QA and data-governance sign-off.",
+    "problem": "Uniper's North America trading operations ran on a legacy CXL ETRM system. Mid-migration the implementation vendor transitioned out, leaving an unfinished Endur codebase and no external support.",
+    "approach": "Reverse-engineered the codebase solo and took Endur live independently, then onboarded the team onto it. Architected the full Snowflake and Azure data flow from source ingestion through business-ready reporting, with incremental DBT models handling deduplication, re-ranking and clustering keys.",
     "impact": [
       { "value": "500M+", "label": "records daily" },
       { "value": "5 min → 10 s", "label": "report latency" }
@@ -18,13 +18,13 @@
     "type": "Uniper",
     "icon": "activity",
     "confidential": true,
-    "problem": "Market data arrived from Morningstar, AESO, Genscape and ARGUS in inconsistent shapes, and a slow daily sync plus silent schema drift meant corrupt data could reach reporting unnoticed.",
-    "approach": "Centralised every provider behind ADF pipelines, added Snowpipe ingestion with dynamic schema-drift handling, and parallelised batch transfers with a custom Azure Function App for drift detection and corrupt-data alerting.",
+    "problem": "Market data arrived from Morningstar, AESO, Genscape and ARGUS in inconsistent shapes, while a slow daily sync and undeployed local scripts meant failures went unnoticed until reporting broke.",
+    "approach": "Centralised every provider behind ADF pipelines with Snowpipe ingestion, parallelised batch transfers across Azure VNets, and converted local scripts into production Azure Functions with monitoring, logging and error handling built in.",
     "impact": [
       { "value": "120 min → 2 min", "label": "daily file sync" },
       { "value": "~30%", "label": "shorter ADF runtime" }
     ],
-    "stack": ["Snowpipe", "ADF", "Azure Function Apps", "Snowflake", "Python"],
+    "stack": ["Snowpipe", "ADF", "Azure Functions", "Azure VNets", "Python"],
     "link": ""
   },
   {
@@ -32,7 +32,7 @@
     "type": "ZS Associates",
     "icon": "brain",
     "confidential": true,
-    "problem": "The largest US pharma client needed go-to-market reporting across 300+ KPIs, built on a healthcare dataset large enough that naive processing could not keep up with the reporting cycle.",
+    "problem": "The largest US pharma client needed go-to-market reporting across 300+ KPIs, built on a healthcare dataset large enough that naive processing could not keep pace with the reporting cycle.",
     "approach": "Built and oversaw ETL on Snowflake and Dataiku DSS, optimised ingestion, and translated client requirements into automated dashboards with weekly QA/QC gates.",
     "impact": [
       { "value": "1B+", "label": "healthcare records" },
@@ -48,7 +48,7 @@
     "icon": "code",
     "confidential": true,
     "problem": "Downloading data extracts, comparing dashboards and adjusting sheet visibility was manual work that consumed analyst days every reporting cycle.",
-    "approach": "Wrote a Python framework over the Tableau REST API that automated extract downloads, dashboard comparison and sheet visibility, with XML manipulation driven by a centralised config file.",
+    "approach": "Wrote a Python framework over the Tableau REST API automating extract downloads, dashboard comparison and sheet visibility, with XML manipulation driven by a centralised config file.",
     "impact": [
       { "value": "60%", "label": "less manual effort" }
     ],

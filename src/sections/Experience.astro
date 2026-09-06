@@ -5,7 +5,7 @@ import rawCredentials from '../content/credentials.json';
 import { ExperienceCollectionSchema, CredentialsSchema } from '../content/schema';
 
 const experiences = ExperienceCollectionSchema.parse(rawExperience);
-const { certifications, education } = CredentialsSchema.parse(rawCredentials);
+const { certifications, education, recognition } = CredentialsSchema.parse(rawCredentials);
 ---
 <section id="experience" class="py-24 sm:py-28 border-t border-[rgb(var(--harbor-border)/0.08)]">
   <div class="max-w-[var(--harbor-container-xl)] mx-auto px-5 sm:px-6 w-full">
@@ -97,6 +97,21 @@ const { certifications, education } = CredentialsSchema.parse(rawCredentials);
           ))}
         </ul>
       </div>
+    </div>
+
+    <div class="reveal mt-5 p-6 sm:p-7 surface-card">
+      <h3 class="font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent-2">
+        Recognition
+      </h3>
+      <ul class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-6">
+        {recognition.map((item) => (
+          <li>
+            <p class="text-sm font-semibold text-fg">{item.title}</p>
+            <p class="mt-0.5 font-mono text-xs text-accent">{item.org}</p>
+            <p class="mt-2 text-sm leading-relaxed text-fg-muted">{item.detail}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 </section>
