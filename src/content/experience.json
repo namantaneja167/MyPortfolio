@@ -1,11 +1,11 @@
 [
   {
     "company": "Uniper (India GCC), Noida",
-    "title": "Senior Data Engineer",
+    "title": "Senior Technical Consultant — Data Engineering",
     "period": "Jun 2025 – Present",
-    "description": "Lead the data architecture for Uniper's North America ETRM operations. When the outgoing implementation vendor transitioned out, I reverse-engineered the codebase solo and took Endur live independently with zero external support, then onboarded the rest of the team onto it. Architected the end-to-end migration from CXL to Endur, covering source ingestion through business-ready reporting for 500M+ records a day.",
+    "description": "Deliver data engineering for Uniper's North America ETRM operations while developing deeper knowledge of energy-trading data and workflows. During the implementation-vendor transition, I assumed ownership of an unfamiliar codebase, completed the Endur go-live, stabilised the data platform and helped onboard the wider team. Designed and delivered the end-to-end data flow from source ingestion through business-ready reporting, ingesting 500M+ source rows daily.",
     "highlights": [
-      "Cut Endur report latency from ~5 minutes to under 10 seconds with incremental DBT load logic handling deduplication, re-ranking and clustering keys",
+      "Cut Endur report latency from ~5 minutes to under 10 seconds with incremental dbt load logic handling deduplication, re-ranking and clustering keys",
       "Reduced daily file sync from ~120 minutes to ~2 minutes by parallelising batch transfers across Azure VNets",
       "Converted undeployed local scripts into production Azure Functions, adding Azure infrastructure that refreshes Endur data end-to-end with monitoring, logging and error handling",
       "Cut ADF job runtime ~30% by optimising dynamic table refresh orchestration",
@@ -13,7 +13,7 @@
       "Serve as the project's Scrum Master, designing sprints and structuring team task planning",
       "First India-based hire for the UGCNA team; mentor a direct report as the India practice scales"
     ],
-    "tags": ["Snowflake", "DBT", "Snowpipe", "Azure Functions", "ADF", "Azure VNets", "Azure DevOps", "Python", "C#"]
+    "tags": ["Snowflake", "dbt", "Snowpipe", "Azure Functions", "ADF", "Azure VNets", "Azure DevOps", "Python", "C#"]
   },
   {
     "company": "ZS Associates, Gurugram",

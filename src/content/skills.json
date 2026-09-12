@@ -1,7 +1,7 @@
 [
   {
-    "category": "Data Engineering",
-    "items": "Snowflake, DBT, Snowpipe, Databricks, Dataiku DSS, ETL Pipelines, Job Orchestration, Data Governance",
+    "category": "Production Data Engineering",
+    "items": "Snowflake, dbt, Snowpipe, Dataiku DSS, ETL Pipelines, Job Orchestration, Data Quality",
     "cool": true
   },
   {
@@ -10,7 +10,7 @@
     "cool": true
   },
   {
-    "category": "Applied Gen AI",
+    "category": "Applied Gen AI — Project Experience",
     "items": "RAG, AI Agents, Agentic Workflows, LangChain, CrewAI, Ollama",
     "cool": true
   },

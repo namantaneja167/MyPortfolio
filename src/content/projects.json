@@ -4,13 +4,13 @@
     "type": "Uniper",
     "icon": "zap",
     "confidential": true,
-    "problem": "Uniper's North America trading operations ran on a legacy CXL ETRM system. Mid-migration the implementation vendor transitioned out, leaving an unfinished Endur codebase and no external support.",
-    "approach": "Reverse-engineered the codebase solo and took Endur live independently, then onboarded the team onto it. Architected the full Snowflake and Azure data flow from source ingestion through business-ready reporting, with incremental DBT models handling deduplication, re-ranking and clustering keys.",
+    "problem": "Uniper's North America trading operations were moving from a legacy CXL ETRM system to Endur. During the migration, the implementation vendor transitioned out, leaving an unfamiliar codebase that the internal team needed to take over and complete.",
+    "approach": "Assumed engineering ownership of the inherited codebase, completed the Endur go-live, stabilised the supporting pipelines and onboarded the wider team. Designed and delivered the Snowflake and Azure data flow from source ingestion through business-ready reporting, with incremental dbt models handling deduplication, re-ranking and clustering keys.",
     "impact": [
-      { "value": "500M+", "label": "records daily" },
+      { "value": "500M+", "label": "source rows ingested daily" },
       { "value": "5 min → 10 s", "label": "report latency" }
     ],
-    "stack": ["Snowflake", "DBT", "ADF", "Azure DevOps", "C#"],
+    "stack": ["Snowflake", "dbt", "ADF", "Azure DevOps", "C#"],
     "link": ""
   },
   {
