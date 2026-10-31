@@ -11,7 +11,7 @@ import Work from "./Work";
 import TechStackNew from "./TechStackNew";
 import CallToAction from "./CallToAction";
 import setSplitText from "./utils/splitText";
-import { assetUrl } from "../config";
+import { mobileCharacterPortraitUrl } from "../config";
 
 const MobileCharacter = lazy(() => import("./Character/MobileCharacter"));
 
@@ -75,7 +75,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
                 <div className="mobile-character">
                   <img
                     className="mobile-character-portrait"
-                    src={assetUrl("images/character-mobile.png")}
+                    src={mobileCharacterPortraitUrl}
                     alt="Stylised character from the portfolio template"
                     width="480"
                     height="480"

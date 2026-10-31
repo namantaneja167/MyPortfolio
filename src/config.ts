@@ -3,6 +3,8 @@ const baseUrl = import.meta.env.BASE_URL;
 export const assetUrl = (path: string) =>
   `${baseUrl}${path.replace(/^\/+/, "")}`;
 
+export const mobileCharacterPortraitUrl = assetUrl("images/character-mobile.png?v=smile");
+
 export const config = {
   developer: {
     name: "Naman",
