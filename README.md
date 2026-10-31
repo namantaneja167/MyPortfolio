@@ -19,6 +19,8 @@ The Vite build uses `/MyPortfolio/` for the GitHub Pages project-site base path.
 
 Capability cards start collapsed and expand using native disclosure controls. Desktop reserves space for an expanded card, while smaller layouts refresh scroll measurements when their height changes. Career reveals are independent of the 3D model; reduced motion keeps the career content static and the character within the hero.
 
+The horizontal project sequence measures its last card on each scroll refresh, including after styles and fonts settle. Mobile and reduced-motion layouts use an unpinned vertical list.
+
 ## Attribution and license
 
 The visual system and character presentation are adapted from Redoyanul Haque’s [MIT-licensed portfolio template](https://github.com/red1-for-hek/portfolio-website). The upstream license is retained in [LICENSE](LICENSE).
