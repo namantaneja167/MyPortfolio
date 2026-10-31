@@ -9,13 +9,13 @@ export function initialFX() {
   }
   document.getElementsByTagName("main")[0].classList.add("main-active");
   if (window.location.hash) {
-    const target = document.getElementById(window.location.hash.slice(1));
-    if (target) {
-      setTimeout(() => {
+    setTimeout(() => {
+      const target = document.getElementById(window.location.hash.slice(1));
+      if (target) {
         lenis?.resize();
         target.scrollIntoView({ block: "start" });
-      }, 500);
-    }
+      }
+    }, 500);
   }
   gsap.to("body", {
     backgroundColor: "#0b080c",

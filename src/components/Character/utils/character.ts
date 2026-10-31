@@ -7,56 +7,46 @@ import { assetUrl } from "../../../config";
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
   scene: THREE.Scene,
-  camera: THREE.PerspectiveCamera
+  camera: THREE.PerspectiveCamera,
+  animateScroll = true
 ) => {
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath(assetUrl("draco/"));
   loader.setDRACOLoader(dracoLoader);
 
-  const loadCharacter = () => {
-    return new Promise<GLTF | null>(async (resolve, reject) => {
-      try {
-        const encryptedBlob = await decryptFile(
-          assetUrl("models/character.enc"),
-          "Character3D#@"
-        );
-        const blobUrl = URL.createObjectURL(new Blob([encryptedBlob]));
-
-        let character: THREE.Object3D;
-        loader.load(
-          blobUrl,
-          async (gltf) => {
-            character = gltf.scene;
-            await renderer.compileAsync(character, camera, scene);
-            character.traverse((child: any) => {
-              if (child.isMesh) {
-                const mesh = child as THREE.Mesh;
-                child.castShadow = false;
-                child.receiveShadow = false;
-                mesh.frustumCulled = true;
-                if (mesh.material && !Array.isArray(mesh.material)) {
-                  (mesh.material as THREE.ShaderMaterial).precision = 'mediump';
-                }
-              }
-            });
-            resolve(gltf);
-            setCharTimeline(character, camera);
-            character!.getObjectByName("footR")!.position.y = 3.36;
-            character!.getObjectByName("footL")!.position.y = 3.36;
-            dracoLoader.dispose();
-          },
-          undefined,
-          (error) => {
-            console.error("Error loading GLTF model:", error);
-            reject(error);
+  const loadCharacter = async (): Promise<GLTF> => {
+    let blobUrl: string | undefined;
+    try {
+      const encryptedBlob = await decryptFile(
+        assetUrl("models/character.enc"),
+        "Character3D#@"
+      );
+      blobUrl = URL.createObjectURL(new Blob([encryptedBlob]));
+      const gltf = await loader.loadAsync(blobUrl);
+      const character = gltf.scene;
+      await renderer.compileAsync(character, camera, scene);
+      character.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.castShadow = false;
+          child.receiveShadow = false;
+          child.frustumCulled = true;
+          if (child.material && !Array.isArray(child.material)) {
+            child.material.precision = "mediump";
           }
-        );
-      } catch (err) {
-        reject(err);
-        console.error(err);
-      }
-    });
+        }
+      });
+      if (animateScroll) setCharTimeline(character, camera);
+      character.getObjectByName("footR")!.position.y = 3.36;
+      character.getObjectByName("footL")!.position.y = 3.36;
+      return gltf;
+    } catch (error) {
+      console.error("Error loading GLTF model:", error);
+      throw error;
+    } finally {
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+      dracoLoader.dispose();
+    }
   };
 
   return { loadCharacter };

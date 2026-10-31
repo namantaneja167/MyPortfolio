@@ -3,7 +3,7 @@
   display: none;
 }
 
-/* Remove mobile photo and ensure 3D character is always hidden on mobile */
+/* The desktop scroll scene is replaced by a hero-only portrait on mobile. */
 @media only screen and (max-width: 768px) {
   .character-model {
     display: none !important;
@@ -151,6 +151,44 @@
     object-fit: contain;
     filter: drop-shadow(0 0 40px rgba(194, 164, 255, 0.4));
   }
+}
+
+.mobile-character {
+  position: relative;
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  margin: 0 auto;
+  pointer-events: none;
+  order: 2;
+  background: radial-gradient(ellipse at 50% 55%, rgba(194, 164, 255, 0.18), transparent 68%);
+  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent);
+  mask-image: linear-gradient(to bottom, black 85%, transparent);
+}
+
+.mobile-character-portrait,
+.mobile-character-canvas,
+.mobile-character-canvas canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mobile-character-portrait {
+  object-fit: contain;
+}
+
+.mobile-character-canvas {
+  visibility: hidden;
+}
+
+.mobile-character-ready .mobile-character-canvas {
+  visibility: visible;
+}
+
+.mobile-character-ready .mobile-character-portrait {
+  visibility: hidden;
 }
 
 .landing-section {
@@ -629,5 +667,68 @@ h2.landing-info-h2 {
 
   .landing-info-secondary .landing-h2-info {
     white-space: normal;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .landing-section {
+    height: auto !important;
+    min-height: 100svh;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .landing-container {
+    width: 100%;
+    height: auto !important;
+    min-height: 100svh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 112px 24px 40px;
+  }
+
+  .landing-intro,
+  .landing-info {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .landing-intro {
+    padding-top: 0;
+    margin-bottom: 12px;
+    order: 1;
+  }
+
+  .landing-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    order: 3;
+    margin-top: 12px;
+    padding-bottom: 0;
+  }
+
+  .landing-info h2 {
+    display: block;
+    height: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  h2.landing-info-h2 {
+    font-size: clamp(24px, 4vw, 38px);
+  }
+
+  .landing-info-secondary {
+    font-size: clamp(18px, 2.8vw, 24px);
   }
 }

@@ -20,6 +20,7 @@ const Landing = ({ children }: PropsWithChildren) => {
               {lastName && <span>{lastName.toUpperCase()}</span>}
             </h1>
           </div>
+          {children}
           <div className="landing-info">
             <h2 className="landing-info-h2">
               <div className="landing-h2-1">{config.developer.title}</div>
@@ -31,7 +32,6 @@ const Landing = ({ children }: PropsWithChildren) => {
             </h2>
           </div>
         </div>
-        {children}
       </div>
     </>
   );

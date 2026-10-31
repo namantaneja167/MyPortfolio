@@ -21,6 +21,8 @@ Capability cards start collapsed and expand using native disclosure controls. De
 
 The horizontal project sequence measures its last card on each scroll refresh, including after styles and fonts settle. Mobile and reduced-motion layouts use an unpinned vertical list.
 
+Mobile and tablet heroes show the same template character in a static, low-power 3D portrait. It renders on load and resize rather than running the desktop scroll animation. A portrait of the same model remains visible while loading or if WebGL is unavailable; mobile content never waits for graphics.
+
 ## Attribution and license
 
 The visual system and character presentation are adapted from Redoyanul Haque’s [MIT-licensed portfolio template](https://github.com/red1-for-hek/portfolio-website). The upstream license is retained in [LICENSE](LICENSE).

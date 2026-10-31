@@ -17,7 +17,7 @@ export const LoadingContext = createContext<LoadingType | null>(null);
 
 export const LoadingProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(() => {
-    // Skip model loading wherever the character is not rendered.
+    // The mobile portrait loads progressively without blocking the page.
     if (window.innerWidth <= 1024) return false;
     return true;
   });

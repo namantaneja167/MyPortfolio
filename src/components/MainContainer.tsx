@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { lazy, PropsWithChildren, Suspense, useEffect, useState } from "react";
 import About from "./About";
 import Career from "./Career";
 import Contact from "./Contact";
@@ -11,12 +11,14 @@ import Work from "./Work";
 import TechStackNew from "./TechStackNew";
 import CallToAction from "./CallToAction";
 import setSplitText from "./utils/splitText";
+import { assetUrl } from "../config";
+
+const MobileCharacter = lazy(() => import("./Character/MobileCharacter"));
 
 const MainContainer = ({ children }: PropsWithChildren) => {
   const [isDesktopView, setIsDesktopView] = useState<boolean>(
     window.innerWidth > 1024
   );
-  const [isMobile] = useState<boolean>(window.innerWidth <= 768);
   const [shouldRenderCharacter, setShouldRenderCharacter] = useState(false);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    if (window.innerWidth <= 1024) return;
+    if (!isDesktopView) return;
 
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let idleId: number | undefined;
@@ -57,16 +59,34 @@ const MainContainer = ({ children }: PropsWithChildren) => {
         clearTimeout(timeoutId);
       }
     };
-  }, []);
+  }, [isDesktopView]);
 
   return (
     <div className="container-main">
       <Cursor />
       <Navbar />
       <SocialIcons />
-      {isDesktopView && !isMobile && shouldRenderCharacter && children}
+      {isDesktopView && shouldRenderCharacter && children}
       <div className="container-main">
-        <Landing />
+        <Landing>
+          {!isDesktopView && (
+            <Suspense
+              fallback={
+                <div className="mobile-character">
+                  <img
+                    className="mobile-character-portrait"
+                    src={assetUrl("images/character-mobile.png")}
+                    alt="Stylised character from the portfolio template"
+                    width="480"
+                    height="480"
+                  />
+                </div>
+              }
+            >
+              <MobileCharacter />
+            </Suspense>
+          )}
+        </Landing>
         <About />
         <WhatIDo />
         <Career />
