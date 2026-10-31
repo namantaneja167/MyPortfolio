@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title description">
+  <title id="title">Illustrative pharma analytics workflow</title>
+  <desc id="description">Abstract records are transformed into healthcare analytics and key performance indicators.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1">
+      <stop stop-color="#21162a"/>
+      <stop offset="1" stop-color="#0b080c"/>
+    </linearGradient>
+    <linearGradient id="bar" y2="1">
+      <stop stop-color="#d4b8ff"/>
+      <stop offset="1" stop-color="#77559b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <circle cx="930" cy="300" r="290" fill="#9d62dc" opacity=".08"/>
+  <g fill="#eae5ec" font-family="Geist,Arial,sans-serif">
+    <text x="85" y="106" font-size="17" letter-spacing="4" fill="#c2a4ff">ILLUSTRATIVE ANALYTICS FLOW</text>
+    <text x="88" y="177" font-size="22" opacity=".7">Healthcare records</text>
+    <text x="470" y="177" font-size="22" opacity=".7">ETL</text>
+    <text x="850" y="177" font-size="22" opacity=".7">Go-to-market insights</text>
+  </g>
+  <g fill="#2a2033" stroke="#bfa1e6" stroke-width="1.5">
+    <rect x="85" y="220" width="270" height="280" rx="4"/>
+    <rect x="445" y="220" width="270" height="280" rx="4"/>
+    <rect x="805" y="220" width="310" height="280" rx="4"/>
+  </g>
+  <g stroke="#d6c1ed" stroke-width="5" opacity=".68">
+    <path d="M118 275h194M118 307h164M118 339h184M118 371h133M118 403h189M118 435h150"/>
+    <path d="M478 278h204M478 311h178M478 344h190M478 377h162M478 410h198M478 443h172"/>
+  </g>
+  <g fill="none" stroke="#c2a4ff" stroke-width="3">
+    <path d="M355 360H445"/>
+    <path d="m423 340 22 20-22 20"/>
+    <path d="M715 360H805"/>
+    <path d="m783 340 22 20-22 20"/>
+  </g>
+  <g fill="url(#bar)">
+    <rect x="852" y="390" width="30" height="64" rx="3"/>
+    <rect x="901" y="352" width="30" height="102" rx="3"/>
+    <rect x="950" y="319" width="30" height="135" rx="3"/>
+    <rect x="999" y="283" width="30" height="171" rx="3"/>
+  </g>
+  <g fill="#eae5ec" font-family="Geist,Arial,sans-serif">
+    <text x="85" y="555" font-size="40" font-weight="600">1B+</text>
+    <text x="173" y="555" font-size="16" opacity=".7">records processed</text>
+    <text x="445" y="555" font-size="40" font-weight="600" fill="#c2a4ff">25%</text>
+    <text x="550" y="555" font-size="16" opacity=".7">faster processing</text>
+    <text x="805" y="555" font-size="40" font-weight="600">300+</text>
+    <text x="930" y="555" font-size="16" opacity=".7">KPIs evaluated</text>
+    <text x="85" y="636" font-size="16" fill="#b9a8c5">Conceptual illustration; no client or patient data shown.</text>
+  </g>
+</svg>

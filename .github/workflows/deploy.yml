@@ -1,63 +1,52 @@
-name: Deploy Portfolio to GitHub Pages
+name: Deploy portfolio to GitHub Pages
 
 on:
   push:
     branches: [main]
-  # Allow manual re-deploy from the Actions tab
   workflow_dispatch:
 
-# Grant GITHUB_TOKEN the permissions needed to publish Pages
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
-# Allow only one concurrent deployment; cancel in-progress runs
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
   build:
-    name: Build Astro site
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: npm
-
       - name: Install dependencies
-        # `npm ci` cannot be used here. The lockfile is generated on Windows, where
-        # npm does not resolve the `wasm32-wasi` optional subtrees of sharp,
-        # tailwindcss and Astro's Satteri processor, so it lacks the @emnapi
-        # packages that Linux resolution expects. `npm ci` treats that as a fatal
-        # mismatch; `npm install` fills the gap while still honouring the lockfile.
-        # Regenerate the lockfile on Linux to switch back to `npm ci`.
-        run: npm install --no-audit --no-fund
-
-      - name: Type check
-        run: npm run check
-
-      - name: Build with Astro
+        run: npm ci
+      - name: Build
         run: npm run build
-
+      - name: Configure single-page routing fallback
+        run: cp dist/index.html dist/404.html
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ./dist
 
   deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

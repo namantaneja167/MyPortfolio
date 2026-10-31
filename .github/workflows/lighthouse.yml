@@ -21,8 +21,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        # See deploy.yml: the Windows-generated lockfile is incomplete for Linux.
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Build
         run: npm run build

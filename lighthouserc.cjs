@@ -4,11 +4,10 @@
 module.exports = {
   ci: {
     collect: {
-      // The site is built for the `/MyPortfolio` base path, so it must be served
-      // by `astro preview`. Serving dist/ as the web root 404s every asset.
+      // Vite preview serves the site under its configured GitHub Pages base path.
       startServerCommand: 'npm run preview',
-      startServerReadyPattern: 'ready in',
-      url: ['http://localhost:4321/MyPortfolio/'],
+      startServerReadyPattern: 'Local:',
+      url: ['http://localhost:4173/MyPortfolio/'],
       numberOfRuns: 3,
       settings: {
         chromeFlags: '--no-sandbox --disable-dev-shm-usage',
