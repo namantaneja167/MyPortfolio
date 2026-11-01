@@ -29,7 +29,7 @@ const Work = () => {
 
     const media = gsap.matchMedia();
     media.add(
-      "(min-width: 769px) and (prefers-reduced-motion: no-preference)",
+      "(min-width: 769px) and (height > 650px) and (prefers-reduced-motion: no-preference)",
       (context) => {
         // Let stylesheet and breakpoint layout settle before capturing pin sizes.
         const frame = requestAnimationFrame(() => {
