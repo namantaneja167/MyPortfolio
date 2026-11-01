@@ -1,5 +1,44 @@
 import * as THREE from "three";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Reduced motion keeps the fixed canvas and the Home/About poses, switched instantly.
+// The monitor stays transparent because its reveal belongs to the scrubbed What I Do scene.
+function setStaticCharacter(character: THREE.Object3D, camera: THREE.PerspectiveCamera) {
+  let pose: "home" | "about" | "hidden" | null = null;
+  const apply = () => {
+    const about = document.querySelector(".about-section");
+    const whatIDo = document.querySelector(".whatIDO");
+    if (!about || !whatIDo) return;
+    const next = whatIDo.getBoundingClientRect().top < window.innerHeight * 0.6
+      ? "hidden"
+      : about.getBoundingClientRect().top < window.innerHeight * 0.5
+        ? "about"
+        : "home";
+    if (next === pose) return;
+    pose = next;
+    const inAbout = next !== "home";
+    gsap.set(".character-model", {
+      x: inAbout ? "-25%" : 0,
+      autoAlpha: next === "hidden" ? 0 : 1,
+      pointerEvents: next === "home" ? "inherit" : "none",
+    });
+    character.rotation.set(0, inAbout ? 0.7 : 0, 0);
+    camera.position.z = inAbout ? 22 : 24.7;
+  };
+  ScrollTrigger.create({
+    trigger: ".landing-section",
+    endTrigger: ".whatIDO",
+    start: "top top",
+    end: "bottom top",
+    onUpdate: apply,
+    onToggle: apply,
+    onRefresh: apply,
+  });
+  apply();
+}
+
+let syncCharacterTimelines: (() => void) | null = null;
 
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
@@ -69,18 +108,11 @@ export function setCharTimeline(
     }
   });
   if (reducedMotion) {
-    character?.traverse((object) => {
-      const mesh = object as THREE.Mesh;
-      if (mesh.material && !Array.isArray(mesh.material)) {
-        const material = mesh.material as THREE.Material;
-        if (material.transparent) material.opacity = 1;
-      }
-    });
     [tl1, tl2, tl3, tl4].forEach((timeline) => {
       timeline.scrollTrigger?.kill();
       timeline.kill();
     });
-    gsap.set(".character-model", { position: "absolute", pointerEvents: "none" });
+    if (window.innerWidth > 1024 && character) setStaticCharacter(character, camera);
     return;
   }
   let neckBone = character?.getObjectByName("spine005");
@@ -105,7 +137,7 @@ export function setCharTimeline(
         .fromTo(
           ".character-model",
           { pointerEvents: "inherit" },
-          { pointerEvents: "none", x: "-12%", delay: 2, duration: 5 },
+          { pointerEvents: "none", x: "-12%", delay: 2, duration: 5, immediateRender: false },
           0
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
@@ -136,6 +168,7 @@ export function setCharTimeline(
             zIndex: 8,
             duration: 1,
             ease: "none",
+            immediateRender: false,
           },
           0
         )
@@ -147,6 +180,22 @@ export function setCharTimeline(
         { y: "-100%", duration: 1, ease: "none", immediateRender: false },
         0
       );
+
+      // Several timelines tween .character-model; after a refresh invalidates
+      // them, re-apply their states in order so a stale later pose cannot win.
+      const timelines = [tl1, tl2, tl3, tl4];
+      if (syncCharacterTimelines) {
+        ScrollTrigger.removeEventListener("refresh", syncCharacterTimelines);
+      }
+      syncCharacterTimelines = () => {
+        [...timelines].reverse().forEach((timeline) => {
+          timeline.progress(0.001, true).progress(0, true);
+        });
+        timelines.forEach((timeline) => {
+          timeline.progress(timeline.scrollTrigger?.progress ?? 0, true);
+        });
+      };
+      ScrollTrigger.addEventListener("refresh", syncCharacterTimelines);
     }
   } else {
     if (character) {
