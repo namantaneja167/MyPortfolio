@@ -12,7 +12,7 @@ export let lenis: Lenis | null = null;
 const Navbar = () => {
   useEffect(() => {
     // Initialize Lenis smooth scroll
-    lenis = new Lenis({
+    const scrollController = new Lenis({
       duration: 1.7,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
@@ -22,46 +22,51 @@ const Navbar = () => {
       touchMultiplier: 2,
       infinite: false,
     });
+    lenis = scrollController;
 
     // Start paused
-    lenis.stop();
+    scrollController.stop();
 
-    // Handle smooth scroll animation frame
-    function raf(time: number) {
-      lenis?.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    const updateLenis = (time: number) => scrollController.raf(time * 1000);
+    scrollController.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(updateLenis);
+    gsap.ticker.lagSmoothing(0);
 
     // Handle navigation links
     const links = document.querySelectorAll(".header ul a");
-    links.forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          const elem = e.currentTarget as HTMLAnchorElement;
-          const section = elem.getAttribute("data-href");
-          if (section && lenis) {
-            const target = document.querySelector(section) as HTMLElement;
-            if (target) {
-              lenis.scrollTo(target, {
-                offset: -100,
-                duration: 1.5,
-              });
-            }
+    const handleNavigation = (e: Event) => {
+      if (window.innerWidth > 1024) {
+        e.preventDefault();
+        const elem = e.currentTarget as HTMLAnchorElement;
+        const section = elem.getAttribute("data-href");
+        if (section) {
+          const target = document.querySelector(section) as HTMLElement;
+          if (target) {
+            scrollController.scrollTo(target, {
+              offset: -100,
+              duration: 1.5,
+            });
           }
         }
-      });
+      }
+    };
+    links.forEach((element) => {
+      element.addEventListener("click", handleNavigation);
     });
 
     // Handle resize
-    window.addEventListener("resize", () => {
-      lenis?.resize();
-    });
+    const handleResize = () => scrollController.resize();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      lenis?.destroy();
+      gsap.ticker.remove(updateLenis);
+      scrollController.off("scroll", ScrollTrigger.update);
+      window.removeEventListener("resize", handleResize);
+      links.forEach((element) => {
+        element.removeEventListener("click", handleNavigation);
+      });
+      scrollController.destroy();
+      if (lenis === scrollController) lenis = null;
     };
   }, []);
   return (

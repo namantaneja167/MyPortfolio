@@ -13,6 +13,8 @@ dist-ssr
 *.tsbuildinfo
 .lighthouseci/
 .lhtmp/
+test-results/
+playwright-report/
 *.local
 
 # Editor directories and files

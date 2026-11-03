@@ -67,16 +67,18 @@ export function setCharTimeline(
     scrollTrigger: {
       trigger: ".whatIDO",
       start: "top 85%",
-      end: "bottom 45%",
+      end: "bottom 75%",
       scrub: true,
       invalidateOnRefresh: true,
     },
   });
   const tl4 = gsap.timeline({
     scrollTrigger: {
+      // Begin where tl3 ends so the fixed character clears the career copy
+      // before that copy scrolls into the character's painted area.
       trigger: ".career-section",
-      start: "top 25%",
-      end: "top -20%",
+      start: "top 75%",
+      end: "top 15%",
       scrub: true,
       invalidateOnRefresh: true,
     },

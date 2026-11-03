@@ -1,6 +1,6 @@
 .loading-screen {
   position: fixed;
-  width: 100vw;
+  width: 100%;
   height: var(--vh);
   /* background-image: linear-gradient(#cbb1ff, #d8c4ff); */
   background-color: #eae5ec;

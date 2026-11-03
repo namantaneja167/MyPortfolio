@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+export const getRenderPixelRatio = () => Math.min(window.devicePixelRatio, 1.5);
+
 export default function handleResize(
   renderer: THREE.WebGLRenderer,
   camera: THREE.PerspectiveCamera,
@@ -10,6 +12,7 @@ export default function handleResize(
   const canvas3d = canvasDiv.current.getBoundingClientRect();
   const width = canvas3d.width;
   const height = canvas3d.height;
+  renderer.setPixelRatio(getRenderPixelRatio());
   renderer.setSize(width, height);
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
