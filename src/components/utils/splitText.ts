@@ -13,6 +13,8 @@ const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const reducedMotion = () => motionQuery.matches;
 
 let builtFor: string | null = null;
+// Tracked directly because React may detach these nodes before cleanup runs.
+const built = new Set<ParaElement>();
 let registered = false;
 let fontsPending = false;
 
@@ -22,12 +24,11 @@ function revertElement(element: ParaElement) {
   element.split?.revert();
   delete element.anim;
   delete element.split;
+  built.delete(element);
 }
 
 function revertAll() {
-  document
-    .querySelectorAll<ParaElement>(".para, .title")
-    .forEach(revertElement);
+  built.forEach(revertElement);
   builtFor = null;
 }
 
@@ -38,6 +39,7 @@ function build() {
   const ToggleAction = "play pause resume reverse";
 
   paras.forEach((para) => {
+    built.add(para);
     para.classList.add("visible");
     para.split = new TextSplitter(para, {
       type: "lines,words",
@@ -61,6 +63,7 @@ function build() {
     );
   });
   titles.forEach((title) => {
+    built.add(title);
     title.split = new TextSplitter(title, {
       type: "chars,lines",
       linesClass: "split-line",

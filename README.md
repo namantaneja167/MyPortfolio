@@ -37,7 +37,7 @@ npm run build
 npm run test:scroll
 ```
 
-The checks start Vite automatically and exercise wheel/trackpad input, same-frame scrub progress, classic scrollbar gutters, project navigation, reduced-motion work layout, and desktop DPR changes. Lifecycle checks cover stable ScrollTrigger refreshes, blocked models and failed WebGL, resizing before the deferred scene mounts, repeated breakpoint crossings, reduced motion and the pause button, navigation hash/focus, and built asset paths under `/MyPortfolio/` (skipped without a build). They run in Chromium and installed Microsoft Edge; use `npm run test:scroll -- --project=chromium` when Edge is unavailable.
+The checks start Vite automatically and exercise wheel/trackpad input, same-frame scrub progress, classic scrollbar gutters, project navigation, reduced-motion work layout, and desktop DPR changes. Lifecycle checks cover stable ScrollTrigger refreshes, blocked models and failed WebGL, resizing before the deferred scene mounts, repeated breakpoint crossings, reduced motion and the pause button, navigation hash/focus, and built asset paths under `/MyPortfolio/` (skipped without a build). A Strict Mode harness (`tests/strict-harness.html`, dev server only) mounts and unmounts the whole app repeatedly and checks that app listeners, refresh handlers, ScrollTriggers, animations, canvases and frame loops return to the same counts each cycle. They run in Chromium and installed Microsoft Edge; use `npm run test:scroll -- --project=chromium` when Edge is unavailable.
 
 ## Attribution and license
 
