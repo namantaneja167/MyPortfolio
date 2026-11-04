@@ -114,6 +114,54 @@ async function canvasCoverage(page: Page, selector: string) {
   }, [shown, hidden]);
 }
 
+test("character moves continuously from About into What I Do", async ({ browser }) => {
+  const context = await browser.newContext({
+    baseURL: test.info().project.use.baseURL,
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: "no-preference",
+  });
+  const page = await context.newPage();
+  try {
+    await openPortfolio(page);
+    await expect(page.locator(".character-model")).toHaveAttribute("data-graphics", "ready", { timeout: 30000 });
+    // About and What I Do timelines overlap here; a second writer used to snap the model.
+    const worst = await page.evaluate(async () => {
+      const top = (selector: string) =>
+        document.querySelector(selector)!.getBoundingClientRect().top + scrollY;
+      const from = Math.round(top(".about-section") - innerHeight * 0.1);
+      const to = Math.round(top(".whatIDO") + innerHeight * 0.25);
+      const model = document.querySelector(".character-model")!;
+      const frame = () => new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve))
+      );
+      const read = () => {
+        const matrix = new DOMMatrix(getComputedStyle(model).transform);
+        return { x: matrix.m41, y: matrix.m42 };
+      };
+      let largest = { jump: 0, at: 0 };
+      for (const [start, end] of [[from, to], [to, from], [from, to]]) {
+        window.scrollTo(0, start);
+        await frame();
+        let previous = read();
+        const step = Math.sign(end - start) * 10;
+        for (let y = start + step; Math.sign(end - y) === Math.sign(step); y += step) {
+          window.scrollTo(0, y);
+          await frame();
+          const next = read();
+          const jump = Math.hypot(next.x - previous.x, next.y - previous.y);
+          if (jump > largest.jump) largest = { jump, at: y };
+          previous = next;
+        }
+      }
+      return largest;
+    });
+    // Scrubbed motion moves well under 1px per scrolled pixel; the old handoff jumped ~190px.
+    expect(worst.jump, `largest jump near scrollY ${worst.at}`).toBeLessThan(20);
+  } finally {
+    await context.close();
+  }
+});
+
 test("character leaves before covering the career heading and first role", async ({ browser }) => {
   const context = await browser.newContext({
     baseURL: test.info().project.use.baseURL,

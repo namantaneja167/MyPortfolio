@@ -193,13 +193,16 @@ export function setCharTimeline(
           0.3
         );
 
+      // tl2 is still scrubbing x when tl3 starts, so tl3 offsets the model with
+      // xPercent/yPercent, which GSAP composes with x instead of overwriting it.
+      // xPercent starts from the CSS translateX(-50%) centring.
       tl3
         .fromTo(
           ".character-model",
-          { x: "-12%", y: "0%", scale: 1, zIndex: 11 },
+          { xPercent: -50, yPercent: 0, scale: 1, zIndex: 11 },
           {
-            x: "-1%",
-            y: "-15%",
+            xPercent: -39,
+            yPercent: -15,
             scale: 0.88,
             zIndex: 8,
             duration: 1,
@@ -212,8 +215,8 @@ export function setCharTimeline(
 
       tl4.fromTo(
         ".character-model",
-        { y: "-15%" },
-        { y: "-100%", duration: 1, ease: "none", immediateRender: false },
+        { yPercent: -15 },
+        { yPercent: -100, duration: 1, ease: "none", immediateRender: false },
         0
       );
 
