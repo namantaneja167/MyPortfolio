@@ -1,14 +1,12 @@
 import * as THREE from "three";
 import { DRACOLoader, GLTF, GLTFLoader } from "three-stdlib";
-import { setCharTimeline } from "../../utils/GsapScroll";
 import { decryptFile } from "./decrypt";
 import { assetUrl } from "../../../config";
 
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
   scene: THREE.Scene,
-  camera: THREE.PerspectiveCamera,
-  animateScroll = true
+  camera: THREE.PerspectiveCamera
 ) => {
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
@@ -18,11 +16,11 @@ const setCharacter = (
   const loadCharacter = async (): Promise<GLTF> => {
     let blobUrl: string | undefined;
     try {
-      const encryptedBlob = await decryptFile(
+      const decrypted = await decryptFile(
         assetUrl("models/character.enc"),
         "Character3D#@"
       );
-      blobUrl = URL.createObjectURL(new Blob([encryptedBlob]));
+      blobUrl = URL.createObjectURL(new Blob([decrypted]));
       const gltf = await loader.loadAsync(blobUrl);
       const character = gltf.scene;
       await renderer.compileAsync(character, camera, scene);
@@ -36,9 +34,10 @@ const setCharacter = (
           }
         }
       });
-      if (animateScroll) setCharTimeline(character, camera);
-      character.getObjectByName("footR")!.position.y = 3.36;
-      character.getObjectByName("footL")!.position.y = 3.36;
+      ["footR", "footL"].forEach((name) => {
+        const foot = character.getObjectByName(name);
+        if (foot) foot.position.y = 3.36;
+      });
       return gltf;
     } catch (error) {
       console.error("Error loading GLTF model:", error);

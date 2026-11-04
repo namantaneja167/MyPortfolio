@@ -9,6 +9,7 @@ import { TbNotes } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import HoverLinks from "./HoverLinks";
 import { config } from "../config";
+import { isMotionPaused } from "../utils/motion";
 
 const SocialIcons = () => {
   const [isHeroVisible, setIsHeroVisible] = useState(
@@ -28,49 +29,64 @@ const SocialIcons = () => {
   }, []);
 
   useEffect(() => {
-    const social = document.getElementById("social") as HTMLElement;
+    const social = document.getElementById("social");
+    if (!social) return;
+    const cleanups: (() => void)[] = [];
 
-    social.querySelectorAll("span").forEach((item) => {
-      const elem = item as HTMLElement;
-      const link = elem.querySelector("a") as HTMLElement;
+    social.querySelectorAll("span").forEach((elem) => {
+      const link = elem.querySelector("a");
+      if (!link) return;
 
-      const rect = elem.getBoundingClientRect();
+      let rect = elem.getBoundingClientRect();
       let mouseX = rect.width / 2;
       let mouseY = rect.height / 2;
-      let currentX = 0;
-      let currentY = 0;
+      let currentX = mouseX;
+      let currentY = mouseY;
+      let frame: number | undefined;
 
-      const updatePosition = () => {
-        currentX += (mouseX - currentX) * 0.1;
-        currentY += (mouseY - currentY) * 0.1;
-
+      const paint = () => {
         link.style.setProperty("--siLeft", `${currentX}px`);
         link.style.setProperty("--siTop", `${currentY}px`);
-
-        requestAnimationFrame(updatePosition);
       };
-
-      const onMouseMove = (e: MouseEvent) => {
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        if (x < 40 && x > 10 && y < 40 && y > 5) {
-          mouseX = x;
-          mouseY = y;
-        } else {
-          mouseX = rect.width / 2;
-          mouseY = rect.height / 2;
+      // Eases toward the pointer and stops once settled.
+      const updatePosition = () => {
+        frame = undefined;
+        if (isMotionPaused()) {
+          currentX = mouseX;
+          currentY = mouseY;
+          paint();
+          return;
+        }
+        currentX += (mouseX - currentX) * 0.1;
+        currentY += (mouseY - currentY) * 0.1;
+        paint();
+        if (Math.abs(mouseX - currentX) > 0.1 || Math.abs(mouseY - currentY) > 0.1) {
+          frame = requestAnimationFrame(updatePosition);
         }
       };
 
-      document.addEventListener("mousemove", onMouseMove);
-
-      updatePosition();
-
-      return () => {
-        elem.removeEventListener("mousemove", onMouseMove);
+      const onMouseMove = (e: MouseEvent) => {
+        rect = elem.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const inside = x < 40 && x > 10 && y < 40 && y > 5;
+        const nextX = inside ? x : rect.width / 2;
+        const nextY = inside ? y : rect.height / 2;
+        if (nextX === mouseX && nextY === mouseY) return;
+        mouseX = nextX;
+        mouseY = nextY;
+        if (frame === undefined) frame = requestAnimationFrame(updatePosition);
       };
+
+      paint();
+      document.addEventListener("mousemove", onMouseMove);
+      cleanups.push(() => {
+        document.removeEventListener("mousemove", onMouseMove);
+        if (frame !== undefined) cancelAnimationFrame(frame);
+      });
     });
+
+    return () => cleanups.forEach((cleanup) => cleanup());
   }, []);
 
   return (

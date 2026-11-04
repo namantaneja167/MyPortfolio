@@ -9,27 +9,40 @@ interface ParaElement extends HTMLElement {
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function setSplitText() {
-  ScrollTrigger.config({ ignoreMobileResize: true });
-  if (window.innerWidth < 900) return;
-  const paras: NodeListOf<ParaElement> = document.querySelectorAll(".para");
-  const titles: NodeListOf<ParaElement> = document.querySelectorAll(".title");
+const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const reducedMotion = () => motionQuery.matches;
 
+let builtFor: string | null = null;
+let registered = false;
+let fontsPending = false;
+
+function revertElement(element: ParaElement) {
+  element.anim?.scrollTrigger?.kill();
+  element.anim?.kill();
+  element.split?.revert();
+  delete element.anim;
+  delete element.split;
+}
+
+function revertAll() {
+  document
+    .querySelectorAll<ParaElement>(".para, .title")
+    .forEach(revertElement);
+  builtFor = null;
+}
+
+function build() {
+  const paras = document.querySelectorAll<ParaElement>(".para");
+  const titles = document.querySelectorAll<ParaElement>(".title");
   const TriggerStart = window.innerWidth <= 1024 ? "top 60%" : "20% 60%";
   const ToggleAction = "play pause resume reverse";
 
-  paras.forEach((para: ParaElement) => {
+  paras.forEach((para) => {
     para.classList.add("visible");
-    if (para.anim) {
-      para.anim.progress(1).kill();
-      para.split?.revert();
-    }
-
     para.split = new TextSplitter(para, {
       type: "lines,words",
       linesClass: "split-line",
     });
-
     para.anim = gsap.fromTo(
       para.split.words,
       { autoAlpha: 0, y: 80 },
@@ -47,11 +60,7 @@ export default function setSplitText() {
       }
     );
   });
-  titles.forEach((title: ParaElement) => {
-    if (title.anim) {
-      title.anim.progress(1).kill();
-      title.split?.revert();
-    }
+  titles.forEach((title) => {
     title.split = new TextSplitter(title, {
       type: "chars,lines",
       linesClass: "split-line",
@@ -74,6 +83,45 @@ export default function setSplitText() {
       }
     );
   });
+}
 
-  ScrollTrigger.addEventListener("refresh", () => setSplitText());
+// Line breaks depend on width and fonts, so only those changes rebuild the split.
+function sync(force = false) {
+  const key = window.innerWidth >= 900 && !reducedMotion() ? `${window.innerWidth}` : null;
+  if (!force && key === builtFor) return;
+  revertAll();
+  if (key === null) return;
+  build();
+  builtFor = key;
+}
+
+const onRefresh = () => sync();
+const onMotionChange = () => sync();
+
+export default function setSplitText() {
+  ScrollTrigger.config({ ignoreMobileResize: true });
+  if (!registered) {
+    registered = true;
+    ScrollTrigger.addEventListener("refresh", onRefresh);
+    motionQuery.addEventListener("change", onMotionChange);
+    if (document.fonts && document.fonts.status !== "loaded") {
+      fontsPending = true;
+      document.fonts.ready.then(() => {
+        if (!fontsPending) return;
+        fontsPending = false;
+        if (registered) sync(true);
+      });
+    }
+  }
+  sync();
+}
+
+export function destroySplitText() {
+  if (registered) {
+    ScrollTrigger.removeEventListener("refresh", onRefresh);
+    motionQuery.removeEventListener("change", onMotionChange);
+  }
+  registered = false;
+  fontsPending = false;
+  revertAll();
 }

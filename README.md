@@ -21,18 +21,23 @@ Capability cards start collapsed and expand using native disclosure controls. De
 
 The horizontal project sequence measures its last card on each scroll refresh, including after styles and fonts settle. Mobile and reduced-motion layouts use an unpinned vertical list.
 
-Lenis runs on the GSAP ticker and updates ScrollTrigger on each scroll step. Native CSS smooth scrolling is overridden while Lenis owns scrolling; its duration and wheel multiplier remain 1.7. Full-width sections exclude the scrollbar gutter. The desktop character caps its render pixel ratio at 1.5 and reapplies it on resize, limiting GPU work on scaled displays.
+Lenis runs on the GSAP ticker and updates ScrollTrigger on each scroll step. Native CSS smooth scrolling is overridden while Lenis owns scrolling; its duration and wheel multiplier remain 1.7. Full-width sections exclude the scrollbar gutter. The desktop character caps its render pixel ratio at 1.5 and reapplies it on resize, limiting GPU work on scaled displays; antialiasing stays on because that cap is below a 2x display's ratio.
+
+The desktop scene pauses rendering while offscreen or in a hidden tab and resumes with a clamped frame delta. If WebGL, the model, or the scene code fails, or the context is lost, the loader is released and a static portrait is shown in the hero. Leaving the desktop breakpoint disposes the scene, its timelines and its listeners.
+
+Reduced motion shows final poses and plain text. The header pause button stops persistent decorative motion (character idle animation, screen flicker, background video, glow and timeline loops) and is remembered for later visits; it is hidden when the OS already requests reduced motion. Desktop section links scroll smoothly while updating the URL hash, browser history and keyboard focus.
 
 Mobile and tablet heroes show the same template character in a low-power 3D portrait with a gentle smile and occasional blink. It renders only on load, resize, or while blinking; motion pauses offscreen, in hidden tabs, and when reduced motion is enabled. A matching portrait remains visible while loading or if WebGL is unavailable; mobile content never waits for graphics.
 
-## Scroll regression checks
+## Scroll and lifecycle checks
 
 ```bash
 npx playwright install chromium
+npm run build
 npm run test:scroll
 ```
 
-The checks start Vite automatically and exercise wheel/trackpad input, same-frame scrub progress, classic scrollbar gutters, project navigation, reduced-motion work layout, and desktop DPR changes. They run in Chromium and installed Microsoft Edge; use `npm run test:scroll -- --project=chromium` when Edge is unavailable.
+The checks start Vite automatically and exercise wheel/trackpad input, same-frame scrub progress, classic scrollbar gutters, project navigation, reduced-motion work layout, and desktop DPR changes. Lifecycle checks cover stable ScrollTrigger refreshes, blocked models and failed WebGL, resizing before the deferred scene mounts, repeated breakpoint crossings, reduced motion and the pause button, navigation hash/focus, and built asset paths under `/MyPortfolio/` (skipped without a build). They run in Chromium and installed Microsoft Edge; use `npm run test:scroll -- --project=chromium` when Edge is unavailable.
 
 ## Attribution and license
 

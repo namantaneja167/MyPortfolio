@@ -3,16 +3,18 @@ import { GLTF } from "three-stdlib";
 import { eyebrowBoneNames, typingBoneNames } from "../../../data/boneData";
 
 const setAnimations = (gltf: GLTF) => {
-  let character = gltf.scene;
-  let mixer = new THREE.AnimationMixer(character);
+  const character = gltf.scene;
+  const mixer = new THREE.AnimationMixer(character);
   if (gltf.animations) {
     const introClip = gltf.animations.find(
       (clip) => clip.name === "introAnimation"
     );
-    const introAction = mixer.clipAction(introClip!);
-    introAction.setLoop(THREE.LoopOnce, 1);
-    introAction.clampWhenFinished = true;
-    introAction.play();
+    if (introClip) {
+      const introAction = mixer.clipAction(introClip);
+      introAction.setLoop(THREE.LoopOnce, 1);
+      introAction.clampWhenFinished = true;
+      introAction.play();
+    }
     const clipNames = ["key1", "key2", "key5", "key6"];
     clipNames.forEach((name) => {
       const clip = THREE.AnimationClip.findByName(gltf.animations, name);
@@ -32,20 +34,35 @@ const setAnimations = (gltf: GLTF) => {
       typingAction.timeScale = 1.2;
     }
   }
-  function startIntro() {
+  let blinkTimer: number | undefined;
+  let removeHover: (() => void) | undefined;
+  // Reduced motion lands on the intro's final pose without playing it or blinking.
+  function startIntro(reducedMotion = false) {
     const introClip = gltf.animations.find(
       (clip) => clip.name === "introAnimation"
     );
-    const introAction = mixer.clipAction(introClip!);
-    introAction.clampWhenFinished = true;
-    introAction.reset().play();
-    setTimeout(() => {
+    if (introClip) {
+      const introAction = mixer.clipAction(introClip);
+      introAction.clampWhenFinished = true;
+      introAction.reset().play();
+      if (reducedMotion) mixer.update(introClip.duration);
+    }
+    if (reducedMotion) return;
+    window.clearTimeout(blinkTimer);
+    blinkTimer = window.setTimeout(() => {
+      blinkTimer = undefined;
       const blink = gltf.animations.find((clip) => clip.name === "Blink");
-      mixer.clipAction(blink!).play().fadeIn(0.5);
+      if (blink) mixer.clipAction(blink).play().fadeIn(0.5);
     }, 2500);
   }
+  function dispose() {
+    window.clearTimeout(blinkTimer);
+    removeHover?.();
+    mixer.stopAllAction();
+    mixer.uncacheRoot(character);
+  }
   function hover(gltf: GLTF, hoverDiv: HTMLDivElement) {
-    let eyeBrowUpAction = createBoneAction(
+    const eyeBrowUpAction = createBoneAction(
       gltf,
       mixer,
       "browup",
@@ -73,14 +90,15 @@ const setAnimations = (gltf: GLTF) => {
       }
     };
     if (!hoverDiv) return;
+    removeHover?.();
     hoverDiv.addEventListener("mouseenter", onHoverFace);
     hoverDiv.addEventListener("mouseleave", onLeaveFace);
-    return () => {
+    removeHover = () => {
       hoverDiv.removeEventListener("mouseenter", onHoverFace);
       hoverDiv.removeEventListener("mouseleave", onLeaveFace);
     };
   }
-  return { mixer, startIntro, hover };
+  return { mixer, startIntro, hover, dispose };
 };
 
 const createBoneAction = (

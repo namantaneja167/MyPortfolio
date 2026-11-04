@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isMotionPaused, prefersReducedMotion, subscribeMotion } from "../../utils/motion";
 
 // Reduced motion keeps the fixed canvas and the Home/About poses, switched instantly.
 // The monitor stays transparent because its reveal belongs to the scrubbed What I Do scene.
@@ -26,7 +27,7 @@ function setStaticCharacter(character: THREE.Object3D, camera: THREE.Perspective
     character.rotation.set(0, inAbout ? 0.7 : 0, 0);
     camera.position.z = inAbout ? 22 : 24.7;
   };
-  ScrollTrigger.create({
+  const trigger = ScrollTrigger.create({
     trigger: ".landing-section",
     endTrigger: ".whatIDO",
     start: "top top",
@@ -36,15 +37,20 @@ function setStaticCharacter(character: THREE.Object3D, camera: THREE.Perspective
     onRefresh: apply,
   });
   apply();
+  return trigger;
 }
 
-let syncCharacterTimelines: (() => void) | null = null;
-
+// Returns a teardown that reverts every tween, trigger and listener it created.
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera
-) {
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+): () => void {
+  const reducedMotion = prefersReducedMotion();
+  const cleanups: (() => void)[] = [];
+  const teardown = () => {
+    cleanups.reverse().forEach((cleanup) => cleanup());
+    cleanups.length = 0;
+  };
   const tl1 = gsap.timeline({
     scrollTrigger: {
       trigger: ".landing-section",
@@ -100,24 +106,46 @@ export function setCharTimeline(
       object.material.opacity = 0;
       object.material.emissive.set("#C8BFFF");
       if (!reducedMotion) {
-        gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
+        const flicker = gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
           emissiveIntensity: () => Math.random() * 8,
           duration: () => Math.random() * 0.6,
           delay: () => Math.random() * 0.1,
+        });
+        const syncFlicker = () => flicker.paused(isMotionPaused());
+        syncFlicker();
+        const unsubscribe = subscribeMotion(syncFlicker);
+        cleanups.push(() => {
+          unsubscribe();
+          flicker.kill();
         });
       }
       screenLight = object;
     }
   });
+  const scrollTimelines = [tl1, tl2, tl3, tl4];
+  cleanups.push(() => {
+    scrollTimelines.forEach((timeline) => {
+      timeline.scrollTrigger?.kill();
+      timeline.revert();
+      timeline.kill();
+    });
+  });
   if (reducedMotion) {
-    [tl1, tl2, tl3, tl4].forEach((timeline) => {
+    scrollTimelines.forEach((timeline) => {
       timeline.scrollTrigger?.kill();
       timeline.kill();
     });
-    if (window.innerWidth > 1024 && character) setStaticCharacter(character, camera);
-    return;
+    scrollTimelines.length = 0;
+    if (window.innerWidth > 1024 && character) {
+      const trigger = setStaticCharacter(character, camera);
+      cleanups.push(() => {
+        trigger.kill();
+        gsap.set(".character-model", { clearProps: "x,visibility,opacity,pointerEvents" });
+      });
+    }
+    return teardown;
   }
-  let neckBone = character?.getObjectByName("spine005");
+  const neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
     if (character) {
       tl1
@@ -186,10 +214,7 @@ export function setCharTimeline(
       // Several timelines tween .character-model; after a refresh invalidates
       // them, re-apply their states in order so a stale later pose cannot win.
       const timelines = [tl1, tl2, tl3, tl4];
-      if (syncCharacterTimelines) {
-        ScrollTrigger.removeEventListener("refresh", syncCharacterTimelines);
-      }
-      syncCharacterTimelines = () => {
+      const syncCharacterTimelines = () => {
         [...timelines].reverse().forEach((timeline) => {
           timeline.progress(0.001, true).progress(0, true);
         });
@@ -198,6 +223,9 @@ export function setCharTimeline(
         });
       };
       ScrollTrigger.addEventListener("refresh", syncCharacterTimelines);
+      cleanups.push(() =>
+        ScrollTrigger.removeEventListener("refresh", syncCharacterTimelines)
+      );
     }
   } else {
     if (character) {
@@ -209,12 +237,17 @@ export function setCharTimeline(
         },
       });
       tM2.to(".what-box-in", { display: "flex", duration: 0.1, delay: 0 }, 0);
+      cleanups.push(() => {
+        tM2.scrollTrigger?.kill();
+        tM2.revert();
+      });
     }
   }
+  return teardown;
 }
 
 export function setAllTimeline() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (prefersReducedMotion()) {
     gsap.set(".career-timeline", { maxHeight: "100%", opacity: 1 });
     return;
   }

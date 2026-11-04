@@ -10,7 +10,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'three': ['three', 'three-stdlib'],
-          'react-three': ['@react-three/fiber', '@react-three/drei'],
           'gsap': ['gsap'],
           'vendor': ['react', 'react-dom']
         }

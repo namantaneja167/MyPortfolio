@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import "./styles/TechStackNew.css";
+import { isMotionPaused, subscribeMotion } from "../utils/motion";
 import { assetUrl } from "../config";
 import type { IconType } from "react-icons";
 import {
@@ -54,12 +56,45 @@ const techStack: TechItem[] = [
   { name: "SQL", icon: TbDatabase },
 ];
 
+// Plays the decorative loop only while it is on screen and motion is allowed.
+const BackgroundVideo = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    let inView = false;
+    const sync = () => {
+      if (inView && !isMotionPaused() && !document.hidden) {
+        video.play().catch(() => undefined);
+      } else {
+        video.pause();
+      }
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(video);
+    const unsubscribe = subscribeMotion(sync);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      observer.disconnect();
+      unsubscribe();
+      document.removeEventListener("visibilitychange", sync);
+      video.pause();
+    };
+  }, []);
+  return (
+    <video ref={videoRef} loop muted playsInline preload="metadata" className="techstack-video">
+      <source src={assetUrl("video/video.webm")} type="video/webm" />
+    </video>
+  );
+};
+
 const TechStackNew = () => (
   <div className="techstack-new">
     <div className="techstack-video-container">
-      <video autoPlay loop muted playsInline className="techstack-video">
-        <source src={assetUrl("video/video.webm")} type="video/webm" />
-      </video>
+      <BackgroundVideo />
       <div className="techstack-overlay"></div>
     </div>
     <div className="techstack-content">

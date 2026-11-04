@@ -3,22 +3,7 @@ import * as THREE from "three";
 import { mobileCharacterPortraitUrl } from "../../config";
 import setCharacter from "./utils/character";
 import { setMobileExpression } from "./utils/mobileExpression";
-
-function disposeCharacter(character: THREE.Object3D) {
-  character.traverse((object) => {
-    if (!(object instanceof THREE.Mesh)) return;
-    object.geometry.dispose();
-    const materials = Array.isArray(object.material)
-      ? object.material
-      : [object.material];
-    materials.forEach((material) => {
-      Object.values(material).forEach((value) => {
-        if (value instanceof THREE.Texture) value.dispose();
-      });
-      material.dispose();
-    });
-  });
-}
+import { disposeObject as disposeCharacter } from "./utils/dispose";
 
 const MobileCharacter = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -174,7 +159,7 @@ const MobileCharacter = () => {
     renderer.domElement.addEventListener("webglcontextlost", onContextLost);
     renderer.domElement.addEventListener("webglcontextrestored", onContextRestored);
 
-    const { loadCharacter } = setCharacter(renderer, scene, camera, false);
+    const { loadCharacter } = setCharacter(renderer, scene, camera);
     loadCharacter()
       .then((gltf) => {
         if (!active) {

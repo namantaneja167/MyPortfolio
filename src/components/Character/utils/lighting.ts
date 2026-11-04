@@ -19,16 +19,30 @@ const setLighting = (scene: THREE.Scene) => {
   pointLight.castShadow = true;
   scene.add(pointLight);
 
+  let disposed = false;
+  let lightsOn = false;
+  let environment: THREE.Texture | undefined;
   new RGBELoader()
     .setPath(assetUrl("models/"))
-    .load("char_enviorment.hdr", function (texture) {
-      texture.mapping = THREE.EquirectangularReflectionMapping;
-      scene.environment = texture;
-      scene.environmentIntensity = 0;
-      scene.environmentRotation.set(5.76, 85.85, 1);
-    });
+    .load(
+      "char_enviorment.hdr",
+      function (texture) {
+        if (disposed) {
+          texture.dispose();
+          return;
+        }
+        environment = texture;
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.environment = texture;
+        if (!lightsOn) scene.environmentIntensity = 0;
+        scene.environmentRotation.set(5.76, 85.85, 1);
+      },
+      undefined,
+      (error) => console.warn("Character environment lighting unavailable:", error)
+    );
 
   function setPointLight(screenLight: any) {
+    if (!screenLight) return;
     if (screenLight.material.opacity > 0.9) {
       pointLight.intensity = screenLight.material.emissiveIntensity * 20;
     } else {
@@ -37,7 +51,14 @@ const setLighting = (scene: THREE.Scene) => {
   }
   const duration = 2;
   const ease = "power2.inOut";
-  function turnOnLights() {
+  function turnOnLights(immediate = false) {
+    lightsOn = true;
+    if (immediate) {
+      scene.environmentIntensity = 0.64;
+      directionalLight.intensity = 1;
+      gsap.set(".character-rim", { y: "55%", opacity: 1 });
+      return;
+    }
     gsap.to(scene, {
       environmentIntensity: 0.64,
       duration: duration,
@@ -56,7 +77,16 @@ const setLighting = (scene: THREE.Scene) => {
     });
   }
 
-  return { setPointLight, turnOnLights };
+  function dispose() {
+    disposed = true;
+    gsap.killTweensOf([scene, directionalLight, ".character-rim"]);
+    environment?.dispose();
+    directionalLight.dispose();
+    pointLight.dispose();
+    if (scene.environment === environment) scene.environment = null;
+  }
+
+  return { setPointLight, turnOnLights, dispose };
 };
 
 export default setLighting;

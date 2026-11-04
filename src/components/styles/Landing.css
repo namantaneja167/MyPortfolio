@@ -732,3 +732,34 @@ h2.landing-info-h2 {
     font-size: clamp(18px, 2.8vw, 24px);
   }
 }
+/* Desktop graphics failure: a static portrait anchored in the hero instead of the fixed scene. */
+.character-fallback {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: min(72vh, 680px, 90%);
+  aspect-ratio: 1;
+  height: auto;
+  transform: translateX(-50%);
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse at 50% 55%, rgba(194, 164, 255, 0.18), transparent 68%);
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent);
+  mask-image: linear-gradient(to bottom, black 80%, transparent);
+}
+
+@media screen and (min-width: 1025px) {
+  .character-model.character-model-fallback {
+    position: absolute;
+    top: 0;
+    bottom: auto;
+    height: var(--vh, 100vh);
+    max-height: none;
+  }
+}
+
+/* three.js sets an inline display on its canvas. */
+.character-model-fallback canvas {
+  display: none !important;
+}

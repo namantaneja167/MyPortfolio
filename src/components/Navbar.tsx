@@ -1,13 +1,58 @@
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { TbPlayerPauseFilled, TbPlayerPlayFilled } from "react-icons/tb";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
 import Lenis from "lenis";
 import "./styles/Navbar.css";
 import { config } from "../config";
+import {
+  isUserMotionPaused,
+  prefersReducedMotion,
+  setUserMotionPaused,
+  subscribeMotion,
+} from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 export let lenis: Lenis | null = null;
+
+const getSectionTarget = (hash: string) => {
+  if (!hash || hash === "#") return null;
+  try {
+    return document.getElementById(decodeURIComponent(hash.slice(1)));
+  } catch {
+    return null;
+  }
+};
+
+const focusSection = (target: HTMLElement) => {
+  if (!target.matches("a, button, input, select, textarea, [tabindex]")) {
+    target.setAttribute("tabindex", "-1");
+  }
+  target.focus({ preventScroll: true });
+};
+
+const MotionToggle = () => {
+  const paused = useSyncExternalStore(subscribeMotion, isUserMotionPaused);
+  const reduced = useSyncExternalStore(subscribeMotion, prefersReducedMotion);
+  // The OS preference already stops this motion, so the toggle would do nothing.
+  if (reduced) return null;
+  return (
+    <li>
+      <button
+        type="button"
+        className="motion-toggle"
+        aria-pressed={paused}
+        aria-label={paused ? "Play animations" : "Pause animations"}
+        title={paused ? "Play animations" : "Pause animations"}
+        data-cursor="disable"
+        onClick={() => setUserMotionPaused(!paused)}
+      >
+        {paused ? <TbPlayerPlayFilled aria-hidden="true" /> : <TbPlayerPauseFilled aria-hidden="true" />}
+      </button>
+    </li>
+  );
+};
 
 const Navbar = () => {
   useEffect(() => {
@@ -32,27 +77,36 @@ const Navbar = () => {
     gsap.ticker.add(updateLenis);
     gsap.ticker.lagSmoothing(0);
 
-    // Handle navigation links
-    const links = document.querySelectorAll(".header ul a");
-    const handleNavigation = (e: Event) => {
-      if (window.innerWidth > 1024) {
-        e.preventDefault();
-        const elem = e.currentTarget as HTMLAnchorElement;
-        const section = elem.getAttribute("data-href");
-        if (section) {
-          const target = document.querySelector(section) as HTMLElement;
-          if (target) {
-            scrollController.scrollTo(target, {
-              offset: -100,
-              duration: 1.5,
-            });
-          }
-        }
-      }
+    // Smooth-scroll section links on desktop while keeping URL, history and focus in sync.
+    const scrollToSection = (target: HTMLElement, onComplete?: () => void) => {
+      scrollController.scrollTo(target, {
+        offset: -100,
+        duration: 1.5,
+        immediate: prefersReducedMotion(),
+        onComplete,
+      });
+    };
+    const links = document.querySelectorAll<HTMLAnchorElement>(".header ul a[data-href]");
+    const handleNavigation = (e: MouseEvent) => {
+      if (window.innerWidth <= 1024) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const hash = (e.currentTarget as HTMLAnchorElement).getAttribute("data-href") ?? "";
+      const target = getSectionTarget(hash);
+      if (!target) return;
+      e.preventDefault();
+      if (window.location.hash !== hash) history.pushState(null, "", hash);
+      scrollToSection(target, () => focusSection(target));
     };
     links.forEach((element) => {
       element.addEventListener("click", handleNavigation);
     });
+    const handleHistory = () => {
+      if (window.innerWidth <= 1024) return;
+      const target = getSectionTarget(window.location.hash);
+      if (target) scrollToSection(target);
+      else if (!window.location.hash) scrollController.scrollTo(0, { immediate: prefersReducedMotion() });
+    };
+    window.addEventListener("popstate", handleHistory);
 
     // Handle resize
     const handleResize = () => scrollController.resize();
@@ -62,6 +116,7 @@ const Navbar = () => {
       gsap.ticker.remove(updateLenis);
       scrollController.off("scroll", ScrollTrigger.update);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("popstate", handleHistory);
       links.forEach((element) => {
         element.removeEventListener("click", handleNavigation);
       });
@@ -98,6 +153,7 @@ const Navbar = () => {
               <HoverLinks text="CONTACT" />
             </a>
           </li>
+          <MotionToggle />
         </ul>
       </div>
 

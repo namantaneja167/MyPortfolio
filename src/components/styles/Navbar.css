@@ -81,3 +81,33 @@
     font-size: 18px;
   }
 }
+.motion-toggle {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(234, 229, 236, 0.28);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.motion-toggle:hover,
+.motion-toggle:focus-visible {
+  border-color: #c481ff;
+  color: #c481ff;
+}
+.motion-toggle:focus-visible {
+  outline: 2px solid #c481ff;
+  outline-offset: 3px;
+}
+@media only screen and (max-width: 499px) {
+  .motion-toggle {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+}

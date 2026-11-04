@@ -15,6 +15,9 @@ export const decryptFile = async (
   password: string
 ): Promise<ArrayBuffer> => {
   const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Character model request failed: ${response.status}`);
+  }
   const encryptedData = await response.arrayBuffer();
   const iv = new Uint8Array(encryptedData.slice(0, 16));
   const data = encryptedData.slice(16);

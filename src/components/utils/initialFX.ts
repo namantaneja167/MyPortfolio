@@ -1,6 +1,9 @@
 import { TextSplitter } from "../../utils/textSplitter";
 import gsap from "gsap";
 import { lenis } from "../Navbar";
+import { isMotionPaused, prefersReducedMotion, subscribeMotion } from "../../utils/motion";
+
+let stopLoops: (() => void)[] = [];
 
 export function initialFX() {
   document.body.style.overflowY = "auto";
@@ -17,6 +20,16 @@ export function initialFX() {
       }
     }, 500);
   }
+  stopLoops.forEach((stop) => stop());
+  stopLoops = [];
+
+  if (prefersReducedMotion()) {
+    // Show the hero in its final state without entrance or looping text motion.
+    gsap.set("body", { backgroundColor: "#0b080c" });
+    gsap.set([".header", ".nav-fade", ".landing-info-h2"], { opacity: 1, y: 0 });
+    return;
+  }
+
   gsap.to("body", {
     backgroundColor: "#0b080c",
     duration: 0.5,
@@ -116,6 +129,12 @@ function revealStaticText(chars: Element[], delay: number) {
 
 function LoopText(Text1: TextSplitter, Text2: TextSplitter) {
   const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+  const syncPause = () => tl.paused(isMotionPaused());
+  const unsubscribe = subscribeMotion(syncPause);
+  stopLoops.push(() => {
+    unsubscribe();
+    tl.kill();
+  });
   const delay = 4;
   const delay2 = delay * 2 + 1;
 
@@ -167,4 +186,5 @@ function LoopText(Text1: TextSplitter, Text2: TextSplitter) {
       },
       1
     );
+  syncPause();
 }

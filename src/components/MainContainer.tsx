@@ -10,7 +10,8 @@ import WhatIDo from "./WhatIDo";
 import Work from "./Work";
 import TechStackNew from "./TechStackNew";
 import CallToAction from "./CallToAction";
-import setSplitText from "./utils/splitText";
+import setSplitText, { destroySplitText } from "./utils/splitText";
+import { useLoading } from "../context/LoadingProvider";
 import { mobileCharacterPortraitUrl } from "../config";
 
 const MobileCharacter = lazy(() => import("./Character/MobileCharacter"));
@@ -20,6 +21,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
     window.innerWidth > 1024
   );
   const [shouldRenderCharacter, setShouldRenderCharacter] = useState(false);
+  const { setLoading } = useLoading();
 
   useEffect(() => {
     const resizeHandler = () => {
@@ -30,8 +32,15 @@ const MainContainer = ({ children }: PropsWithChildren) => {
     window.addEventListener("resize", resizeHandler);
     return () => {
       window.removeEventListener("resize", resizeHandler);
+      destroySplitText();
     };
   }, []);
+
+  useEffect(() => {
+    // Below the desktop breakpoint nothing waits on the 3D scene, so release
+    // a loader started at desktop width before the scene could finish.
+    if (!isDesktopView) setLoading(100);
+  }, [isDesktopView, setLoading]);
 
   useEffect(() => {
     if (!isDesktopView) return;
