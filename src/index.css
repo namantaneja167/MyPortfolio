@@ -196,11 +196,19 @@ body {
 /* Persistent decorative loops stop for reduced motion or the header pause control. */
 html.motion-paused .landing-circle1,
 html.motion-paused .landing-circle2,
-html.motion-paused .career-dot {
+html.motion-paused .career-dot,
+html.motion-paused .loading-marquee .marquee,
+html.motion-paused .loaderGame-line,
+html.motion-paused .loaderGame-ball {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .main-active {
+    animation: none;
+    opacity: 1;
+  }
+
   .landing-circle1,
   .landing-circle2,
   .career-dot {

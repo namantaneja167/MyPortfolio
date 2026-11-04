@@ -1,12 +1,20 @@
 import { lazy, Suspense, useEffect, type ComponentType } from "react";
 import "./App.css";
 import { LoadingProvider, useLoading } from "./context/LoadingProvider";
+import CharacterPortrait from "./components/Character/CharacterPortrait";
 
 // A failed scene chunk must not strand the loader; the page stays usable without it.
 const CharacterUnavailable = () => {
   const { setLoading } = useLoading();
   useEffect(() => setLoading(100), [setLoading]);
-  return null;
+  return (
+    <div className="character-container">
+      <div className="character-model character-model-fallback" data-graphics="fallback">
+        <div className="character-rim"></div>
+        <CharacterPortrait />
+      </div>
+    </div>
+  );
 };
 
 const CharacterModel = lazy<ComponentType>(() =>

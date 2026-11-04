@@ -91,6 +91,9 @@ const harness = {
     root?.unmount();
     root = null;
   },
+  refresh() {
+    ScrollTrigger.refresh();
+  },
   // Describes surviving ScrollTriggers and tweens so a failing assertion names its source.
   leftovers() {
     const describe = (target: unknown) => {
@@ -128,6 +131,7 @@ const harness = {
       tweens: gsap.globalTimeline.getChildren(true, true, true).length,
       canvases: document.querySelectorAll("canvas").length,
       frames: pendingFrames.size,
+      frameNames: [...pendingFrames.values()].map((callback) => callback.name || callback.toString().slice(0, 120)),
     };
   },
 };

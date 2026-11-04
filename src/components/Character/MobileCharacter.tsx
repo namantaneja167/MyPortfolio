@@ -4,6 +4,7 @@ import { mobileCharacterPortraitUrl } from "../../config";
 import setCharacter from "./utils/character";
 import { setMobileExpression } from "./utils/mobileExpression";
 import { disposeObject as disposeCharacter } from "./utils/dispose";
+import { isMotionPaused, subscribeMotion } from "../../utils/motion";
 
 const MobileCharacter = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,7 +54,7 @@ const MobileCharacter = () => {
     let graphicsReady = false;
     let renderedWidth = 0;
     let renderedHeight = 0;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const abortController = new AbortController();
 
     const render = () => {
       const { width, height } = container.getBoundingClientRect();
@@ -74,7 +75,7 @@ const MobileCharacter = () => {
       visible &&
       graphicsReady &&
       !document.hidden &&
-      !reducedMotion.matches &&
+      !isMotionPaused() &&
       !renderer.getContext().isContextLost() &&
       Boolean(blinkAction && blinkMixer);
 
@@ -137,7 +138,7 @@ const MobileCharacter = () => {
     );
     visibility.observe(container);
     document.addEventListener("visibilitychange", syncMotion);
-    reducedMotion.addEventListener("change", syncMotion);
+    const unsubscribeMotion = subscribeMotion(syncMotion);
 
     const resize = new ResizeObserver(render);
     resize.observe(container);
@@ -160,7 +161,8 @@ const MobileCharacter = () => {
     renderer.domElement.addEventListener("webglcontextrestored", onContextRestored);
 
     const { loadCharacter } = setCharacter(renderer, scene, camera);
-    loadCharacter()
+    const loading = loadCharacter(abortController.signal);
+    loading
       .then((gltf) => {
         if (!active) {
           disposeCharacter(gltf.scene);
@@ -203,8 +205,8 @@ const MobileCharacter = () => {
         syncMotion();
       })
       .catch((error: unknown) => {
-        console.error("Mobile character failed to load; showing its portrait:", error);
         if (active) {
+          console.error("Mobile character failed to load; showing its portrait:", error);
           graphicsReady = false;
           stopMotion();
           setStatus("fallback");
@@ -213,11 +215,12 @@ const MobileCharacter = () => {
 
     return () => {
       active = false;
+      abortController.abort();
       stopMotion();
       visibility.disconnect();
       resize.disconnect();
       document.removeEventListener("visibilitychange", syncMotion);
-      reducedMotion.removeEventListener("change", syncMotion);
+      unsubscribeMotion();
       renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
       renderer.domElement.removeEventListener("webglcontextrestored", onContextRestored);
       if (character) {

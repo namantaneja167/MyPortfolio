@@ -21,7 +21,7 @@ const Cursor = () => {
     // Runs only while the cursor is catching up, then sleeps until the next move.
     const loop = () => {
       frame = undefined;
-      if (hover) return;
+      if (hover || document.hidden || window.innerWidth < 600 || cursor.classList.contains("cursor-disable")) return;
       const dx = mousePos.x - cursorPos.x;
       const dy = mousePos.y - cursorPos.y;
       if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) return;
@@ -33,7 +33,7 @@ const Cursor = () => {
     const onMouseMove = (e: MouseEvent) => {
       mousePos.x = e.clientX;
       mousePos.y = e.clientY;
-      if (hover) return;
+      if (hover || document.hidden || window.innerWidth < 600 || cursor.classList.contains("cursor-disable")) return;
       if (still) {
         cursorPos.x = mousePos.x;
         cursorPos.y = mousePos.y;
@@ -42,8 +42,26 @@ const Cursor = () => {
         frame = requestAnimationFrame(loop);
       }
     };
-    const unsubscribe = subscribeMotion(() => (still = isMotionPaused()));
+    const stopFrame = () => {
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      frame = undefined;
+    };
+    const unsubscribe = subscribeMotion(() => {
+      still = isMotionPaused();
+      if (still) {
+        stopFrame();
+        if (!hover) {
+          cursorPos.x = mousePos.x;
+          cursorPos.y = mousePos.y;
+          moveTo(cursorPos.x, cursorPos.y);
+        }
+      }
+    });
+    const onVisibilityChange = () => {
+      if (document.hidden) stopFrame();
+    };
     document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     const removers: (() => void)[] = [];
     document.querySelectorAll<HTMLElement>("[data-cursor]").forEach((element) => {
@@ -59,10 +77,18 @@ const Cursor = () => {
           cursor.classList.add("cursor-disable");
         }
       };
-      const onOut = () => {
+      const onOut = (event: MouseEvent) => {
+        mousePos.x = event.clientX;
+        mousePos.y = event.clientY;
         cursor.classList.remove("cursor-disable", "cursor-icons");
         hover = false;
-        if (frame === undefined) frame = requestAnimationFrame(loop);
+        if (still) {
+          cursorPos.x = mousePos.x;
+          cursorPos.y = mousePos.y;
+          moveTo(cursorPos.x, cursorPos.y);
+        } else if (frame === undefined) {
+          frame = requestAnimationFrame(loop);
+        }
       };
       element.addEventListener("mouseover", onOver);
       element.addEventListener("mouseout", onOut);
@@ -73,9 +99,10 @@ const Cursor = () => {
     });
 
     return () => {
-      if (frame !== undefined) cancelAnimationFrame(frame);
+      stopFrame();
       unsubscribe();
       document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       removers.forEach((remove) => remove());
       gsap.killTweensOf(cursor);
     };

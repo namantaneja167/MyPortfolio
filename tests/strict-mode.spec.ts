@@ -10,6 +10,7 @@ type Counts = {
   tweens: number;
   canvases: number;
   frames: number;
+  frameNames: string[];
 };
 
 const counts = (page: Page) =>
@@ -54,6 +55,28 @@ async function unmountAndWait(page: Page) {
   return counts(page);
 }
 
+test("refresh listener and trigger counts remain stable across refreshes and resizes", async ({ page }) => {
+  await page.goto("/MyPortfolio/tests/strict-harness.html");
+  await page.waitForFunction(() => document.documentElement.dataset.harness === "ready");
+  const before = await mountAndWait(page);
+  for (const width of [1300, 1440, 1360, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.evaluate(() =>
+      (window as unknown as { harness: { refresh: () => void } }).harness.refresh()
+    );
+    await settle(page);
+  }
+  await page.evaluate(() => {
+    const { refresh } = (window as unknown as { harness: { refresh: () => void } }).harness;
+    for (let i = 0; i < 12; i++) refresh();
+  });
+  const after = await counts(page);
+  expect(after.refreshListeners).toBe(before.refreshListeners);
+  expect(after.triggers).toBe(before.triggers);
+  const unmounted = await unmountAndWait(page);
+  expect(unmounted.refreshListeners).toBe(0);
+});
+
 test("Strict Mode mount/cleanup cycles release listeners, triggers, canvases and frames", async ({ page }) => {
   test.setTimeout(360000);
   // The harness uses the dev server, where Strict Mode mounts, cleans up and remounts every effect.
@@ -80,9 +103,12 @@ test("Strict Mode mount/cleanup cycles release listeners, triggers, canvases and
     expect(unmounted.refreshListeners).toBe(0);
     expect(unmounted.triggers).toBe(0);
     expect(unmounted.canvases).toBe(0);
-    // Only GSAP ScrollTrigger's own scheduler frames may remain, and they must not grow.
-    expect(unmounted.frames).toBeLessThanOrEqual(firstUnmount.frames);
-    expect(unmounted.frames).toBeLessThanOrEqual(2);
+    // GSAP can queue a one-shot scroll update between snapshots; it must drain,
+    // leaving only its ticker and ScrollTrigger's page-level repaint workaround.
+    await expect.poll(async () => (await counts(page)).frameNames.filter((name) =>
+      !/^_(?:tick|rafBugFix)/.test(name)
+    ), { timeout: 3000 }).toEqual([]);
+    await expect.poll(async () => (await counts(page)).frames, { timeout: 3000 }).toBeLessThanOrEqual(2);
     expect(unmounted.tweens).toBeLessThanOrEqual(1);
 
     const mounted = await mountAndWait(page);
@@ -92,7 +118,37 @@ test("Strict Mode mount/cleanup cycles release listeners, triggers, canvases and
     expect(mounted.refreshListeners).toBe(first.refreshListeners);
     expect(mounted.triggers).toBe(first.triggers);
     expect(mounted.canvases).toBe(1);
-    expect(mounted.frames).toBeLessThanOrEqual(first.frames);
+    await expect.poll(async () => (await counts(page)).frameNames.filter((name) =>
+      name === "animate"
+    ).length).toBe(1);
+    await expect.poll(async () => (await counts(page)).frames, { timeout: 3000 }).toBeLessThanOrEqual(first.frames);
     expect(mounted.tweens).toBeLessThanOrEqual(first.tweens + 2);
+  }
+});
+
+test("unmounting mobile while its intro chunk loads cancels the delayed intro", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  let release = () => {};
+  const gate = new Promise<void>((resolve) => { release = resolve; });
+  let requested = false;
+  await page.route(/\/src\/components\/utils\/initialFX\.ts(?:\?.*)?$/, async (route) => {
+    requested = true;
+    await gate;
+    await route.continue().catch(() => undefined);
+  });
+  try {
+    await page.goto("/MyPortfolio/tests/strict-harness.html");
+    await page.waitForFunction(() => document.documentElement.dataset.harness === "ready");
+    await page.evaluate(() => (window as unknown as { harness: { mount: () => Promise<void> } }).harness.mount());
+    await expect.poll(() => requested).toBe(true);
+    await page.evaluate(() => (window as unknown as { harness: { unmount: () => void } }).harness.unmount());
+    release();
+    await page.waitForTimeout(1200);
+    expect(errors).toEqual([]);
+    expect(await page.locator("canvas").count()).toBe(0);
+  } finally {
+    release();
   }
 });

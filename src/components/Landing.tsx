@@ -16,7 +16,6 @@ const Landing = ({ children }: PropsWithChildren) => {
             <h1>
               {firstName.toUpperCase()}
               {' '}
-              <br />
               {lastName && <span>{lastName.toUpperCase()}</span>}
             </h1>
           </div>

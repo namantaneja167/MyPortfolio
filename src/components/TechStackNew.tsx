@@ -65,7 +65,10 @@ const BackgroundVideo = () => {
     let inView = false;
     const sync = () => {
       if (inView && !isMotionPaused() && !document.hidden) {
-        video.play().catch(() => undefined);
+        video.play().catch((error: unknown) => {
+          if (error instanceof DOMException && error.name === "AbortError") return;
+          console.warn("Background video playback failed:", error);
+        });
       } else {
         video.pause();
       }

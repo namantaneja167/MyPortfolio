@@ -5,7 +5,11 @@ import { isMotionPaused, prefersReducedMotion, subscribeMotion } from "../../uti
 
 // Reduced motion keeps the fixed canvas and the Home/About poses, switched instantly.
 // The monitor stays transparent because its reveal belongs to the scrubbed What I Do scene.
-function setStaticCharacter(character: THREE.Object3D, camera: THREE.PerspectiveCamera) {
+function setStaticCharacter(
+  character: THREE.Object3D,
+  camera: THREE.PerspectiveCamera,
+  onVisibilityChange?: () => void
+) {
   let pose: "home" | "about" | "hidden" | null = null;
   const apply = () => {
     const about = document.querySelector(".about-section");
@@ -26,6 +30,7 @@ function setStaticCharacter(character: THREE.Object3D, camera: THREE.Perspective
     });
     character.rotation.set(0, inAbout ? 0.7 : 0, 0);
     camera.position.z = inAbout ? 22 : 24.7;
+    onVisibilityChange?.();
   };
   const trigger = ScrollTrigger.create({
     trigger: ".landing-section",
@@ -43,7 +48,8 @@ function setStaticCharacter(character: THREE.Object3D, camera: THREE.Perspective
 // Returns a teardown that reverts every tween, trigger and listener it created.
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
-  camera: THREE.PerspectiveCamera
+  camera: THREE.PerspectiveCamera,
+  onVisibilityChange?: () => void
 ): () => void {
   const reducedMotion = prefersReducedMotion();
   const cleanups: (() => void)[] = [];
@@ -137,7 +143,7 @@ export function setCharTimeline(
     });
     scrollTimelines.length = 0;
     if (window.innerWidth > 1024 && character) {
-      const trigger = setStaticCharacter(character, camera);
+      const trigger = setStaticCharacter(character, camera, onVisibilityChange);
       cleanups.push(() => {
         trigger.kill();
         gsap.set(".character-model", { clearProps: "x,visibility,opacity,pointerEvents" });

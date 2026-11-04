@@ -14,7 +14,25 @@ import setSplitText, { destroySplitText } from "./utils/splitText";
 import { useLoading } from "../context/LoadingProvider";
 import { mobileCharacterPortraitUrl } from "../config";
 
-const MobileCharacter = lazy(() => import("./Character/MobileCharacter"));
+const MobileCharacterPortrait = ({ fallback = false }: { fallback?: boolean }) => (
+  <div className="mobile-character" data-graphics={fallback ? "fallback" : "loading"}>
+    <img
+      className="mobile-character-portrait"
+      src={mobileCharacterPortraitUrl}
+      alt="Stylised character from the portfolio template"
+      width="480"
+      height="480"
+    />
+  </div>
+);
+
+const MobileCharacterUnavailable = () => <MobileCharacterPortrait fallback />;
+const MobileCharacter = lazy(() =>
+  import("./Character/MobileCharacter").catch((error: unknown) => {
+    console.error("Mobile character code failed to load; showing its portrait:", error);
+    return { default: MobileCharacterUnavailable };
+  })
+);
 
 const MainContainer = ({ children }: PropsWithChildren) => {
   const [isDesktopView, setIsDesktopView] = useState<boolean>(
@@ -79,19 +97,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       <div className="container-main">
         <Landing>
           {!isDesktopView && (
-            <Suspense
-              fallback={
-                <div className="mobile-character">
-                  <img
-                    className="mobile-character-portrait"
-                    src={mobileCharacterPortraitUrl}
-                    alt="Stylised character from the portfolio template"
-                    width="480"
-                    height="480"
-                  />
-                </div>
-              }
-            >
+            <Suspense fallback={<MobileCharacterPortrait />}>
               <MobileCharacter />
             </Suspense>
           )}

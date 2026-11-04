@@ -12,9 +12,10 @@ async function generateAESKey(password: string): Promise<CryptoKey> {
 
 export const decryptFile = async (
   url: string,
-  password: string
+  password: string,
+  signal?: AbortSignal
 ): Promise<ArrayBuffer> => {
-  const response = await fetch(url);
+  const response = await fetch(url, { signal });
   if (!response.ok) {
     throw new Error(`Character model request failed: ${response.status}`);
   }

@@ -12,9 +12,10 @@ import {
   setUserMotionPaused,
   subscribeMotion,
 } from "../utils/motion";
+import { lenis, setLenis } from "../utils/pageLifecycle";
 
 gsap.registerPlugin(ScrollTrigger);
-export let lenis: Lenis | null = null;
+export { lenis } from "../utils/pageLifecycle";
 
 const getSectionTarget = (hash: string) => {
   if (!hash || hash === "#") return null;
@@ -67,10 +68,11 @@ const Navbar = () => {
       touchMultiplier: 2,
       infinite: false,
     });
-    lenis = scrollController;
+    setLenis(scrollController);
 
-    // Start paused
-    scrollController.stop();
+    // The page can become ready before this component finishes loading.
+    if (document.querySelector("main.main-active")) scrollController.start();
+    else scrollController.stop();
 
     const updateLenis = (time: number) => scrollController.raf(time * 1000);
     scrollController.on("scroll", ScrollTrigger.update);
@@ -103,7 +105,7 @@ const Navbar = () => {
     const handleHistory = () => {
       if (window.innerWidth <= 1024) return;
       const target = getSectionTarget(window.location.hash);
-      if (target) scrollToSection(target);
+      if (target) scrollToSection(target, () => focusSection(target));
       else if (!window.location.hash) scrollController.scrollTo(0, { immediate: prefersReducedMotion() });
     };
     window.addEventListener("popstate", handleHistory);
@@ -121,7 +123,7 @@ const Navbar = () => {
         element.removeEventListener("click", handleNavigation);
       });
       scrollController.destroy();
-      if (lenis === scrollController) lenis = null;
+      if (lenis === scrollController) setLenis(null);
     };
   }, []);
   return (

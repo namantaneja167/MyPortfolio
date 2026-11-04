@@ -48,15 +48,6 @@
     margin: 0;
   }
 
-  /* Ensure name parts display correctly */
-  .landing-intro h1 br {
-    display: block;
-    /* Keep break on mobile for 2 lines, or use display:none for 1 line */
-    content: " ";
-    /* Fallback */
-    margin-bottom: 5px;
-  }
-
   /* Subtitles Container */
   .landing-info {
     position: relative !important;

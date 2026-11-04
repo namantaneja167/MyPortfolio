@@ -6,6 +6,7 @@ export class TextSplitter {
   elements: Element[] = [];
   selector: string | Function;
   private originalHTML: Map<Element, string> = new Map();
+  private lineFrames = new Set<number>();
 
   constructor(target: string | Element | NodeListOf<Element> | Element[], vars?: { type?: string; linesClass?: string }) {
     const type = vars?.type || "chars,words,lines";
@@ -95,7 +96,8 @@ export class TextSplitter {
 
   private splitLines(element: Element, linesClass: string) {
     // Use requestAnimationFrame to ensure layout is complete
-    requestAnimationFrame(() => {
+    const frame = requestAnimationFrame(() => {
+      this.lineFrames.delete(frame);
       const items = element.querySelectorAll(".split-word, .split-char");
       if (items.length === 0) return;
 
@@ -142,9 +144,12 @@ export class TextSplitter {
 
       this.lines.push(...Array.from(element.querySelectorAll(`.${linesClass}`)));
     });
+    this.lineFrames.add(frame);
   }
 
   revert() {
+    this.lineFrames.forEach((frame) => cancelAnimationFrame(frame));
+    this.lineFrames.clear();
     this.elements.forEach((element) => {
       const original = this.originalHTML.get(element);
       if (original !== undefined) {

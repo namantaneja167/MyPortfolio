@@ -9,7 +9,7 @@ import { TbNotes } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import HoverLinks from "./HoverLinks";
 import { config } from "../config";
-import { isMotionPaused } from "../utils/motion";
+import { isMotionPaused, subscribeMotion } from "../utils/motion";
 
 const SocialIcons = () => {
   const [isHeroVisible, setIsHeroVisible] = useState(
@@ -29,9 +29,11 @@ const SocialIcons = () => {
   }, []);
 
   useEffect(() => {
+    if (!isHeroVisible) return;
     const social = document.getElementById("social");
     if (!social) return;
     const cleanups: (() => void)[] = [];
+    const resetters: (() => void)[] = [];
 
     social.querySelectorAll("span").forEach((elem) => {
       const link = elem.querySelector("a");
@@ -47,6 +49,14 @@ const SocialIcons = () => {
       const paint = () => {
         link.style.setProperty("--siLeft", `${currentX}px`);
         link.style.setProperty("--siTop", `${currentY}px`);
+      };
+      const reset = () => {
+        if (frame !== undefined) cancelAnimationFrame(frame);
+        frame = undefined;
+        rect = elem.getBoundingClientRect();
+        mouseX = currentX = rect.width / 2;
+        mouseY = currentY = rect.height / 2;
+        paint();
       };
       // Eases toward the pointer and stops once settled.
       const updatePosition = () => {
@@ -66,6 +76,7 @@ const SocialIcons = () => {
       };
 
       const onMouseMove = (e: MouseEvent) => {
+        if (isMotionPaused() || document.hidden || !elem.getClientRects().length) return;
         rect = elem.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -79,6 +90,7 @@ const SocialIcons = () => {
       };
 
       paint();
+      resetters.push(reset);
       document.addEventListener("mousemove", onMouseMove);
       cleanups.push(() => {
         document.removeEventListener("mousemove", onMouseMove);
@@ -86,8 +98,17 @@ const SocialIcons = () => {
       });
     });
 
-    return () => cleanups.forEach((cleanup) => cleanup());
-  }, []);
+    const syncMotion = () => {
+      if (isMotionPaused() || document.hidden) resetters.forEach((reset) => reset());
+    };
+    const unsubscribe = subscribeMotion(syncMotion);
+    document.addEventListener("visibilitychange", syncMotion);
+    return () => {
+      unsubscribe();
+      document.removeEventListener("visibilitychange", syncMotion);
+      cleanups.forEach((cleanup) => cleanup());
+    };
+  }, [isHeroVisible]);
 
   return (
     <div

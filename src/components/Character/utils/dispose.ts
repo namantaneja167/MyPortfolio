@@ -1,17 +1,26 @@
 import * as THREE from "three";
 
 export function disposeObject(root: THREE.Object3D) {
+  const geometries = new Set<THREE.BufferGeometry>();
+  const materials = new Set<THREE.Material>();
+  const textures = new Set<THREE.Texture>();
+  const skeletons = new Set<THREE.Skeleton>();
   root.traverse((object) => {
     if (!(object instanceof THREE.Mesh)) return;
-    object.geometry.dispose();
-    const materials = Array.isArray(object.material)
+    geometries.add(object.geometry);
+    if (object instanceof THREE.SkinnedMesh) skeletons.add(object.skeleton);
+    const meshMaterials = Array.isArray(object.material)
       ? object.material
       : [object.material];
-    materials.forEach((material) => {
-      Object.values(material).forEach((value) => {
-        if (value instanceof THREE.Texture) value.dispose();
-      });
-      material.dispose();
+    meshMaterials.forEach((material) => materials.add(material));
+  });
+  materials.forEach((material) => {
+    Object.values(material).forEach((value) => {
+      if (value instanceof THREE.Texture) textures.add(value);
     });
   });
+  skeletons.forEach((skeleton) => skeleton.dispose());
+  geometries.forEach((geometry) => geometry.dispose());
+  textures.forEach((texture) => texture.dispose());
+  materials.forEach((material) => material.dispose());
 }

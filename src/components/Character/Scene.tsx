@@ -15,7 +15,7 @@ import { disposeObject } from "./utils/dispose";
 import { setProgress } from "../Loading";
 import { setCharTimeline } from "../utils/GsapScroll";
 import { isMotionPaused, prefersReducedMotion, subscribeMotion } from "../../utils/motion";
-import { mobileCharacterPortraitUrl } from "../../config";
+import CharacterPortrait from "./CharacterPortrait";
 
 type GraphicsStatus = "loading" | "ready" | "fallback";
 
@@ -89,7 +89,8 @@ const Scene = () => {
 
     const contextLost = () => renderer.getContext().isContextLost();
     const shouldRun = () =>
-      active && inView && !document.hidden && !contextLost() && Boolean(character);
+      active && inView && !document.hidden && !contextLost() &&
+      container.style.visibility !== "hidden" && Boolean(character);
 
     let mouse = { x: 0, y: 0 },
       interpolation = { x: 0.1, y: 0.2 };
@@ -103,20 +104,21 @@ const Scene = () => {
       frame = requestAnimationFrame(animate);
       // Clamp so a resumed loop never jumps the mixer forward by the paused duration.
       const delta = Math.min(clock.getDelta(), 0.1);
-      // Reduced motion hides the scene past About; skip work while it is invisible.
-      if (container.style.visibility === "hidden") return;
+      const paused = isMotionPaused();
       if (headBone) {
-        handleHeadRotation(
-          headBone,
-          mouse.x,
-          mouse.y,
-          interpolation.x,
-          interpolation.y,
-          THREE.MathUtils.lerp
-        );
+        if (!paused) {
+          handleHeadRotation(
+            headBone,
+            mouse.x,
+            mouse.y,
+            interpolation.x,
+            interpolation.y,
+            THREE.MathUtils.lerp
+          );
+        }
         light.setPointLight(screenLight);
       }
-      if (animations && !isMotionPaused()) animations.mixer.update(delta);
+      if (animations && !paused) animations.mixer.update(delta);
       renderer.render(scene, camera);
     };
     const resume = () => {
@@ -141,7 +143,7 @@ const Scene = () => {
 
     const buildTimelines = () => {
       removeTimelines?.();
-      removeTimelines = character ? setCharTimeline(character, camera) : null;
+      removeTimelines = character ? setCharTimeline(character, camera, syncLoop) : null;
     };
     let timelinesReduced = prefersReducedMotion();
     const onMotionChange = () => {
@@ -152,6 +154,7 @@ const Scene = () => {
         timelinesReduced = reduced;
         buildTimelines();
       }
+      syncLoop();
     };
     const unsubscribeMotion = subscribeMotion(onMotionChange);
 
@@ -176,7 +179,9 @@ const Scene = () => {
     renderer.domElement.addEventListener("webglcontextrestored", onContextRestored);
 
     const { loadCharacter } = setCharacter(renderer, scene, camera);
-    loadCharacter()
+    const abortController = new AbortController();
+    const loading = loadCharacter(abortController.signal);
+    loading
       .then((gltf) => {
         if (!active || contextLost()) {
           disposeObject(gltf.scene);
@@ -195,16 +200,28 @@ const Scene = () => {
         renderer.render(scene, camera);
         progress.loaded().then(() => {
           if (!active) return;
-          const reduced = prefersReducedMotion();
+          const paused = isMotionPaused();
           // Reduced motion skips the delayed intro and fades.
           later(() => {
-            light.turnOnLights(reduced);
-            animations?.startIntro(reduced);
-          }, reduced ? 0 : 2500);
+            const still = isMotionPaused();
+            light.turnOnLights(still);
+            animations?.startIntro(still);
+          }, paused ? 0 : 2500);
         });
         syncLoop();
       })
       .catch((error: unknown) => {
+        if (!active) return;
+        pause();
+        removeTimelines?.();
+        removeTimelines = null;
+        animations?.dispose();
+        animations = null;
+        if (character) {
+          scene.remove(character);
+          disposeObject(character);
+          character = null;
+        }
         showFallback("Desktop character failed to load; showing its portrait:", error);
       });
 
@@ -236,6 +253,7 @@ const Scene = () => {
 
     return () => {
       active = false;
+      abortController.abort();
       pause();
       progress.stop();
       timers.forEach((id) => window.clearTimeout(id));
@@ -270,15 +288,7 @@ const Scene = () => {
         data-graphics={status}
       >
         <div className="character-rim"></div>
-        {status === "fallback" && (
-          <img
-            className="character-fallback"
-            src={mobileCharacterPortraitUrl}
-            alt="Stylised character from the portfolio template"
-            width="480"
-            height="480"
-          />
-        )}
+        {status === "fallback" && <CharacterPortrait />}
         <div className="character-hover" ref={hoverDivRef}></div>
       </div>
     </div>

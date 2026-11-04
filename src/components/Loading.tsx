@@ -4,9 +4,10 @@ import { useLoading } from "../context/LoadingProvider";
 
 import Marquee from "react-fast-marquee";
 import { config } from "../config";
+import { activatePage } from "../utils/pageLifecycle";
 
 const Loading = ({ percent }: { percent: number }) => {
-  const { setIsLoading } = useLoading();
+  const { setIsLoading, beginInitialFX } = useLoading();
   const [loaded, setLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -27,18 +28,31 @@ const Loading = ({ percent }: { percent: number }) => {
     let cancelled = false;
     let timer: number | undefined;
     setClicked(true);
-    import("./utils/initialFX").then((module) => {
-      if (cancelled) return;
-      timer = window.setTimeout(() => {
-        module.initialFX?.();
+    import("./utils/initialFX")
+      .then((module) => {
+        if (cancelled) return;
+        timer = window.setTimeout(() => {
+          if (cancelled) return;
+          try {
+            beginInitialFX(module.initialFX);
+          } catch (error) {
+            console.error("Portfolio intro failed; showing the page without it:", error);
+            activatePage();
+          }
+          setIsLoading(false);
+        }, 900);
+      })
+      .catch((error: unknown) => {
+        if (cancelled) return;
+        console.error("Portfolio intro failed to load; showing the page without it:", error);
+        activatePage();
         setIsLoading(false);
-      }, 900);
-    });
+      });
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [isLoaded, setIsLoading]);
+  }, [isLoaded, setIsLoading, beginInitialFX]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget: target } = e;
