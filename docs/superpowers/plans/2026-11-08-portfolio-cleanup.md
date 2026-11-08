@@ -1,6 +1,6 @@
 # Portfolio Cleanup Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task in one session, then run one superpowers:requesting-code-review pass over the full diff. Steps use checkbox (`- [ ]`) syntax for tracking. Rationale is in the spec's Decisions section.
 
 **Goal:** Remove template and AI residue from the copy, the code and the docs, while keeping pixels, motion and behaviour identical.
 

@@ -74,7 +74,10 @@ Structure: a one-line description, a live link, the stack, run/build/test comman
 - Compare screenshots before and after (desktop 1440, laptop 1280, mobile 390) for Home, About, What I Do, Work and Contact. The only differences expected are text changes.
 - Commit at least once per task. Do not push or deploy without the owner's instruction.
 
-## Open questions for the owner
+## Decisions
 
-- Should the CTA go to LinkedIn (current) or open email?
-- Should the agent tool config files (`.cursorrules`, `.windsurfrules`, `.kiro/`, `.opencode.json`, `GEMINI.md`) stay tracked in the public repo? This spec keeps them.
+The owner asked for autonomous decisions. Each one below is reversible in a single commit.
+
+- **CTA keeps the LinkedIn link and becomes "Connect on LinkedIn →".** The label should say where the button goes. "Hire Me" overstates the ask for someone currently employed and hides that it leaves the site. The email address is already in the navbar and Contact section, so email is not lost. Changing the destination would also change behaviour, which this cleanup avoids.
+- **Agent tool config files stay tracked.** The owner installed them deliberately and they don't ship in the built site. Removing them is a separate repo-hygiene decision, not copy or code quality.
+- **Execution: one session, one task at a time, with a single independent review at the end.** The five tasks are small and the Playwright suite gates each one. Spinning up a fresh agent and reviewer per task would add overhead without catching anything the tests and final review won't.
