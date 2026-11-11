@@ -34,6 +34,7 @@ test.describe("production preview", () => {
     expect(response.ok()).toBe(true);
     expect(response.headers()["content-type"]).toMatch(/text\/html/);
     const html = await response.text();
+    expect(html).toContain('rel="license" href="/MyPortfolio/LICENSE"');
     const references = [...html.matchAll(/(?:src|href)="([^"]+)"/g)]
       .map((match) => match[1])
       .filter((ref) => !/^(https?:|mailto:|data:|#)/.test(ref));
@@ -58,6 +59,7 @@ test.describe("production preview", () => {
       ["images/market-data.svg", /image\/svg\+xml/],
       ["images/pharma-analytics.svg", /image\/svg\+xml/],
       ["images/tableau-automation.svg", /image\/svg\+xml/],
+      ["assets/Naman-Taneja-Data-Engineer-Resume.pdf", /application\/pdf/],
     ];
     await Promise.all(files.map(async ([path, contentType]) => {
       const asset = await request.get(new URL(path, site).href);
@@ -65,6 +67,60 @@ test.describe("production preview", () => {
       expect(asset.headers()["content-type"], path).toMatch(contentType);
       expect((await asset.body()).byteLength, path).toBeGreaterThan(0);
     }));
+    const license = await request.get(new URL("LICENSE", site).href);
+    expect(await license.text()).toBe(readFileSync(join(process.cwd(), "LICENSE"), "utf8"));
+    const resume = await request.get(new URL("assets/Naman-Taneja-Data-Engineer-Resume.pdf", site).href);
+    expect(await resume.body()).toEqual(readFileSync(join(process.cwd(), "public/assets/Naman-Taneja-Data-Engineer-Resume.pdf")));
+  });
+
+  test("shows the requested technologies without the template credit", async ({ page }) => {
+    await page.goto(site, { waitUntil: "domcontentloaded" });
+    const technologies = page.locator(".techstack-pyramid");
+    for (const [name, url] of [
+      ["Databricks", "https://www.databricks.com"],
+      ["CrewAI", "https://www.crewai.com"],
+      ["LangChain", "https://www.langchain.com"],
+      ["MCP", "https://modelcontextprotocol.io"],
+    ]) {
+      const item = technologies.getByRole("link", { name, exact: true });
+      await expect(item).toHaveCount(1);
+      await expect(item).toHaveAttribute("href", url);
+    }
+    await expect(technologies.getByText("Snowpipe", { exact: true })).toHaveCount(0);
+    await expect(page.locator(".contact-section")).not.toContainText("Visual foundation adapted");
+
+    for (const width of [1440, 390, 320]) {
+      await page.setViewportSize({ width, height: 900 });
+      const layout = await technologies.evaluate((container) => {
+        const bounds = container.getBoundingClientRect();
+        const cards = [...container.querySelectorAll(".techstack-item")]
+          .map((card) => card.getBoundingClientRect());
+        const last = cards[cards.length - 1];
+        const row = cards.filter((card) => Math.abs(card.top - last.top) < 1);
+        return {
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          offset: Math.abs((row[0].left + row[row.length - 1].right) / 2 - (bounds.left + bounds.right) / 2),
+        };
+      });
+      expect(layout.overflow, `${width}px viewport`).toBeLessThanOrEqual(0);
+      expect(layout.offset, `${width}px final row`).toBeLessThanOrEqual(1);
+    }
+  });
+
+  test("capability cards remain usable on desktop and mobile", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(site, { waitUntil: "domcontentloaded" });
+      const cards = page.locator(".what-content");
+      await expect(cards).toHaveCount(2);
+      await expect(page.locator(".loading-screen")).toHaveCount(0, { timeout: 30000 });
+      await cards.first().locator("summary").click();
+      await expect(cards.first()).toHaveAttribute("open", "");
+      await cards.last().locator("summary").click();
+      await expect(cards.first()).not.toHaveAttribute("open", "");
+      await expect(cards.last()).toHaveAttribute("open", "");
+    }
   });
 
   test("loads the built character, direct links, and project image", async ({ page }) => {

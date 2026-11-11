@@ -7,14 +7,15 @@ import {
   SiAzurefunctions,
   SiAzurepipelines,
   SiCsharp,
+  SiDatabricks,
   SiDataiku,
-  SiDbt,
+  SiLangchain,
   SiMicrosoftazure,
   SiPython,
   SiSnowflake,
   SiTableau,
 } from "react-icons/si";
-import { TbDatabase } from "react-icons/tb";
+import { TbDatabase, TbPlugConnected, TbRobot } from "react-icons/tb";
 
 interface TechItem {
   name: string;
@@ -25,17 +26,12 @@ interface TechItem {
 const techStack: TechItem[] = [
   { name: "Python", icon: SiPython, url: "https://python.org" },
   { name: "Snowflake", icon: SiSnowflake, url: "https://www.snowflake.com" },
+  { name: "Databricks", icon: SiDatabricks, url: "https://www.databricks.com" },
   { name: "Azure", icon: SiMicrosoftazure, url: "https://azure.microsoft.com" },
   {
     name: "C#",
     icon: SiCsharp,
     url: "https://learn.microsoft.com/dotnet/csharp",
-  },
-  { name: "dbt", icon: SiDbt, url: "https://www.getdbt.com" },
-  {
-    name: "Snowpipe",
-    icon: SiSnowflake,
-    url: "https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro",
   },
   {
     name: "Azure Data Factory",
@@ -54,6 +50,9 @@ const techStack: TechItem[] = [
   },
   { name: "Tableau", icon: SiTableau, url: "https://www.tableau.com" },
   { name: "SQL", icon: TbDatabase },
+  { name: "CrewAI", icon: TbRobot, url: "https://www.crewai.com" },
+  { name: "LangChain", icon: SiLangchain, url: "https://www.langchain.com" },
+  { name: "MCP", icon: TbPlugConnected, url: "https://modelcontextprotocol.io" },
 ];
 
 // Plays the decorative loop only while it is on screen and motion is allowed.

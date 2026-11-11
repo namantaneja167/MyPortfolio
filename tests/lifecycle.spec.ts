@@ -91,9 +91,12 @@ test("repeated resizes keep one text animation set and narrow screens get plain 
 
   await page.setViewportSize({ width: 800, height: 900 });
   await expect.poll(async () => (await counts(page)).splitWords).toBe(0);
-  const para = page.locator(".about-me .para");
-  await expect(para).toHaveCSS("opacity", "1");
-  await expect(para).not.toHaveAttribute("style", /translate/);
+  const paragraphs = page.locator(".about-me .para");
+  await expect(paragraphs).toHaveCount(1);
+  for (const paragraph of await paragraphs.all()) {
+    await expect(paragraph).toHaveCSS("opacity", "1");
+    await expect(paragraph).not.toHaveAttribute("style", /translate/);
+  }
 });
 
 test("reverting a text split cancels its pending line-wrapping frame", async ({ page }) => {
@@ -362,7 +365,11 @@ test("reduced motion stops decorative loops and keeps text readable", async ({ p
   await expect(page.locator(".motion-toggle")).toHaveCount(0);
   await expect(page.locator(".landing-circle1")).toHaveCSS("animation-play-state", "paused");
   expect((await counts(page)).splitWords).toBe(0);
-  await expect(page.locator(".about-me .para")).toHaveCSS("opacity", "1");
+  const paragraphs = page.locator(".about-me .para");
+  await expect(paragraphs).toHaveCount(1);
+  for (const paragraph of await paragraphs.all()) {
+    await expect(paragraph).toHaveCSS("opacity", "1");
+  }
   await page.locator(".techstack-video").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
   expect(await page.locator(".techstack-video").evaluate((video) => (video as HTMLVideoElement).paused)).toBe(true);

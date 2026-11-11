@@ -42,9 +42,9 @@
   </g>
   <g fill="#eae5ec" font-family="Geist,Arial,sans-serif">
     <text x="85" y="555" font-size="40" font-weight="600">1B+</text>
-    <text x="173" y="555" font-size="16" opacity=".7">records processed</text>
+    <text x="173" y="555" font-size="16" opacity=".7">records in reporting data</text>
     <text x="445" y="555" font-size="40" font-weight="600" fill="#c2a4ff">25%</text>
-    <text x="550" y="555" font-size="16" opacity=".7">faster processing</text>
+    <text x="550" y="555" font-size="16" opacity=".7">faster pipeline processing</text>
     <text x="805" y="555" font-size="40" font-weight="600">300+</text>
     <text x="930" y="555" font-size="16" opacity=".7">KPIs evaluated</text>
     <text x="85" y="636" font-size="16" fill="#b9a8c5">Conceptual illustration; no client or patient data shown.</text>

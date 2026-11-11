@@ -113,13 +113,6 @@ body {
   position: relative;
 }
 
-.container1 {
-  width: var(--cWidth);
-  height: var(--vh);
-  margin: auto;
-  position: relative;
-}
-
 .split-line {
   overflow: hidden;
 }

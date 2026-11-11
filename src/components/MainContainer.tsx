@@ -19,7 +19,7 @@ const MobileCharacterPortrait = ({ fallback = false }: { fallback?: boolean }) =
     <img
       className="mobile-character-portrait"
       src={mobileCharacterPortraitUrl}
-      alt="Stylised character from the portfolio template"
+      alt="Illustrated character portrait"
       width="480"
       height="480"
     />

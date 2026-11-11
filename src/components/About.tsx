@@ -6,9 +6,11 @@ const About = () => {
     <div className="about-section" id="about">
       <div className="about-me">
         <h3 className="title">{config.about.title}</h3>
-        <p className="para">
-          {config.about.description}
-        </p>
+        {config.about.paragraphs.map((paragraph) => (
+          <p className="para" key={paragraph}>
+            {paragraph}
+          </p>
+        ))}
       </div>
     </div>
   );

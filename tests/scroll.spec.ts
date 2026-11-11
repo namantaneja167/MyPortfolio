@@ -91,10 +91,19 @@ async function canvasCoverage(page: Page, selector: string) {
   }, selector);
   if (!clip) return 0;
   const canvas = page.locator(".character-model canvas");
-  const shown = (await page.screenshot({ clip })).toString("base64");
-  await canvas.evaluate((element) => { (element as HTMLElement).style.visibility = "hidden"; });
-  const hidden = (await page.screenshot({ clip })).toString("base64");
-  await canvas.evaluate((element) => { (element as HTMLElement).style.visibility = ""; });
+  const freezeAnimations = await page.addStyleTag({
+    content: "*, *::before, *::after { animation-play-state: paused !important; transition: none !important; }",
+  });
+  let shown: string;
+  let hidden: string;
+  try {
+    shown = (await page.screenshot({ clip })).toString("base64");
+    await canvas.evaluate((element) => { (element as HTMLElement).style.visibility = "hidden"; });
+    hidden = (await page.screenshot({ clip })).toString("base64");
+  } finally {
+    await canvas.evaluate((element) => { (element as HTMLElement).style.visibility = ""; });
+    await freezeAnimations.evaluate((element) => element.remove());
+  }
   return page.evaluate(async ([a, b]) => {
     const pixels = async (data: string) => {
       const image = await createImageBitmap(await (await fetch(`data:image/png;base64,${data}`)).blob());

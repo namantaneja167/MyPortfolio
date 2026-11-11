@@ -4,13 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { setAllTimeline } from "./utils/GsapScroll";
 
-const getDisplayPeriod = (period: string) => {
-  const years = period.match(/\b20\d{2}\b/g);
-  if (!years?.length) return period;
-  const endYear = period.includes("Present") ? "NOW" : years[years.length - 1];
-  return `${years[0]}–${endYear}`;
-};
-
 const Career = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -35,9 +28,16 @@ const Career = () => {
                   <h4>{exp.position}</h4>
                   <h5>{exp.company}</h5>
                 </div>
-                <h3>{getDisplayPeriod(exp.period)}</h3>
+                <h3>{exp.period}</h3>
               </div>
-              <p>{exp.description}</p>
+              <div className="career-summary">
+                <p>{exp.description}</p>
+                <ul>
+                  {exp.responsibilities.map((responsibility) => (
+                    <li key={responsibility}>{responsibility}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>

@@ -16,9 +16,9 @@
   <g font-family="Arial,sans-serif">
     <text x="92" y="126" fill="#c2a4ff" font-size="18" letter-spacing="5">NAMAN TANEJA · NOIDA, INDIA</text>
     <text x="88" y="282" fill="#f3edf7" font-size="76" font-weight="600" letter-spacing="-3">Data Engineer</text>
-    <text x="92" y="344" fill="#c2a4ff" font-size="27" letter-spacing="1">Enterprise data platforms · Applied AI projects</text>
-    <text x="92" y="420" fill="#bcb1c3" font-size="21">Energy trading and pharma analytics</text>
-    <text x="92" y="562" fill="#8f8198" font-size="16" letter-spacing="3">SNOWFLAKE  /  DBT  /  AZURE  /  PYTHON</text>
+    <text x="92" y="344" fill="#c2a4ff" font-size="27" letter-spacing="1">Energy trading · analytics · practical automation</text>
+    <text x="92" y="420" fill="#bcb1c3" font-size="21">Reliable pipelines and tools for recurring work</text>
+    <text x="92" y="562" fill="#8f8198" font-size="16" letter-spacing="3">SNOWFLAKE  /  AZURE  /  PYTHON</text>
   </g>
   <g opacity=".7" fill="none" stroke="#d4b8ff">
     <circle cx="990" cy="335" r="125" stroke-width="1"/>

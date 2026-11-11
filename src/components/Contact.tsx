@@ -103,9 +103,6 @@ const Contact = () => {
           <div className="contact-box">
             <h2>
               Portfolio content by <span>{config.developer.fullName}</span>
-              <br />
-              Visual foundation adapted from Redoyanul Haque’s MIT-licensed
-              portfolio.
             </h2>
             <h5>
               <MdCopyright /> {new Date().getFullYear()}

@@ -4,7 +4,7 @@ const CharacterPortrait = () => (
   <img
     className="character-fallback"
     src={mobileCharacterPortraitUrl}
-    alt="Stylised character from the portfolio template"
+    alt="Illustrated character portrait"
     width="480"
     height="480"
   />

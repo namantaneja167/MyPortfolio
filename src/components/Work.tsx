@@ -90,6 +90,17 @@ const Work = () => {
                 </div>
                 <h4>Contribution</h4>
                 <p>{project.description}</p>
+                {project.status && <p className="work-status">{project.status}</p>}
+                {project.details && (
+                  <details className="work-details">
+                    <summary>More detail</summary>
+                    <ul>
+                      {project.details.map((detail) => (
+                        <li key={detail}>{detail}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
                 <h4>Result</h4>
                 <p>{project.outcome}</p>
                 <h4>Stack</h4>

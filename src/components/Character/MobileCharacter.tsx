@@ -241,7 +241,7 @@ const MobileCharacter = () => {
     <div
       className={`mobile-character${status === "ready" ? " mobile-character-ready" : ""}`}
       data-graphics={status}
-      aria-label={`Stylised character from the portfolio template${status === "fallback" ? " (portrait fallback)" : ""}`}
+      aria-label={`Illustrated character portrait${status === "fallback" ? " (portrait fallback)" : ""}`}
       role="img"
     >
       <img

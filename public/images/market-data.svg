@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title description">
-  <title id="title">Illustrative market data ingestion flow</title>
-  <desc id="description">Conceptual provider feeds converging through managed ingestion into an organized data stream.</desc>
+  <title id="title">Illustrative market metadata refresh</title>
+  <desc id="description">A conceptual metadata flow using Snowflake data sharing, a stored procedure for orchestration, and incremental Dynamic Tables.</desc>
   <defs>
     <linearGradient id="bg" x2="1" y2="1">
       <stop stop-color="#24192d"/>
@@ -15,36 +15,30 @@
   <rect width="1200" height="700" fill="url(#bg)"/>
   <circle cx="950" cy="320" r="290" fill="#9d62dc" opacity=".08"/>
   <g fill="#eae5ec" font-family="Geist,Arial,sans-serif">
-    <text x="86" y="106" font-size="17" letter-spacing="4" fill="#c2a4ff">ILLUSTRATIVE DATA FLOW</text>
-    <text x="86" y="161" font-size="24" opacity=".7">Provider feeds</text>
-    <text x="536" y="161" font-size="24" opacity=".7">Orchestrated ingestion</text>
-    <text x="940" y="161" font-size="24" opacity=".7">Data products</text>
+    <text x="86" y="106" font-size="17" letter-spacing="4" fill="#c2a4ff">ILLUSTRATIVE METADATA FLOW</text>
+    <text x="86" y="161" font-size="24" opacity=".7">Provider shares</text>
+    <text x="536" y="161" font-size="24" opacity=".7">Orchestration</text>
+    <text x="940" y="161" font-size="24" opacity=".7">Data updates</text>
   </g>
   <g fill="#21162a" stroke="#c2a4ff" stroke-width="2">
-    <rect x="85" y="210" width="270" height="68" rx="4"/>
-    <rect x="85" y="310" width="270" height="68" rx="4"/>
-    <rect x="85" y="410" width="270" height="68" rx="4"/>
-    <rect x="85" y="510" width="270" height="68" rx="4"/>
+    <rect x="85" y="265" width="270" height="85" rx="4"/>
+    <rect x="85" y="420" width="270" height="85" rx="4"/>
     <rect x="530" y="270" width="250" height="240" rx="4"/>
     <rect x="920" y="315" width="205" height="150" rx="4"/>
   </g>
   <g fill="#eae5ec" font-family="Geist,Arial,sans-serif" font-size="21">
-    <text x="115" y="253">Morningstar</text>
-    <text x="115" y="353">AESO</text>
-    <text x="115" y="453">Genscape</text>
-    <text x="115" y="553">ARGUS</text>
-    <text x="565" y="340" font-size="24" font-weight="600">ADF + Snowpipe</text>
-    <text x="565" y="382" font-size="16" opacity=".72">parallel transfers</text>
-    <text x="565" y="411" font-size="16" opacity=".72">production functions</text>
-    <text x="957" y="374" font-size="22" font-weight="600">Reliable feeds</text>
-    <text x="957" y="410" font-size="15" opacity=".7">monitored delivery</text>
+    <text x="115" y="316">Wood Mackenzie</text>
+    <text x="115" y="471">Genscape</text>
+    <text x="565" y="340" font-size="24" font-weight="600">Stored procedure</text>
+    <text x="565" y="382" font-size="16" opacity=".72">orchestration</text>
+    <text x="565" y="411" font-size="16" opacity=".72">Snowflake share</text>
+    <text x="957" y="374" font-size="22" font-weight="600">Dynamic Tables</text>
+    <text x="957" y="410" font-size="15" opacity=".7">incremental updates</text>
   </g>
   <g fill="none" stroke="url(#stream)" stroke-width="3">
-    <path d="M355 244C450 244 437 330 530 330"/>
-    <path d="M355 344H530"/>
-    <path d="M355 444C450 444 437 410 530 410"/>
-    <path d="M355 544C450 544 437 450 530 450"/>
+    <path d="M355 307C450 307 437 350 530 350"/>
+    <path d="M355 462C450 462 437 430 530 430"/>
     <path d="M780 390H920"/>
   </g>
-  <text x="86" y="636" fill="#b9a8c5" font-family="Geist,Arial,sans-serif" font-size="16">Conceptual illustration; no provider payloads or client architecture shown.</text>
+  <text x="86" y="636" fill="#b9a8c5" font-family="Geist,Arial,sans-serif" font-size="16">Conceptual illustration; this integration is in testing.</text>
 </svg>
